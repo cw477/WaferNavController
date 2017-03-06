@@ -1,108 +1,71 @@
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.eclipse.paho.client.mqttv3.*;
+/**
+ * http://docs.oracle.com/javafx/2/get_started/jfxpub-get_started.htm
+ * Created by camer on 2/27/2017.
+ */
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-public class WaferNavController {
-    public static final String BROKER_URL = "tcp://iot.eclipse.org:1883";
-    public static final String SUB_TOPIC = "wafernav/location_requests";
-    public static final String PUB_TOPIC = "wafernav/location_data";
-
-    private static final String CLIENT_ID = UUID.randomUUID().toString();
-    private MqttClient mqttClient;
-    private Map<Integer, String> mockDatabase;
-
-    public WaferNavController() throws InterruptedException, IOException {
-        mockDatabase = new HashMap<>();
-        mockDatabase.put(123, "abc");
-        mockDatabase.put(456, "xyz");
-        mockDatabase.put(12345, "somewhere");
-
-        //testingJsonParsing();
-
-        System.out.println(CLIENT_ID);
-        try {
-            mqttClient = new MqttClient(BROKER_URL, CLIENT_ID);
-            mqttClient.setCallback(new SubscribeCallback());
-            mqttClient.connect();
-
-            mqttClient.subscribe(SUB_TOPIC);
-            System.out.println("Subscribed to " + SUB_TOPIC);
-        }
-        catch (MqttException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+public class WaferNavController extends Application {
+    public static void main(String[] args) {
+        launch(args);
     }
 
-    private void testingJsonParsing() throws IOException {
-        Map<Integer, String> map = new HashMap<>();
-        map.put(123, "xyz");
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("JavaFX Welcome");
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        Button btn = new Button("Sign in");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 1, 4);
+        final Text actiontarget = new Text();
+        grid.add(actiontarget, 1, 6);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
 
-        String jsonString = new ObjectMapper().writeValueAsString(map);
-        System.out.println(jsonString);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<Integer, String> resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<Integer, String>>() {
+            @Override
+            public void handle(ActionEvent e) {
+                actiontarget.setFill(Color.FIREBRICK);
+                actiontarget.setText("Sign in button pressed");
+            }
         });
-        System.out.println(resultMap);
-    }
+        Text scenetitle = new Text("Welcome");
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        grid.add(scenetitle, 0, 0, 2, 1);
 
-    private void pubLocation(MqttMessage mqttMessage) {
-        try {
-            // Process mqtt message to get desired ID
-            String jsonString = mqttMessage.toString();
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<String, Object>>() {
-            });
-            int id = (int) resultMap.get("id"); // e.g. 123
+        Label userName = new Label("User Name:");
+        grid.add(userName, 0, 1);
 
-            // Get location data to return from "database"
-            String loc = mockDatabase.get(id); // e.g. "xyz"
+        TextField userTextField = new TextField();
+        grid.add(userTextField, 1, 1);
 
-            // Create json string to send back, e.g. {"id":123, "loc":"xyz"}
-            Map<String, Object> returnMap = new HashMap<>();
-            returnMap.put("id", id);
-            returnMap.put("loc", loc);
-            String returnJsonString = new ObjectMapper().writeValueAsString(returnMap);
+        Label pw = new Label("Password:");
+        grid.add(pw, 0, 2);
 
-            // Publish location info
-            final MqttTopic topic = mqttClient.getTopic(PUB_TOPIC);
-            topic.publish(new MqttMessage(returnJsonString.toString().getBytes()));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        PasswordField pwBox = new PasswordField();
+        grid.add(pwBox, 1, 2);
 
-    private class SubscribeCallback implements MqttCallback {
-
-        @Override
-        public void connectionLost(Throwable cause) {
-        }
-
-        @Override
-        public void messageArrived(String topic, MqttMessage mqttMessage) throws IOException, MqttException {
-            System.out.println(LocalDateTime.now() + "  Message arrived.  Topic: " + topic + "  Message: '" + mqttMessage.toString() + "'");
-            pubLocation(mqttMessage);
-        }
-
-        @Override
-        public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException, IOException {
-        try {
-            new WaferNavController();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        Scene scene = new Scene(grid, 300, 275);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
