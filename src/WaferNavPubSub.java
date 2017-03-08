@@ -99,6 +99,11 @@ public class WaferNavPubSub {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        new WaferNavPubSub();
+        try {
+            new WaferNavPubSub();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
