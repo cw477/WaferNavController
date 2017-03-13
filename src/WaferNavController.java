@@ -1,71 +1,52 @@
-/**
- * http://docs.oracle.com/javafx/2/get_started/jfxpub-get_started.htm
- * Created by camer on 2/27/2017.
- */
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+// Use the JDBC driver
+import java.sql.*;
+import com.microsoft.sqlserver.jdbc.*;
 
-public class WaferNavController extends Application {
+public class WaferNavController {
+
+    // Connect to your database.
+    // Replace server name, username, and password with your credentials
     public static void main(String[] args) {
-        launch(args);
-    }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX Welcome");
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-        Button btn = new Button("Sign in");
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 1, 4);
-        final Text actiontarget = new Text();
-        grid.add(actiontarget, 1, 6);
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        String connectionString = "jdbc:sqlserver://localhost;DatabaseName=wafer_nav;user=appuser;password=appuser;";
 
-            @Override
-            public void handle(ActionEvent e) {
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setText("Sign in button pressed");
+        // Declare the JDBC objects.
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        PreparedStatement prepsInsertProduct = null;
+        try {
+            connection = DriverManager.getConnection(connectionString);
+
+//            String insertSql = "INSERT INTO wn.active_bib VALUES "
+//                    + "(984545945);";
+//
+//            prepsInsertProduct = connection.prepareStatement(
+//                    insertSql,
+//                    Statement.RETURN_GENERATED_KEYS);
+//            prepsInsertProduct.execute();
+//
+//            resultSet = prepsInsertProduct.getGeneratedKeys();
+//            while (resultSet.next()) {
+//                System.out.println("Generated: " + resultSet.getString(1));
+//            }
+
+            String query = "select id from wn.active_bib";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                System.out.println("Found record: " + id);
             }
-        });
-        Text scenetitle = new Text("Welcome");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(scenetitle, 0, 0, 2, 1);
-
-        Label userName = new Label("User Name:");
-        grid.add(userName, 0, 1);
-
-        TextField userTextField = new TextField();
-        grid.add(userTextField, 1, 1);
-
-        Label pw = new Label("Password:");
-        grid.add(pw, 0, 2);
-
-        PasswordField pwBox = new PasswordField();
-        grid.add(pwBox, 1, 2);
-
-        Scene scene = new Scene(grid, 300, 275);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (prepsInsertProduct != null) try { prepsInsertProduct.close(); } catch(Exception e) {}
+            if (resultSet != null) try { resultSet.close(); } catch(Exception e) {}
+            if (statement != null) try { statement.close(); } catch(Exception e) {}
+            if (connection != null) try { connection.close(); } catch(Exception e) {}
+        }
     }
 }
