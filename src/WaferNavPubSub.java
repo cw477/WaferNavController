@@ -15,13 +15,13 @@ public class WaferNavPubSub {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
     private MqttClient mqttClient;
-    private Map<Integer, String> mockDatabase;
+    private Map<String, String> mockDatabase;
 
     public WaferNavPubSub() throws InterruptedException, IOException {
         mockDatabase = new HashMap<>();
-        mockDatabase.put(123, "abc");
-        mockDatabase.put(456, "xyz");
-        mockDatabase.put(12345, "somewhere");
+        mockDatabase.put("123", "abc");
+        mockDatabase.put("456", "xyz");
+        mockDatabase.put("12345", "somewhere");
 
         //testingJsonParsing();
 
@@ -58,16 +58,16 @@ public class WaferNavPubSub {
             // Process mqtt message to get desired ID
             String jsonString = mqttMessage.toString();
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<String, Object>>() {
+            Map<String, String> resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<String, Object>>() {
             });
-            int id = (int) resultMap.get("id"); // e.g. 123
+            String idString = resultMap.get("id"); // e.g. 123
 
             // Get location data to return from "database"
-            String loc = mockDatabase.get(id); // e.g. "xyz"
+            String loc = mockDatabase.get(idString); // e.g. "xyz"
 
             // create json string to send back, e.g. {"id":123, "loc":"xyz"}
             Map<String, Object> returnMap = new HashMap<>();
-            returnMap.put("id", id);
+            returnMap.put("id", idString);
             returnMap.put("loc", loc);
             String returnJsonString = new ObjectMapper().writeValueAsString(returnMap);
 
