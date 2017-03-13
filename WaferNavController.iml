@@ -10,5 +10,9 @@
     <orderEntry type="library" name="jackson-core-asl-1.9.9" level="project" />
     <orderEntry type="library" name="jackson-mapper-asl-1.9.9" level="project" />
     <orderEntry type="library" name="org.eclipse.paho.client.mqttv3-1.0.2" level="project" />
+    <orderEntry type="library" name="jackson-core-asl-1.9.9" level="project" />
+    <orderEntry type="library" name="jackson-mapper-asl-1.9.9" level="project" />
+    <orderEntry type="library" name="org.eclipse.paho.client.mqttv3-1.0.2" level="project" />
+    <orderEntry type="library" name="sqljdbc42" level="project" />
   </component>
 </module>
