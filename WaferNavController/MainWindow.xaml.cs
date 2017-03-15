@@ -11,6 +11,7 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
+        //Adding a comment to test a first commit - Cameron Watt
         private readonly string BROKER_URL = "iot.eclipse.org"; // Defaults to port 1883
         private readonly string CLIENT_ID = Guid.NewGuid().ToString();
         private readonly Dictionary<string, string> mockDatabase;
