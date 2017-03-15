@@ -1,12 +1,14 @@
-﻿<Window x:Class="WaferNavController.MainWindow"
+<Window x:Class="WaferNavController.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="WaferNavController" Height="325" Width="700">
     <Grid>
-        
+        <ScrollViewer x:Name="scrollViewer">
+            <TextBlock x:Name="textBlock" Margin="10" TextWrapping="Wrap" RenderTransformOrigin="4.058,4.073"/>
+        </ScrollViewer>
     </Grid>
 </Window>

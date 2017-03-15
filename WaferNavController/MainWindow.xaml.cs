@@ -16,7 +16,7 @@ namespace WaferNavController {
         private readonly MqttClient mqttClient;
 
         public MainWindow() {
-            //InitializeComponent();
+            InitializeComponent();
 
             mockDatabase = new Dictionary<string, string>();
             mockDatabase.Add("123", "abc");
@@ -24,17 +24,21 @@ namespace WaferNavController {
             mockDatabase.Add("12345", "somewhere");
 
             Console.WriteLine(CLIENT_ID);
+            textBlock.Text += CLIENT_ID + "\n";
             mqttClient = new MqttClient(BROKER_URL);
             mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
             mqttClient.Connect(CLIENT_ID);
             mqttClient.Subscribe(new[] {SUB_TOPIC}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
-            Console.WriteLine("Subscribed to " + SUB_TOPIC);
+            textBlock.Text += "Subscribed to " + SUB_TOPIC + "\n";
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
-            // Print received message to console
+            // Print received message to window
             var receivedJsonStr = Encoding.UTF8.GetString(e.Message, 0, e.Message.Length);
-            Console.WriteLine(DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + receivedJsonStr + "'");
+            this.Dispatcher.Invoke(() => {
+                textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + receivedJsonStr + "'" + "\n";
+                scrollViewer.ScrollToVerticalOffset(Double.MaxValue);
+            });
 
             // Process mqtt message to get desired ID
             var resultMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(receivedJsonStr);
@@ -52,5 +56,6 @@ namespace WaferNavController {
             // Publish location info
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(json));
         }
+
     }
 }
