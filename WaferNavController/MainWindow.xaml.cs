@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -18,6 +21,7 @@ namespace WaferNavController {
         private readonly string PUB_TOPIC = "wafernav/location_data";
         private readonly string SUB_TOPIC = "wafernav/location_requests";
         private readonly MqttClient mqttClient;
+        private bool killMakeDotsThread = false;
 
         public MainWindow() {
             InitializeComponent();
@@ -31,19 +35,19 @@ namespace WaferNavController {
             mockDatabase.Add("456", "xyz");
             mockDatabase.Add("12345", "somewhere");
 
-            Console.WriteLine(CLIENT_ID);
-            textBlock.Text += CLIENT_ID + "\n";
+            AppendLine("ClIENT ID: " + CLIENT_ID);
+
             mqttClient = new MqttClient(BROKER_URL);
             mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
             mqttClient.Connect(CLIENT_ID);
             mqttClient.Subscribe(new[] {SUB_TOPIC}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
-            textBlock.Text += "Subscribed to " + SUB_TOPIC + "\n";
+            AppendLine("Subscribed to " + SUB_TOPIC);
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
             // Print received message to window
             var receivedJsonStr = Encoding.UTF8.GetString(e.Message, 0, e.Message.Length);
-            this.Dispatcher.Invoke(() => {
+            Dispatcher.Invoke(() => {
                 textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + receivedJsonStr + "'" + "\n";
                 scrollViewer.ScrollToVerticalOffset(Double.MaxValue);
             });
@@ -63,6 +67,60 @@ namespace WaferNavController {
 
             // Publish location info
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(json));
+        }
+
+        protected override void OnContentRendered(EventArgs e) {
+            base.OnContentRendered(e);
+            var thread = new Thread(ConnectToDatabase);
+            thread.Start();
+        }
+
+        private void ConnectToDatabase() {
+            Dispatcher.Invoke(() => { AppendText("Connecting to database"); });
+
+            killMakeDotsThread = false;
+            var makeDotsThread = new Thread(MakeDots);
+            makeDotsThread.Start();
+
+            SqlConnection myConnection = new SqlConnection("user id=appuser;" +
+                            "password=appuser;" +
+                            "server=localhost;" +
+                            "database=wafer_nav;" +
+                            "connection timeout=10");
+            try {
+                myConnection.Open();
+                killMakeDotsThread = true;
+                Dispatcher.Invoke(() => { AppendLine(" success!"); });
+                SqlDataReader myReader = null;
+                SqlCommand myCommand = new SqlCommand("select * from wn.active_bib", myConnection);
+                myReader = myCommand.ExecuteReader();
+                while (myReader.Read()) {
+                    Dispatcher.Invoke(() => { AppendLine(myReader["id"].ToString()); });
+                }
+            }
+            catch (Exception exception) {
+                killMakeDotsThread = true;
+                Dispatcher.Invoke(() => AppendLine(" failed."));
+                Dispatcher.Invoke(() => AppendLine("Exception message:\n " + exception));
+            }
+        }
+
+        private void MakeDots() {
+            while (true) {
+                Thread.Sleep(1000);
+                if (killMakeDotsThread) {
+                    break;
+                }
+                Dispatcher.Invoke(() => AppendText(" ."));
+            }
+        }
+
+        private void AppendText(String text) {
+            textBlock.Text += text;
+        }
+
+        private void AppendLine(String text) {
+            textBlock.Text += text + "\n";
         }
 
         protected override void OnClosed(EventArgs e) {
