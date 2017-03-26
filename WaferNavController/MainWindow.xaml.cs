@@ -25,6 +25,7 @@ namespace WaferNavController {
 
         public MainWindow() {
             InitializeComponent();
+
             var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;
             var hBitmap = bmp.GetHbitmap();
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
@@ -76,32 +77,33 @@ namespace WaferNavController {
         }
 
         private void ConnectToDatabase() {
-            Dispatcher.Invoke(() => { AppendText("Connecting to database"); });
+            Dispatcher.Invoke(() => { AppendText("Connecting to database . . ."); });
 
             killMakeDotsThread = false;
             var makeDotsThread = new Thread(MakeDots);
             makeDotsThread.Start();
 
-            SqlConnection myConnection = new SqlConnection("user id=appuser;" +
-                            "password=appuser;" +
-                            "server=localhost;" +
-                            "database=wafer_nav;" +
-                            "connection timeout=10");
             try {
-                myConnection.Open();
+                DatabaseHandler.ConnectToDatabase();
+
                 killMakeDotsThread = true;
                 Dispatcher.Invoke(() => { AppendLine(" success!"); });
-                SqlDataReader myReader = null;
-                SqlCommand myCommand = new SqlCommand("select * from wn.active_bib", myConnection);
-                myReader = myCommand.ExecuteReader();
-                while (myReader.Read()) {
-                    Dispatcher.Invoke(() => { AppendLine(myReader["id"].ToString()); });
-                }
+                List<List<String>> data = DatabaseHandler.GetData("SELECT * FROM [wn].[BLU]");
+                AppendDatabaseDataToTextBox(data);
+
+                String availBluId = DatabaseHandler.GetFirstAvailableBluId();
+                Dispatcher.Invoke(() => AppendText("First available BLU ID: " + availBluId));
             }
             catch (Exception exception) {
                 killMakeDotsThread = true;
                 Dispatcher.Invoke(() => AppendLine(" failed."));
                 Dispatcher.Invoke(() => AppendLine("Exception message:\n " + exception));
+            }
+        }
+
+        private void AppendDatabaseDataToTextBox(List<List<String>> data) {
+            foreach (var row in data) {
+                Dispatcher.Invoke(() => { AppendLine(row[0] + ", " + row[1] + ", " + row[2]); });
             }
         }
 
@@ -115,17 +117,18 @@ namespace WaferNavController {
             }
         }
 
-        private void AppendText(String text) {
+        public void AppendText(String text) {
             textBlock.Text += text;
         }
 
-        private void AppendLine(String text) {
+        public void AppendLine(String text) {
             textBlock.Text += text + "\n";
         }
 
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             mqttClient.Disconnect();
+            DatabaseHandler.CloseConnection();
             Application.Current.Shutdown();
         }
     }
