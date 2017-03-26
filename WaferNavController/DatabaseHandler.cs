@@ -29,11 +29,16 @@ namespace WaferNavController {
             reader = sqlCommand.ExecuteReader();
 
             List<List<String>> data = new List<List<string>>();
+
+            // Iterate through rows
             while (reader.Read()) {
                 var row = new List<string>();
-                row.Add(reader["id"].ToString());
-                row.Add(reader["location"].ToString());
-                row.Add(reader["available"].ToString());
+
+                // Iterate through columns
+                for (int i = 0; i < reader.FieldCount; i++) {
+                    string colName = reader.GetName(i);
+                    row.Add(reader[colName].ToString());
+                }
                 data.Add(row);
             }
             reader.Close();
@@ -52,6 +57,16 @@ namespace WaferNavController {
             }
             reader.Close();
             return bluId;
+        }
+
+        public static void AddNewActiveBib(String bibId) {
+            try {
+                SqlCommand insertCommand = new SqlCommand($"INSERT INTO [wn].[active_bib] (id) Values ({bibId})", myConnection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception exception) {
+                //TODO - Do something with exception instead of just swallowing it
+            }
         }
 
         public static void CloseConnection() {

@@ -88,11 +88,25 @@ namespace WaferNavController {
 
                 killMakeDotsThread = true;
                 Dispatcher.Invoke(() => { AppendLine(" success!"); });
+
+
                 List<List<String>> data = DatabaseHandler.GetData("SELECT * FROM [wn].[BLU]");
                 AppendDatabaseDataToTextBox(data);
 
+
                 String availBluId = DatabaseHandler.GetFirstAvailableBluId();
-                Dispatcher.Invoke(() => AppendText("First available BLU ID: " + availBluId));
+                Dispatcher.Invoke(() => AppendLine("First available BLU ID: " + availBluId));
+
+
+                Dispatcher.Invoke(() => AppendLine("Before AddNewActiveBib()"));
+                data = DatabaseHandler.GetData("SELECT * FROM [wn].[active_bib]");
+                AppendDatabaseDataToTextBox(data);
+
+
+                Dispatcher.Invoke(() => AppendLine("After AddNewActiveBib()"));
+                DatabaseHandler.AddNewActiveBib("555");
+                data = DatabaseHandler.GetData("SELECT * FROM [wn].[active_bib]");
+                AppendDatabaseDataToTextBox(data);
             }
             catch (Exception exception) {
                 killMakeDotsThread = true;
@@ -103,7 +117,12 @@ namespace WaferNavController {
 
         private void AppendDatabaseDataToTextBox(List<List<String>> data) {
             foreach (var row in data) {
-                Dispatcher.Invoke(() => { AppendLine(row[0] + ", " + row[1] + ", " + row[2]); });
+                String outputStr = "";
+                foreach (var col in row) {
+                    outputStr += col + ", ";
+                }
+                outputStr = outputStr.Substring(0, outputStr.Length - 2);
+                Dispatcher.Invoke(() => { AppendLine(outputStr); });
             }
         }
 
