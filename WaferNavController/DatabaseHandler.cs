@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace WaferNavController {
 
@@ -23,20 +18,19 @@ namespace WaferNavController {
             myConnection.Open();
         }
 
-        public static List<List<String>> GetData(String query) {
-            SqlDataReader reader = null;
-            SqlCommand sqlCommand = new SqlCommand(query, myConnection);
-            reader = sqlCommand.ExecuteReader();
+        public static List<List<string>> GetData(string query) {
+            var sqlCommand = new SqlCommand(query, myConnection);
+            var reader = sqlCommand.ExecuteReader();
 
-            List<List<String>> data = new List<List<string>>();
+            var data = new List<List<string>>();
 
             // Iterate through rows
             while (reader.Read()) {
                 var row = new List<string>();
 
                 // Iterate through columns
-                for (int i = 0; i < reader.FieldCount; i++) {
-                    string colName = reader.GetName(i);
+                for (var i = 0; i < reader.FieldCount; i++) {
+                    var colName = reader.GetName(i);
                     row.Add(reader[colName].ToString());
                 }
                 data.Add(row);
@@ -45,12 +39,12 @@ namespace WaferNavController {
             return data;
         }
 
-        public static String GetFirstAvailableBluId() {
-            String query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
-            SqlDataReader reader = null;
-            SqlCommand sqlCommand = new SqlCommand(query, myConnection);
-            reader = sqlCommand.ExecuteReader();
-            String bluId = null;
+        public static string GetFirstAvailableBluId() {
+            var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
+            var sqlCommand = new SqlCommand(query, myConnection);
+            var reader = sqlCommand.ExecuteReader();
+
+            string bluId = null;
             while (reader.Read()) {
                 bluId = reader["id"].ToString();
                 break;
@@ -59,9 +53,9 @@ namespace WaferNavController {
             return bluId;
         }
 
-        public static void AddNewActiveBib(String bibId) {
+        public static void AddNewActiveBib(string bibId) {
             try {
-                SqlCommand insertCommand = new SqlCommand($"INSERT INTO [wn].[active_bib] (id) Values ({bibId})", myConnection);
+                var insertCommand = new SqlCommand($"INSERT INTO [wn].[active_bib] (id) Values ({bibId})", myConnection);
                 insertCommand.ExecuteNonQuery();
             }
             catch (Exception exception) {

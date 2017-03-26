@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -50,7 +48,7 @@ namespace WaferNavController {
             var receivedJsonStr = Encoding.UTF8.GetString(e.Message, 0, e.Message.Length);
             Dispatcher.Invoke(() => {
                 textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + receivedJsonStr + "'" + "\n";
-                scrollViewer.ScrollToVerticalOffset(Double.MaxValue);
+                scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
             // Process mqtt message to get desired ID
@@ -90,11 +88,11 @@ namespace WaferNavController {
                 Dispatcher.Invoke(() => { AppendLine(" success!"); });
 
 
-                List<List<String>> data = DatabaseHandler.GetData("SELECT * FROM [wn].[BLU]");
+                var data = DatabaseHandler.GetData("SELECT * FROM [wn].[BLU]");
                 AppendDatabaseDataToTextBox(data);
 
 
-                String availBluId = DatabaseHandler.GetFirstAvailableBluId();
+                var availBluId = DatabaseHandler.GetFirstAvailableBluId();
                 Dispatcher.Invoke(() => AppendLine("First available BLU ID: " + availBluId));
 
 
@@ -115,9 +113,9 @@ namespace WaferNavController {
             }
         }
 
-        private void AppendDatabaseDataToTextBox(List<List<String>> data) {
+        private void AppendDatabaseDataToTextBox(List<List<string>> data) {
             foreach (var row in data) {
-                String outputStr = "";
+                var outputStr = "";
                 foreach (var col in row) {
                     outputStr += col + ", ";
                 }
@@ -136,11 +134,11 @@ namespace WaferNavController {
             }
         }
 
-        public void AppendText(String text) {
+        public void AppendText(string text) {
             textBlock.Text += text;
         }
 
-        public void AppendLine(String text) {
+        public void AppendLine(string text) {
             textBlock.Text += text + "\n";
         }
 
