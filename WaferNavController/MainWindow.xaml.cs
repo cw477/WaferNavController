@@ -65,5 +65,10 @@ namespace WaferNavController {
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(json));
         }
 
+        protected override void OnClosed(EventArgs e) {
+            base.OnClosed(e);
+            mqttClient.Disconnect();
+            Application.Current.Shutdown();
+        }
     }
 }
