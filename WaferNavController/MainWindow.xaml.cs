@@ -15,7 +15,6 @@ namespace WaferNavController {
         //Adding a comment to test a first commit - Cameron Watt
         private readonly string BROKER_URL = "iot.eclipse.org"; // Defaults to port 1883
         private readonly string CLIENT_ID = Guid.NewGuid().ToString();
-        private readonly Dictionary<string, string> mockDatabase;
         private readonly string PUB_TOPIC = "wafernav/location_data";
         private readonly string SUB_TOPIC = "wafernav/location_requests";
         private readonly MqttClient mqttClient;
@@ -28,11 +27,6 @@ namespace WaferNavController {
             var hBitmap = bmp.GetHbitmap();
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             Icon = wpfBitmap;
-
-            mockDatabase = new Dictionary<string, string>();
-            mockDatabase.Add("123", "abc");
-            mockDatabase.Add("456", "xyz");
-            mockDatabase.Add("12345", "somewhere");
 
             AppendLine("ClIENT ID: " + CLIENT_ID);
 
@@ -53,18 +47,29 @@ namespace WaferNavController {
 
             // Process mqtt message to get desired ID
             var resultMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(receivedJsonStr);
-            var idString = resultMap["id"];
+            var bibId = resultMap["id"];
 
-            // Get location data to return from "database"
-            var loc = mockDatabase.ContainsKey(idString) ? mockDatabase[idString] : "null";
+            // START - TEMPORARY TO RESET DATABASE
+            DatabaseHandler.SetAllBluToAvailable();
+            DatabaseHandler.RemoveAllActiveBibs();
+            // END - TEMPORARY TO RESET DATABASE
 
-            // Create JSON string to send back, e.g. {"id":123, "loc":"abc"}
-            var returnMap = new Dictionary<string, string>();
-            returnMap["id"] = idString;
-            returnMap["loc"] = loc;
-            var json = JsonConvert.SerializeObject(returnMap);
+            // Get first available BLU id
+            var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
-            // Publish location info
+            // Add BIB to active_bib
+            DatabaseHandler.AddNewActiveBib(bibId);
+
+            // Mark BLU as unavailable
+            DatabaseHandler.SetBluToUnavailable(bluId);
+
+            // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
+            var bluInfo = DatabaseHandler.GetBlu(bluId);
+
+            // Create JSON string to send back
+            var json = JsonConvert.SerializeObject(bluInfo);
+
+            // Publish BLU info
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(json));
         }
 
@@ -136,16 +141,16 @@ namespace WaferNavController {
             }
         }
 
-        private void AppendDatabaseDataToTextBox(string header, List<List<string>> data) {
+        private void AppendDatabaseDataToTextBox(string header, List<Dictionary<string, string>> data) {
             AppendLine(header, true);
             AppendDatabaseDataToTextBox(data);
         }
 
-        private void AppendDatabaseDataToTextBox(List<List<string>> data) {
+        private void AppendDatabaseDataToTextBox(List<Dictionary<string, string>> data) {
             foreach (var row in data) {
                 var outputStr = "";
                 foreach (var col in row) {
-                    outputStr += col + ", ";
+                    outputStr += col.Key + ":" + col.Value + ", ";
                 }
                 outputStr = outputStr.Substring(0, outputStr.Length - 2);
                 AppendLine(outputStr, true);
@@ -180,10 +185,12 @@ namespace WaferNavController {
 
         private void AppendText(string text) {
             textBlock.Text += text;
+            scrollViewer.ScrollToVerticalOffset(double.MaxValue);
         }
 
         private void AppendLine(string text) {
             textBlock.Text += text + "\n";
+            scrollViewer.ScrollToVerticalOffset(double.MaxValue);
         }
 
         protected override void OnClosed(EventArgs e) {

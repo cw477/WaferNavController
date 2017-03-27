@@ -18,32 +18,36 @@ namespace WaferNavController {
             myConnection.Open();
         }
 
-        public static List<List<string>> GetAllBlus() {
+        public static List<Dictionary<string, string>> GetAllBlus() {
             return GetData("SELECT * FROM [wn].[BLU]");
         }
 
-        public static List<List<string>> GetAllActiveBibs() {
+        public static Dictionary<string, string> GetBlu(string bluId) {
+            return GetData($"SELECT * FROM [wn].[BLU] WHERE id = {bluId}")[0];
+        }
+
+        public static List<Dictionary<string, string>> GetAllActiveBibs() {
             return GetData("SELECT * FROM [wn].[active_bib]");
         }
 
-        public static List<List<string>> GetAllHistoricBibs() {
+        public static List<Dictionary<string, string>> GetAllHistoricBibs() {
             return GetData("SELECT * FROM [wn].[historic_bib]");
         }
 
-        public static List<List<string>> GetData(string query) {
+        private static List<Dictionary<string, string>> GetData(string query) {
             var sqlCommand = new SqlCommand(query, myConnection);
             var reader = sqlCommand.ExecuteReader();
 
-            var data = new List<List<string>>();
+            var data = new List<Dictionary<string, string>>();
 
             // Iterate through rows
             while (reader.Read()) {
-                var row = new List<string>();
+                var row = new Dictionary<string, string>();
 
                 // Iterate through columns
                 for (var i = 0; i < reader.FieldCount; i++) {
                     var colName = reader.GetName(i);
-                    row.Add(reader[colName].ToString());
+                    row.Add(colName, reader[colName].ToString());
                 }
                 data.Add(row);
             }
@@ -63,6 +67,20 @@ namespace WaferNavController {
             }
             reader.Close();
             return bluId;
+        }
+
+        public static void SetAllBluToUnavailable() {
+            var query = "UPDATE[wafer_nav].[wn].[BLU]" +
+                        "SET available = 0";
+            var updateCommand = new SqlCommand(query, myConnection);
+            updateCommand.ExecuteNonQuery();
+        }
+
+        public static void SetAllBluToAvailable() {
+            var query = "UPDATE[wafer_nav].[wn].[BLU]" +
+                        "SET available = 1";
+            var updateCommand = new SqlCommand(query, myConnection);
+            updateCommand.ExecuteNonQuery();
         }
 
         public static void SetBluToUnavailable(string bluId) {
