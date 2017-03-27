@@ -63,6 +63,12 @@ namespace WaferNavController {
             }
         }
 
+        public static void RemoveAllActiveBibs() {
+            var query = "DELETE FROM [wn].[active_bib];";
+            var deleteCommand = new SqlCommand(query, myConnection);
+            deleteCommand.ExecuteNonQuery();
+        }
+
         public static void CloseConnection() {
             myConnection.Close();
         }

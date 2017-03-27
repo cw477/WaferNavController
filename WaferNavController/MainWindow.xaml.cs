@@ -75,7 +75,7 @@ namespace WaferNavController {
         }
 
         private void ConnectToDatabase() {
-            Dispatcher.Invoke(() => { AppendText("Connecting to database . . ."); });
+            AppendText("Connecting to database . . .", true);
 
             killMakeDotsThread = false;
             var makeDotsThread = new Thread(MakeDots);
@@ -85,7 +85,7 @@ namespace WaferNavController {
                 DatabaseHandler.ConnectToDatabase();
 
                 killMakeDotsThread = true;
-                Dispatcher.Invoke(() => { AppendLine(" success!"); });
+                AppendLine(" success!", true);
 
 
                 var data = DatabaseHandler.GetData("SELECT * FROM [wn].[BLU]");
@@ -93,23 +93,19 @@ namespace WaferNavController {
 
 
                 var availBluId = DatabaseHandler.GetFirstAvailableBluId();
-                Dispatcher.Invoke(() => AppendLine("First available BLU ID: " + availBluId));
+                AppendLine("First available BLU ID: " + availBluId, true);
 
 
-                Dispatcher.Invoke(() => AppendLine("Before AddNewActiveBib()"));
-                data = DatabaseHandler.GetData("SELECT * FROM [wn].[active_bib]");
-                AppendDatabaseDataToTextBox(data);
+                DatabaseHandler.RemoveAllActiveBibs();
 
-
-                Dispatcher.Invoke(() => AppendLine("After AddNewActiveBib()"));
                 DatabaseHandler.AddNewActiveBib("555");
                 data = DatabaseHandler.GetData("SELECT * FROM [wn].[active_bib]");
                 AppendDatabaseDataToTextBox(data);
             }
             catch (Exception exception) {
                 killMakeDotsThread = true;
-                Dispatcher.Invoke(() => AppendLine(" failed."));
-                Dispatcher.Invoke(() => AppendLine("Exception message:\n " + exception));
+                AppendLine(" failed.", true);
+                AppendLine("Exception message:\n " + exception, true);
             }
         }
 
@@ -120,7 +116,7 @@ namespace WaferNavController {
                     outputStr += col + ", ";
                 }
                 outputStr = outputStr.Substring(0, outputStr.Length - 2);
-                Dispatcher.Invoke(() => { AppendLine(outputStr); });
+                AppendLine(outputStr, true);
             }
         }
 
@@ -130,15 +126,31 @@ namespace WaferNavController {
                 if (killMakeDotsThread) {
                     break;
                 }
-                Dispatcher.Invoke(() => AppendText(" ."));
+                AppendText(" .", true);
             }
         }
 
-        public void AppendText(string text) {
+        private void AppendText(string text, bool useDispatcher) {
+            if (useDispatcher) {
+                Dispatcher.Invoke(() => AppendText(text));
+            } else {
+                AppendText(text);
+            }
+        }
+
+        private void AppendLine(string text, bool useDispatcher) {
+            if (useDispatcher) {
+                Dispatcher.Invoke(() => AppendLine(text));
+            } else {
+                AppendLine(text);
+            }
+        }
+
+        private void AppendText(string text) {
             textBlock.Text += text;
         }
 
-        public void AppendLine(string text) {
+        private void AppendLine(string text) {
             textBlock.Text += text + "\n";
         }
 
