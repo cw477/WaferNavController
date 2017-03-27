@@ -88,25 +88,57 @@ namespace WaferNavController {
                 AppendLine(" success!", true);
 
 
-                var data = DatabaseHandler.GetData("SELECT * FROM [wn].[BLU]");
-                AppendDatabaseDataToTextBox(data);
+                var data = DatabaseHandler.GetAllBlus();
+                AppendDatabaseDataToTextBox("\nAll BLUs:", data);
 
 
                 var availBluId = DatabaseHandler.GetFirstAvailableBluId();
-                AppendLine("First available BLU ID: " + availBluId, true);
+                AppendLine("\nFirst available BLU ID: " + availBluId, true);
 
 
                 DatabaseHandler.RemoveAllActiveBibs();
+                DatabaseHandler.RemoveAllHistoricBibs();
+
 
                 DatabaseHandler.AddNewActiveBib("555");
-                data = DatabaseHandler.GetData("SELECT * FROM [wn].[active_bib]");
+                data = DatabaseHandler.GetAllActiveBibs();
+                AppendDatabaseDataToTextBox("\nActive BIBs: ", data);
+
+                data = DatabaseHandler.GetAllBlus();
+                AppendDatabaseDataToTextBox("\nALL BLUs: ", data);
+
+//                DatabaseHandler.SetBluToUnavailable("123");
+//                DatabaseHandler.SetBluToAvailable("123");
+
+                AppendLine("\nActive BIBs (before):", true);
+                data = DatabaseHandler.GetAllActiveBibs();
+                AppendDatabaseDataToTextBox(data);
+
+                AppendLine("\nHistoric BIBs (before):", true);
+                data = DatabaseHandler.GetAllHistoricBibs();
+                AppendDatabaseDataToTextBox(data);
+
+                DatabaseHandler.MoveActiveBibToHistoricBib("555");
+
+                AppendLine("\nActive BIBs (after):", true);
+                data = DatabaseHandler.GetAllActiveBibs();
+                AppendDatabaseDataToTextBox(data);
+
+                AppendLine("\nHistoric BIBs (after):", true);
+                data = DatabaseHandler.GetAllHistoricBibs();
                 AppendDatabaseDataToTextBox(data);
             }
+
             catch (Exception exception) {
                 killMakeDotsThread = true;
                 AppendLine(" failed.", true);
                 AppendLine("Exception message:\n " + exception, true);
             }
+        }
+
+        private void AppendDatabaseDataToTextBox(string header, List<List<string>> data) {
+            AppendLine(header, true);
+            AppendDatabaseDataToTextBox(data);
         }
 
         private void AppendDatabaseDataToTextBox(List<List<string>> data) {
