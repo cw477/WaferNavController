@@ -8,7 +8,7 @@
         Title="WaferNavController" Height="325" Width="700">
     <Grid>
         <ScrollViewer x:Name="scrollViewer">
-            <TextBlock x:Name="textBlock" Margin="10" TextWrapping="Wrap" RenderTransformOrigin="4.058,4.073"/>
+            <TextBlock x:Name="textBlock" Margin="10" TextWrapping="Wrap" RenderTransformOrigin="4.058,4.073" FontFamily="Consolas"/>
         </ScrollViewer>
     </Grid>
 </Window>

@@ -49,11 +49,6 @@ namespace WaferNavController {
             var resultMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(receivedJsonStr);
             var bibId = resultMap["id"];
 
-            // START - TEMPORARY TO RESET DATABASE
-            DatabaseHandler.SetAllBluToAvailable();
-            DatabaseHandler.RemoveAllActiveBibs();
-            // END - TEMPORARY TO RESET DATABASE
-
             // Get first available BLU id
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
@@ -71,6 +66,8 @@ namespace WaferNavController {
 
             // Publish BLU info
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(json));
+
+            AppendCurrentDatabaseData();
         }
 
         protected override void OnContentRendered(EventArgs e) {
@@ -88,50 +85,12 @@ namespace WaferNavController {
 
             try {
                 DatabaseHandler.ConnectToDatabase();
+                DatabaseHandler.ResetDatabase();
 
                 killMakeDotsThread = true;
                 AppendLine(" success!", true);
 
-
-                var data = DatabaseHandler.GetAllBlus();
-                AppendDatabaseDataToTextBox("\nAll BLUs:", data);
-
-
-                var availBluId = DatabaseHandler.GetFirstAvailableBluId();
-                AppendLine("\nFirst available BLU ID: " + availBluId, true);
-
-
-                DatabaseHandler.RemoveAllActiveBibs();
-                DatabaseHandler.RemoveAllHistoricBibs();
-
-
-                DatabaseHandler.AddNewActiveBib("555");
-                data = DatabaseHandler.GetAllActiveBibs();
-                AppendDatabaseDataToTextBox("\nActive BIBs: ", data);
-
-                data = DatabaseHandler.GetAllBlus();
-                AppendDatabaseDataToTextBox("\nALL BLUs: ", data);
-
-//                DatabaseHandler.SetBluToUnavailable("123");
-//                DatabaseHandler.SetBluToAvailable("123");
-
-                AppendLine("\nActive BIBs (before):", true);
-                data = DatabaseHandler.GetAllActiveBibs();
-                AppendDatabaseDataToTextBox(data);
-
-                AppendLine("\nHistoric BIBs (before):", true);
-                data = DatabaseHandler.GetAllHistoricBibs();
-                AppendDatabaseDataToTextBox(data);
-
-                DatabaseHandler.MoveActiveBibToHistoricBib("555");
-
-                AppendLine("\nActive BIBs (after):", true);
-                data = DatabaseHandler.GetAllActiveBibs();
-                AppendDatabaseDataToTextBox(data);
-
-                AppendLine("\nHistoric BIBs (after):", true);
-                data = DatabaseHandler.GetAllHistoricBibs();
-                AppendDatabaseDataToTextBox(data);
+                AppendCurrentDatabaseData();
             }
 
             catch (Exception exception) {
@@ -141,16 +100,31 @@ namespace WaferNavController {
             }
         }
 
+        private void AppendCurrentDatabaseData() {
+            var data = DatabaseHandler.GetAllBlus();
+            AppendDatabaseDataToTextBox("\nAll BLUs:", data);
+
+            data = DatabaseHandler.GetAllActiveBibs();
+            AppendDatabaseDataToTextBox("Active BIBs: ", data);
+
+            data = DatabaseHandler.GetAllHistoricBibs();
+            AppendDatabaseDataToTextBox("Historic BIBs: ", data);
+        }
+
         private void AppendDatabaseDataToTextBox(string header, List<Dictionary<string, string>> data) {
             AppendLine(header, true);
             AppendDatabaseDataToTextBox(data);
         }
 
         private void AppendDatabaseDataToTextBox(List<Dictionary<string, string>> data) {
+            if (data.Count == 0) {
+                AppendLine("    (empty)", true);
+                return;
+            }
             foreach (var row in data) {
                 var outputStr = "";
                 foreach (var col in row) {
-                    outputStr += col.Key + ":" + col.Value + ", ";
+                    outputStr += "    " + col.Key + ":" + col.Value + ", ";
                 }
                 outputStr = outputStr.Substring(0, outputStr.Length - 2);
                 AppendLine(outputStr, true);
