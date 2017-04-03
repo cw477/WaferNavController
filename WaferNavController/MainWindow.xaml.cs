@@ -52,6 +52,12 @@ namespace WaferNavController {
             // Get first available BLU id
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
+            // Reset database and try again if no available BLUs - TEMPORARY HACK, FIX THIS
+            if (bluId == null) {
+                DatabaseHandler.ResetDatabase();
+                bluId = DatabaseHandler.GetFirstAvailableBluId();
+            }
+
             // Add BIB to active_bib
             DatabaseHandler.AddNewActiveBib(bibId);
 
