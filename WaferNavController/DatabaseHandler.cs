@@ -10,11 +10,11 @@ namespace WaferNavController {
 
         public static void ConnectToDatabase() {
             connection = new SqlConnection(
-                "user id=appuser;" +
-                "password=appuser;" +
-                "server=localhost;" +
+                "user id=nielsenninjas;" +
+                "password=astronics;" +
+                "server=wafernav.c0aibvlheoep.us-west-1.rds.amazonaws.com,1433;" +
                 "database=wafer_nav;" +
-                "connection timeout=3");
+                "connection timeout=20");
             connection.Open();
         }
 
