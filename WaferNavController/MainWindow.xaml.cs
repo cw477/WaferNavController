@@ -30,11 +30,54 @@ namespace WaferNavController {
 
             AppendLine("ClIENT ID: " + CLIENT_ID);
 
+            //TODO: move mqtt logic to app.xaml.cs hopefully possibly. The idea being this main window won't always be active.
             mqttClient = new MqttClient(BROKER_URL);
             mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
             mqttClient.Connect(CLIENT_ID);
             mqttClient.Subscribe(new[] {SUB_TOPIC}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
             AppendLine("Subscribed to " + SUB_TOPIC);
+        }
+
+        /// <summary>
+        /// This method directs incoming mqtt messages to be further processed.
+        /// </summary>
+        /// <param name="directive">Enum-like string that directs what to do with messages.</param>
+        /// <param name="messages">Contents of message.</param>
+        private void incomingMessageProcessor(String directive, List<String> messages)
+        {
+            switch (directive)
+            {
+                case "GET_NEW_BLU":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "ACCEPT_NEW_BLU":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "COMPLETE_NEW_BLU":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "GET_NEW_SLT":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "ACCEPT_NEW_SLT":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "COMPLETE_NEW_SLT":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "GET_DONE_BLU":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "ACCEPT_DONE_BLU":
+                    Console.WriteLine("Placeholder");
+                    break;
+                case "COMPLETE_DONE_BLU":
+                    Console.WriteLine("Placeholder");
+                    break;
+                default:
+                    Console.Error.WriteLine("Method incomingMessageProcessor default statement reached.");
+                    break;
+            }
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
@@ -45,6 +88,9 @@ namespace WaferNavController {
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
+            //Placing main processing method below, assuming this is where it goes. CHECK THIS.
+            incomingMessageProcessor("directive placeholder", new List<string>());
+
             // Process mqtt message to get desired ID
             var resultMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(receivedJsonStr);
             var bibId = resultMap["id"];
@@ -52,7 +98,7 @@ namespace WaferNavController {
             // Get first available BLU id
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
-            // Reset database and try again if no available BLUs - TEMPORARY HACK, FIX THIS
+            //HACK: Reset database and try again if no available BLUs
             if (bluId == null) {
                 DatabaseHandler.ResetDatabase();
                 bluId = DatabaseHandler.GetFirstAvailableBluId();
