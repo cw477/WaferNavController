@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Windows.Input;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
@@ -43,10 +44,15 @@ namespace WaferNavController {
         /// </summary>
         /// <param name="directive">Enum-like string that directs what to do with messages.</param>
         /// <param name="messages">Contents of message.</param>
-        private void incomingMessageProcessor(String directive, List<String> messages)
+        private string incomingMessageProcessor(String directive, List<String> messages)
         {
+            string returnMessage = "";
             switch (directive)
             {
+                //TODO: kill this case
+                case "OLD_LOGIC":
+                    returnMessage = NavigationHandler.oldPlaceholderLogic(messages[0]);
+                    break;
                 case "GET_NEW_BLU":
                     Console.WriteLine("Placeholder");
                     break;
@@ -78,46 +84,28 @@ namespace WaferNavController {
                     Console.Error.WriteLine("Method incomingMessageProcessor default statement reached.");
                     break;
             }
+
+            return returnMessage;
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
-            // Print received message to window
             var receivedJsonStr = Encoding.UTF8.GetString(e.Message, 0, e.Message.Length);
+
+            // Print received message to window
             Dispatcher.Invoke(() => {
                 textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + receivedJsonStr + "'" + "\n";
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
+            //TODO: Rework below 2 statements for when Json is formatted properly
+            var msg = new List<string>();
+            msg.Add(receivedJsonStr);
+
             //Placing main processing method below, assuming this is where it goes. CHECK THIS.
-            incomingMessageProcessor("directive placeholder", new List<string>());
-
-            // Process mqtt message to get desired ID
-            var resultMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(receivedJsonStr);
-            var bibId = resultMap["id"];
-
-            // Get first available BLU id
-            var bluId = DatabaseHandler.GetFirstAvailableBluId();
-
-            //HACK: Reset database and try again if no available BLUs
-            if (bluId == null) {
-                DatabaseHandler.ResetDatabase();
-                bluId = DatabaseHandler.GetFirstAvailableBluId();
-            }
-
-            // Add BIB to active_bib
-            DatabaseHandler.AddNewActiveBib(bibId);
-
-            // Mark BLU as unavailable
-            DatabaseHandler.SetBluToUnavailable(bluId);
-
-            // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
-            var bluInfo = DatabaseHandler.GetBlu(bluId);
-
-            // Create JSON string to send back
-            var json = JsonConvert.SerializeObject(bluInfo);
+            var returnMessage = incomingMessageProcessor("OLD_LOGIC", msg);
 
             // Publish BLU info
-            mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(json));
+            mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(returnMessage));
 
             AppendCurrentDatabaseData();
         }
@@ -126,6 +114,15 @@ namespace WaferNavController {
             base.OnContentRendered(e);
             var thread = new Thread(ConnectToDatabase);
             thread.Start();
+            this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.A)
+            {
+                AppendCurrentDatabaseData();
+            }
         }
 
         private void ConnectToDatabase() {
