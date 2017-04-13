@@ -49,39 +49,35 @@ namespace WaferNavController {
             string returnMessage = "";
             switch (directive)
             {
-                //TODO: kill this case
-                case "OLD_LOGIC":
-                    returnMessage = NavigationHandler.oldPlaceholderLogic(messages[0]);
-                    break;
                 case "GET_NEW_BLU":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.getNewBlu(messages);
                     break;
                 case "ACCEPT_NEW_BLU":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.acceptNewBlu(messages);
                     break;
                 case "COMPLETE_NEW_BLU":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.completeNewBlu(messages);
                     break;
                 case "GET_NEW_SLT":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.getNewSlt(messages);
                     break;
                 case "ACCEPT_NEW_SLT":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.acceptNewSlt(messages);
                     break;
                 case "COMPLETE_NEW_SLT":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.completeNewSlt(messages);
                     break;
                 case "GET_DONE_BLU":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.getDoneBlu(messages);
                     break;
                 case "ACCEPT_DONE_BLU":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.acceptDoneBlu(messages);
                     break;
                 case "COMPLETE_DONE_BLU":
-                    Console.WriteLine("Placeholder");
+                    returnMessage = NavigationHandler.completeDoneBlu(messages);
                     break;
                 default:
-                    Console.Error.WriteLine("Method incomingMessageProcessor default statement reached.");
+                    Console.Error.WriteLine("incomingMessageProcessor: Directive unrecognized.");
                     break;
             }
 
@@ -97,17 +93,13 @@ namespace WaferNavController {
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
-            //TODO: Rework below 2 statements for when Json is formatted properly
+            //TODO: Rework below 2 statements and following method call. needs to deserialize json before.
             var msg = new List<string>();
             msg.Add(receivedJsonStr);
-
-            //Placing main processing method below, assuming this is where it goes. CHECK THIS.
-            var returnMessage = incomingMessageProcessor("OLD_LOGIC", msg);
+            var returnMessage = incomingMessageProcessor("GET_NEW_BLU", msg); //TODO: remove literal
 
             // Publish BLU info
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(returnMessage));
-
-            AppendCurrentDatabaseData();
         }
 
         protected override void OnContentRendered(EventArgs e) {
@@ -138,8 +130,6 @@ namespace WaferNavController {
 
                 killMakeDotsThread = true;
                 AppendLine(" success!", true);
-
-                AppendCurrentDatabaseData();
             }
 
             catch (Exception exception) {
