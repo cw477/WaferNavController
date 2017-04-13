@@ -9,14 +9,16 @@ namespace WaferNavController {
         private static SqlConnection connection;
 
         public static void ConnectToDatabase() {
+
             connection = new SqlConnection(
-                "user id=nielsenninjas;" +
-                "password=astronics;" +
-                "server=wafernav.c0aibvlheoep.us-west-1.rds.amazonaws.com,1433;" +
-                "database=wafer_nav;" +
-                "connection timeout=20");
+                "Data Source=localhost;" +
+                "Initial Catalog=wafer_nav;" +
+                "Persist Security Info=True;" +
+                "User ID=appuser;" +
+                "Password=appuser;" +
+                "connection timeout=10");
             connection.Open();
-        }
+        }   
 
         public static void ResetDatabase() {
             RemoveAllBlus();
@@ -29,8 +31,27 @@ namespace WaferNavController {
             return GetData("SELECT * FROM [wn].[BLU];");
         }
 
+        internal static void AddNewActiveWaferType(string waferType)
+        {
+            try
+            {
+                var insertCommand = new SqlCommand($"INSERT INTO [wn].[active_wafer_type] (id, description) Values ('{waferType}', 'unknown');", connection); //TODO: remove literal
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                //TODO: Do something with exception instead of just swallowing it
+                Console.Error.WriteLine(e.Message);
+            }
+        }
+
+        internal static void AddBluAssignmentLoad(string v, string bluId)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Dictionary<string, string> GetBlu(string bluId) {
-            // TODO handle the case where there are no available BLUs
+            //TODO: handle the case where there are no available BLUs
             return GetData($"SELECT * FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
         }
 
@@ -112,8 +133,9 @@ namespace WaferNavController {
                 var insertCommand = new SqlCommand($"INSERT INTO [wn].[active_bib] (id) Values ({bibId});", connection);
                 insertCommand.ExecuteNonQuery();
             }
-            catch (Exception exception) {
+            catch (Exception e) {
                 //TODO - Do something with exception instead of just swallowing it
+                Console.Error.WriteLine(e.StackTrace);
             }
         }
 
