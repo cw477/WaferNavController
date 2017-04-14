@@ -45,14 +45,63 @@ namespace WaferNavController {
             }
         }
 
+        internal static string jsonToStr(Dictionary<string, string> jsonMessage)
+        {
+            var msg = "";
+            msg += "\nJson:";
+            var keys = jsonMessage.Keys;
+            foreach (string key in keys)
+            {
+                msg += "\n" + key + ": " + jsonMessage[key];
+            }
+            Console.WriteLine(":End Json");
+            return msg;
+        }
+
+        internal static string jsonToStr(Dictionary<string, object> jsonMessage)
+        {
+            var msg = "";
+            msg += "\nJson:";
+            var keys = jsonMessage.Keys;
+            foreach (string key in keys)
+            {
+                if (key != "bibIds")
+                {
+                    msg += "\n" + key + ": " + (string)jsonMessage[key];
+                }
+                else
+                {
+                    msg += "\n" + key + ": [";
+                    foreach (string s in (string[])jsonMessage[key])
+                    {
+                        msg += "\n\t" + s;
+                    }
+                    msg += "\n]";
+                }
+            }
+            Console.WriteLine(":End Json");
+            return msg;
+        }
+
         internal static void AddBluAssignmentLoad(string v, string bluId)
         {
             throw new NotImplementedException();
         }
 
+        internal static bool confirmNewBlu(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void removeBluAssignmentLoad(string v)
+        {
+            //needs to transfer to historic
+            throw new NotImplementedException();
+        }
+
         public static Dictionary<string, string> GetBlu(string bluId) {
             //TODO: handle the case where there are no available BLUs
-            return GetData($"SELECT * FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
+            return GetData($"SELECT [id] AS [bluId], [location] AS [bluInfo] FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
         }
 
         public static List<Dictionary<string, string>> GetAllActiveBibs() {
@@ -84,6 +133,21 @@ namespace WaferNavController {
             return data;
         }
 
+        internal static Dictionary<string, string> GetSlt(object sltId)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void AddNewActiveBibs(string[] v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static string GetFirstAvailableSltId()
+        {
+            throw new NotImplementedException();
+        }
+
         public static string GetFirstAvailableBluId() {
             var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
             var sqlCommand = new SqlCommand(query, connection);
@@ -96,6 +160,16 @@ namespace WaferNavController {
             }
             reader.Close();
             return bluId;
+        }
+
+        internal static void AddSltAssignmentLoad(string[] v1, string v2)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void SetSLTToUnavailable(string v)
+        {
+            throw new NotImplementedException();
         }
 
         public static void SetAllBluToAvailable() {
@@ -112,6 +186,11 @@ namespace WaferNavController {
             updateCommand.ExecuteNonQuery();
         }
 
+        internal static bool confirmNewSlt(string v)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void SetBluToAvailable(string bluId) {
             var query = "UPDATE[wafer_nav].[wn].[BLU] " +
                         "SET available = 1 " +
@@ -126,6 +205,17 @@ namespace WaferNavController {
                         $"WHERE id = '{bluId}';";
             var updateCommand = new SqlCommand(query, connection);
             updateCommand.ExecuteNonQuery();
+        }
+
+        internal static void SetSltToAvailable(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void removeSltAssignments(string v)
+        {
+            //DONT MOVE BIBS ONLY THE ASSIGNMENTS
+            throw new NotImplementedException();
         }
 
         public static void AddNewActiveBib(string bibId) {
@@ -149,6 +239,11 @@ namespace WaferNavController {
             command.ExecuteNonQuery();
         }
 
+        internal static void AddBluAssignmentUnload(string[] v1, string v2)
+        {
+            throw new NotImplementedException();
+        }
+
         private static void RemoveAllBlus() {
             var query = "DELETE FROM [wn].[BLU];";
             var deleteCommand = new SqlCommand(query, connection);
@@ -170,6 +265,13 @@ namespace WaferNavController {
             var insertCommand = new SqlCommand(query, connection);
             insertCommand.ExecuteNonQuery();
         }
+
+        internal static bool confirmDoneBlu(string v)
+        {
+            //move bibs that are at this blu to historic
+            throw new NotImplementedException();
+        }
+
 
         public static void RemoveAllActiveBibs() {
             var query = "DELETE FROM [wn].[active_bib];";

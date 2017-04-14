@@ -9,7 +9,7 @@ namespace WaferNavController
 {
     class NavigationHandler
     {
-        internal static string getNewBlu(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> getNewBlu(Dictionary<string, object> messages)
         {
             //GET_NEW_BLU: Message will contain LOT ID, and return a message with a BLU Identifier and its information.
 
@@ -31,41 +31,55 @@ namespace WaferNavController
             DatabaseHandler.AddNewActiveWaferType((string)messages["lotId"]);
 
             // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
-            var bluInfo = DatabaseHandler.GetBlu(bluId);
+            var returnJson = DatabaseHandler.GetBlu(bluId);
+            returnJson.Add("directive", "GET_NEW_BLU_RETURN");
 
             // Create JSON string to send back
-            return JsonConvert.SerializeObject(bluInfo);
+            return returnJson;
         }
 
-        internal static string acceptNewBlu(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> acceptNewBlu(Dictionary<string, object> messages)
         {
             //ACCEPT_NEW_BLU: Message will be minimal. Return message will confirm acceptance
 
+            //"lotId"
+            //"bluId"
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
 
-
-            //TODO: implement and use below stuff as a part of it
             // Add wafer and blu to blu assigment load table
-            //DatabaseHandler.AddBluAssignmentLoad(messages[0], bluId);
+            DatabaseHandler.AddBluAssignmentLoad((string)messages["lotId"], (string)messages["bluId"]);
 
             // Mark BLU as unavailable
-            //DatabaseHandler.SetBluToUnavailable(bluId);
+            DatabaseHandler.SetBluToUnavailable((string)messages["bluId"]);
 
-            throw new NotImplementedException();
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "ACCEPT_NEW_BLU_RETURN");
+            returnJson.Add("confirm", "true");
+            return returnJson;
         }
 
-        internal static string completeNewBlu(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> completeNewBlu(Dictionary<string, object> messages)
         {
             //COMPLETE_NEW_BLU: Message will be contain scanned blu id, and return confirm
 
-            //“bluId”
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
-            throw new NotImplementedException();
+
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "COMPLETE_NEW_BLU_RETURN");
+            if (DatabaseHandler.confirmNewBlu((string)messages["bluId"]))
+            {
+                returnJson.Add("confirm", "true");
+            }
+            else
+            {
+                returnJson.Add("confirm", "false");
+            }
+            return returnJson;
         }
 
-        internal static string getNewSlt(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> getNewSlt(Dictionary<string, object> messages)
         {
             //GET_NEW_SLT: Message will contain previous BLU ID plus all BIB ID’s, and return a message with a SLT identifier and its information.
 
@@ -73,57 +87,143 @@ namespace WaferNavController
             //“bibIds” THIS IS AN ARRAY/ LIST
             //“sltId”
             //----------------------------------------------------------
-            throw new NotImplementedException();
+            // remove wafer and blu from assignment load table, transfer data to historic tables
+            DatabaseHandler.removeBluAssignmentLoad((string)messages["bluId"]);
+
+            // Mark original BLU as available
+            DatabaseHandler.SetBluToAvailable((string)messages["bluId"]);
+
+            // Get first available SLT id
+            var sltId = DatabaseHandler.GetFirstAvailableSltId();
+
+            //HACK: Reset database and try again if no available SLTs
+            if (sltId == null)
+            {
+                DatabaseHandler.ResetDatabase();
+                sltId = DatabaseHandler.GetFirstAvailableSltId();
+            }
+
+            // Add bibs to active
+            DatabaseHandler.AddNewActiveBibs((string[])messages["bibIds"]);
+
+            // Get slt info
+            var returnJson = DatabaseHandler.GetSlt(sltId);
+            returnJson.Add("directive", "GET_NEW_SLT_RETURN");
+
+            // Create JSON string to send back
+            return returnJson;
+
         }
 
-        internal static string acceptNewSlt(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> acceptNewSlt(Dictionary<string, object> messages)
         {
             //ACCEPT_NEW_SLT: Message will contain BIB ID’s again for confirmation purposes. Return message will confirm acceptance(minimal message).
-        
+
+            //"bibIds"
+            //"sltId"
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
-                    throw new NotImplementedException();
+            // Add bibs and slt to slt assigment table
+            DatabaseHandler.AddSltAssignmentLoad((string[])messages["bibIds"], (string)messages["sltId"]);
+
+            // Mark SLT as unavailable
+            DatabaseHandler.SetSLTToUnavailable((string)messages["sltId"]);
+
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "ACCEPT_NEW_SLT_RETURN");
+            returnJson.Add("confirm", "true");
+            return returnJson;
         }
 
-        internal static string completeNewSlt(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> completeNewSlt(Dictionary<string, object> messages)
         {
-            //COMPLETE_NEW_BLU: Message will contain SLT ID and return confirm
+            //COMPLETE_NEW_SLT: Message will contain SLT ID and return confirm
 
             //“sltId” 
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
-
-
-            throw new NotImplementedException();
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "COMPLETE_NEW_SLT_RETURN");
+            if (DatabaseHandler.confirmNewSlt((string)messages["sltId"]))
+            {
+                returnJson.Add("confirm", "true");
+            }
+            else
+            {
+                returnJson.Add("confirm", "false");
+            }
+            return returnJson;
         }
 
-        internal static string getDoneBlu(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> getDoneBlu(Dictionary<string, object> messages)
         {
             //GET_DONE_BLU: Message will contain SLT ID, and return a message with a BLU identifier and its information.
 
             //“sltId”
             //“bluId”
             //----------------------------------------------------------
-            throw new NotImplementedException();
+            // remove bibs and slt from assignment table, transfer data to historic tables
+            DatabaseHandler.removeSltAssignments((string)messages["sltId"]);
+
+            // Mark original BLU as available
+            DatabaseHandler.SetSltToAvailable((string)messages["sltId"]);
+
+            //get available blu
+            var bluId = DatabaseHandler.GetFirstAvailableBluId();
+
+            //HACK: Reset database and try again if no available BLUs
+            if (bluId == null)
+            {
+                DatabaseHandler.ResetDatabase();
+                bluId = DatabaseHandler.GetFirstAvailableBluId();
+            }
+
+            // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
+            var returnJson = DatabaseHandler.GetBlu(bluId);
+            returnJson.Add("directive", "GET_DONE_BLU_RETURN");
+
+            // Create JSON string to send back
+            return returnJson;
         }
 
-        internal static string acceptDoneBlu(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> acceptDoneBlu(Dictionary<string, object> messages)
         {
             //ACCEPT_DONE_BLU: Message will contain LOT ID again for confirmation purposes. Return message will confirm acceptance(minimal message).
-        
+
+            //"bibIds"
+            //"bluId"
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
-            throw new NotImplementedException();
+            // Add bibs and slt to slt assigment table
+            DatabaseHandler.AddBluAssignmentUnload((string[])messages["bibIds"], (string)messages["bluId"]);
+
+            // Mark BLU as unavailable
+            DatabaseHandler.SetBluToUnavailable((string)messages["bluId"]);
+
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "ACCEPT_DONE_BLU_RETURN");
+            returnJson.Add("confirm", "true");
+            return returnJson;
         }
 
-        internal static string completeDoneBlu(Dictionary<string, object> messages)
+        internal static Dictionary<string, string> completeDoneBlu(Dictionary<string, object> messages)
         {
             //COMPLETE_DONE_BLU: Message will contain BLU ID, and return a confirm
 
             //“bluId”
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
-            throw new NotImplementedException();
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "COMPLETE_DONE_BLU_RETURN");
+            if (DatabaseHandler.confirmDoneBlu((string)messages["bluId"]))
+            {
+                returnJson.Add("confirm", "true");
+            }
+            else
+            {
+                returnJson.Add("confirm", "false");
+            }
+            return returnJson;
         }
     }
 }

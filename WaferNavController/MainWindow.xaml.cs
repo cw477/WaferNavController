@@ -13,7 +13,6 @@ using System.Windows.Input;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
-        //Adding a comment to test a first commit - Cameron Watt
         private readonly string BROKER_URL = "iot.eclipse.org"; // Defaults to port 1883
         private readonly string CLIENT_ID = Guid.NewGuid().ToString();
         private readonly string PUB_TOPIC = "wafernav/location_data";
@@ -23,7 +22,7 @@ namespace WaferNavController {
 
         public MainWindow() {
             InitializeComponent();
-
+                
             var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;
             var hBitmap = bmp.GetHbitmap();
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
@@ -44,9 +43,9 @@ namespace WaferNavController {
         /// </summary>
         /// <param name="directive">Enum-like string that directs what to do with messages.</param>
         /// <param name="messages">Contents of message.</param>
-        private string incomingMessageProcessor(Dictionary<String, object> messages)
+        private Dictionary<string, string> incomingMessageProcessor(Dictionary<String, object> messages)
         {
-            string returnMessage = "";
+            Dictionary<string, string> returnMessage = null;
             switch ((string)messages["directive"])
             {
                 case "GET_NEW_BLU":
@@ -85,18 +84,25 @@ namespace WaferNavController {
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
-            var json = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
+            var incommingJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
 
             // Print received message to window
             Dispatcher.Invoke(() => {
-                textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + json + "'" + "\n";
+                textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '"
+                    + DatabaseHandler.jsonToStr(incommingJson) + "'" + "\n";
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
-            var returnMessage = incomingMessageProcessor(json);
+            var returnJson = incomingMessageProcessor(incommingJson);
+
+            // Print outgoing message to window
+            Dispatcher.Invoke(() => {
+                textBlock.Text += DateTime.Now + "  Message outgoing:" + DatabaseHandler.jsonToStr(returnJson) + "'" + "\n";
+                scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+            });
 
             // Publish return message
-            mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(returnMessage));
+            mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(returnJson)));
         }
 
         protected override void OnContentRendered(EventArgs e) {
