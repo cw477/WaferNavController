@@ -46,6 +46,11 @@ namespace WaferNavController {
         /// <param name="messages">Contents of message.</param>
         private string incomingMessageProcessor(Dictionary<String, object> messages)
         {
+            if (!messages.ContainsKey("directive")) {
+                Console.Error.WriteLine("incomingMessageProcessor: No directive!");
+                return "No directive!";
+            }
+
             string returnMessage = "";
             switch ((string)messages["directive"])
             {

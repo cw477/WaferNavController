@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +32,7 @@ namespace WaferNavController
 
             // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
             var bluInfo = DatabaseHandler.GetBlu(bluId);
+            bluInfo["directive"] = "GET_NEW_BLU_RETURN";
 
             // Create JSON string to send back
             return JsonConvert.SerializeObject(bluInfo);
@@ -62,7 +63,13 @@ namespace WaferNavController
             //“bluId”
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
-            throw new NotImplementedException();
+
+            // TODO - Actually manipulate database
+
+            var returnDict = new Dictionary<string, string>();
+            returnDict["directive"] = "COMPLETE_NEW_BLU_RETURN";
+            returnDict["confirm"] = "true";
+            return JsonConvert.SerializeObject(returnDict);
         }
 
         internal static string getNewSlt(Dictionary<string, object> messages)
