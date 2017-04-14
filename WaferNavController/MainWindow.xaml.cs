@@ -44,10 +44,10 @@ namespace WaferNavController {
         /// </summary>
         /// <param name="directive">Enum-like string that directs what to do with messages.</param>
         /// <param name="messages">Contents of message.</param>
-        private string incomingMessageProcessor(String directive, List<String> messages)
+        private string incomingMessageProcessor(Dictionary<String, object> messages)
         {
             string returnMessage = "";
-            switch (directive)
+            switch ((string)messages["directive"])
             {
                 case "GET_NEW_BLU":
                     returnMessage = NavigationHandler.getNewBlu(messages);
@@ -85,20 +85,17 @@ namespace WaferNavController {
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
-            var receivedJsonStr = Encoding.UTF8.GetString(e.Message, 0, e.Message.Length);
+            var json = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
 
             // Print received message to window
             Dispatcher.Invoke(() => {
-                textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + receivedJsonStr + "'" + "\n";
+                textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '" + json + "'" + "\n";
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
-            //TODO: Rework below 2 statements and following method call. needs to deserialize json before.
-            var msg = new List<string>();
-            msg.Add(receivedJsonStr);
-            var returnMessage = incomingMessageProcessor("GET_NEW_BLU", msg); //TODO: remove literal
+            var returnMessage = incomingMessageProcessor(json);
 
-            // Publish BLU info
+            // Publish return message
             mqttClient.Publish(PUB_TOPIC, Encoding.UTF8.GetBytes(returnMessage));
         }
 

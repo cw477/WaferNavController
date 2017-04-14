@@ -9,10 +9,13 @@ namespace WaferNavController
 {
     class NavigationHandler
     {
-        internal static string getNewBlu(List<string> messages)
+        internal static string getNewBlu(Dictionary<string, object> messages)
         {
-            // Message will contain LOT ID, and return a message with a 
-            //BLU Identifier and its information.
+            //GET_NEW_BLU: Message will contain LOT ID, and return a message with a BLU Identifier and its information.
+
+            //“lotId”
+            //“bluId”
+            //“bluInfo”
             //----------------------------------------------------------
             // Get first available BLU id
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
@@ -25,7 +28,7 @@ namespace WaferNavController
             }
 
             // Add wafertype to active_wafer_type
-            DatabaseHandler.AddNewActiveWaferType(messages[0]);
+            DatabaseHandler.AddNewActiveWaferType((string)messages["lotId"]);
 
             // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
             var bluInfo = DatabaseHandler.GetBlu(bluId);
@@ -34,10 +37,14 @@ namespace WaferNavController
             return JsonConvert.SerializeObject(bluInfo);
         }
 
-        internal static string acceptNewBlu(List<string> messages)
+        internal static string acceptNewBlu(Dictionary<string, object> messages)
         {
-            // Message will contain LOT ID again for confirmation purposes. 
-            //Return message will confirm acceptance (minimal message). 
+            //ACCEPT_NEW_BLU: Message will be minimal. Return message will confirm acceptance
+
+            //“confirm” boolean, let it be a string though, “true / false” lowercase
+            //----------------------------------------------------------
+
+
             //TODO: implement and use below stuff as a part of it
             // Add wafer and blu to blu assigment load table
             //DatabaseHandler.AddBluAssignmentLoad(messages[0], bluId);
@@ -48,49 +55,74 @@ namespace WaferNavController
             throw new NotImplementedException();
         }
 
-        internal static string completeNewBlu(List<string> messages)
+        internal static string completeNewBlu(Dictionary<string, object> messages)
         {
-            //Message will be minimal, and no return message will be necessary
+            //COMPLETE_NEW_BLU: Message will be contain scanned blu id, and return confirm
+
+            //“bluId”
+            //“confirm” boolean, let it be a string though, “true / false” lowercase
+            //----------------------------------------------------------
             throw new NotImplementedException();
         }
 
-        internal static string getNewSlt(List<string> messages)
+        internal static string getNewSlt(Dictionary<string, object> messages)
         {
-            //Message will contain previous BLU ID plus all BIB ID’s,
-            //and return a message with a SLT identifier and its information.
+            //GET_NEW_SLT: Message will contain previous BLU ID plus all BIB ID’s, and return a message with a SLT identifier and its information.
+
+            //“bluId”
+            //“bibIds” THIS IS AN ARRAY/ LIST
+            //“sltId”
+            //----------------------------------------------------------
             throw new NotImplementedException();
         }
 
-        internal static string acceptNewSlt(List<string> messages)
+        internal static string acceptNewSlt(Dictionary<string, object> messages)
         {
-            //Message will contain BIB ID’s again for confirmation purposes.
-            //Return message will confirm acceptance (minimal message).
+            //ACCEPT_NEW_SLT: Message will contain BIB ID’s again for confirmation purposes. Return message will confirm acceptance(minimal message).
+        
+            //“confirm” boolean, let it be a string though, “true / false” lowercase
+            //----------------------------------------------------------
+                    throw new NotImplementedException();
+        }
+
+        internal static string completeNewSlt(Dictionary<string, object> messages)
+        {
+            //COMPLETE_NEW_BLU: Message will contain SLT ID and return confirm
+
+            //“sltId” 
+            //“confirm” boolean, let it be a string though, “true / false” lowercase
+            //----------------------------------------------------------
+
+
             throw new NotImplementedException();
         }
 
-        internal static string completeNewSlt(List<string> messages)
+        internal static string getDoneBlu(Dictionary<string, object> messages)
         {
-            //Message will contain SLT ID and no return message will be necessary
+            //GET_DONE_BLU: Message will contain SLT ID, and return a message with a BLU identifier and its information.
+
+            //“sltId”
+            //“bluId”
+            //----------------------------------------------------------
             throw new NotImplementedException();
         }
 
-        internal static string getDoneBlu(List<string> messages)
+        internal static string acceptDoneBlu(Dictionary<string, object> messages)
         {
-            //Message will contain SLT + BIB IDS,
-            //and return a message with a BLU identifier and its information.
+            //ACCEPT_DONE_BLU: Message will contain LOT ID again for confirmation purposes. Return message will confirm acceptance(minimal message).
+        
+            //“confirm” boolean, let it be a string though, “true / false” lowercase
+            //----------------------------------------------------------
             throw new NotImplementedException();
         }
 
-        internal static string acceptDoneBlu(List<string> messages)
+        internal static string completeDoneBlu(Dictionary<string, object> messages)
         {
-            //Message will contain LOT ID again for confirmation purposes.
-            //Return message will confirm acceptance (minimal message).
-            throw new NotImplementedException();
-        }
+            //COMPLETE_DONE_BLU: Message will contain BLU ID, and return a confirm
 
-        internal static string completeDoneBlu(List<string> messages)
-        {
-            //Message will contain BLU ID, and no return message will be necessary.
+            //“bluId”
+            //“confirm” boolean, let it be a string though, “true / false” lowercase
+            //----------------------------------------------------------
             throw new NotImplementedException();
         }
     }
