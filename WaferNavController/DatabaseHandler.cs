@@ -83,14 +83,24 @@ namespace WaferNavController {
             return msg;
         }
 
-        internal static void AddBluAssignmentLoad(string v, string bluId)
+        internal static void AddBluAssignmentLoad(string lotId, string bluId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var insertCommand = new SqlCommand($"INSERT INTO [wn].[blu_assignment_load] (blu_id, wafer_type_id) Values ({bluId}'{lotId}');", connection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                //TODO: Do something with exception instead of just swallowing it
+                Console.Error.WriteLine(e.Message);
+            }
         }
 
         internal static bool confirmNewBlu(string v)
         {
-            throw new NotImplementedException();
+            //TODO: Add some checking logic?
+            return true;
         }
 
         internal static void removeBluAssignmentLoad(string v)
