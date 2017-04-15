@@ -89,7 +89,7 @@ namespace WaferNavController {
             // Print received message to window
             Dispatcher.Invoke(() => {
                 textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '"
-                    + DatabaseHandler.jsonToStr(incommingJson) + "'" + "\n";
+                    + DatabaseHandler.jsonToStr(incommingJson) + "\n\n";
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
@@ -97,7 +97,7 @@ namespace WaferNavController {
 
             // Print outgoing message to window
             Dispatcher.Invoke(() => {
-                textBlock.Text += DateTime.Now + "  Message outgoing:" + DatabaseHandler.jsonToStr(returnJson) + "'" + "\n";
+                textBlock.Text += DateTime.Now + "  Message outgoing:" + DatabaseHandler.jsonToStr(returnJson) + "\n\n";
                 scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
