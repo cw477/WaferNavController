@@ -36,8 +36,8 @@
                     <TextBox HorizontalAlignment="Left" Height="33" Margin="227,348,0,0" TextWrapping="Wrap" Text="Location" VerticalAlignment="Top" Width="137" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14"/>
                     <Button Content="Select File" HorizontalAlignment="Left" Margin="335,178,0,0" VerticalAlignment="Top" Width="96" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
                     <Button Content="Set" HorizontalAlignment="Left" Margin="448,178,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
-                    <TextBlock HorizontalAlignment="Left" Margin="34,497,0,0" TextWrapping="Wrap" Text="Status..." VerticalAlignment="Top" FontSize="14"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
+                    <Label Content="Status.." HorizontalAlignment="Left" Margin="25,497,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <!--Status-->
@@ -60,16 +60,6 @@
                     <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E"/>
                 </Grid>
             </TabItem>
-
-
-
-
-
-
-
         </TabControl>
-
-        <!-- tabs -->
-
     </Grid>
 </Page>
