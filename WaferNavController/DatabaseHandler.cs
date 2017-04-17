@@ -104,10 +104,21 @@ namespace WaferNavController {
             return true;
         }
 
-        internal static void removeBluAssignmentLoad(string v)
+        internal static void removeBluAssignmentLoad(string bluId)
         {
-            //needs to transfer to historic
-            throw new NotImplementedException();
+            //get waftertype associated
+            var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';")[0];
+            //create historic wafertype
+            var insertCommand = new SqlCommand($"INSERT INTO [wn].[historic_wafer_type] (id) Values ({wafertype["wafer_type_id"]});", connection);
+            insertCommand.ExecuteNonQuery();
+            //remove relation, then wafertype
+            var deleteCommand = new SqlCommand($"DELETE FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';", connection);
+            deleteCommand.ExecuteNonQuery();
+            deleteCommand = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{wafertype["wafer_type_id"]}';", connection);
+            deleteCommand.ExecuteNonQuery();
+            //add entry to historic
+            insertCommand = new SqlCommand($"INSERT INTO [wn].[historic_blu_assignment_load] (blu_id, wafer_type_id, completed_at) Values ({bluId},{wafertype["wafer_type_id"]}, CURRENT_TIMESTAMP);", connection);
+            insertCommand.ExecuteNonQuery();
         }
 
         public static Dictionary<string, string> GetBlu(string bluId) {
@@ -146,17 +157,39 @@ namespace WaferNavController {
 
         internal static Dictionary<string, string> GetSlt(object sltId)
         {
-            throw new NotImplementedException();
+            //TODO: handle the case where there are no available SLTs
+            return GetData($"SELECT [id] AS [sltId], [location] AS [sltInfo] FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
         }
 
-        internal static void AddNewActiveBibs(string[] v)
+        internal static void AddNewActiveBibs(JArray v)
         {
-            throw new NotImplementedException();
+            var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
+            foreach (string s in v)
+            {
+                sqlText += $"(" + s + "),";
+            }
+
+            sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
+            sqlText += ";";
+
+            var insertCommand = new SqlCommand(sqlText, connection);
+            insertCommand.ExecuteNonQuery();
         }
 
         internal static string GetFirstAvailableSltId()
         {
-            throw new NotImplementedException();
+            var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
+            var sqlCommand = new SqlCommand(query, connection);
+            var reader = sqlCommand.ExecuteReader();
+
+            string sltId = null;
+            while (reader.Read())
+            {
+                sltId = reader["id"].ToString();
+                break;
+            }
+            reader.Close();
+            return sltId;
         }
 
         public static string GetFirstAvailableBluId() {
@@ -173,14 +206,28 @@ namespace WaferNavController {
             return bluId;
         }
 
-        internal static void AddSltAssignmentLoad(string[] v1, string v2)
+        internal static void AddSltAssignmentLoad(JArray bibIds, string sltId)
         {
-            throw new NotImplementedException();
+            var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
+            foreach (string s in bibIds)
+            {
+                sqlText += $"({sltId}, " + s + "),";
+            }
+
+            sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
+            sqlText += ";";
+
+            var insertCommand = new SqlCommand(sqlText, connection);
+            insertCommand.ExecuteNonQuery();
         }
 
-        internal static void SetSLTToUnavailable(string v)
+        internal static void SetSLTToUnavailable(string sltId)
         {
-            throw new NotImplementedException();
+            var query = "UPDATE[wafer_nav].[wn].[SLT] " +
+            "SET available = 0 " +
+            $"WHERE id = '{sltId}';";
+            var updateCommand = new SqlCommand(query, connection);
+            updateCommand.ExecuteNonQuery();
         }
 
         public static void SetAllBluToAvailable() {
@@ -199,7 +246,7 @@ namespace WaferNavController {
 
         internal static bool confirmNewSlt(string v)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public static void SetBluToAvailable(string bluId) {
@@ -280,7 +327,7 @@ namespace WaferNavController {
         internal static bool confirmDoneBlu(string v)
         {
             //move bibs that are at this blu to historic
-            throw new NotImplementedException();
+            return true;
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,7 +105,7 @@ namespace WaferNavController
             }
 
             // Add bibs to active
-            DatabaseHandler.AddNewActiveBibs((string[])messages["bibIds"]);
+            DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]);
 
             // Get slt info
             var returnJson = DatabaseHandler.GetSlt(sltId);
@@ -124,7 +125,7 @@ namespace WaferNavController
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
             // Add bibs and slt to slt assigment table
-            DatabaseHandler.AddSltAssignmentLoad((string[])messages["bibIds"], (string)messages["sltId"]);
+            DatabaseHandler.AddSltAssignmentLoad((JArray)messages["bibIds"], (string)messages["sltId"]);
 
             // Mark SLT as unavailable
             DatabaseHandler.SetSLTToUnavailable((string)messages["sltId"]);
@@ -166,7 +167,7 @@ namespace WaferNavController
             DatabaseHandler.removeSltAssignments((string)messages["sltId"]);
 
             // Mark original BLU as available
-            DatabaseHandler.SetSltToAvailable((string)messages["sltId"]);
+            DatabaseHandler.SetBluToAvailable((string)messages["bluId"]);
 
             //get available blu
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
