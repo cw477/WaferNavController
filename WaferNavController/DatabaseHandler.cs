@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Newtonsoft.Json.Linq;
 
 namespace WaferNavController {
 
@@ -72,7 +73,7 @@ namespace WaferNavController {
                 else
                 {
                     msg += "\n" + key + ": [";
-                    foreach (string s in (string[])jsonMessage[key])
+                    foreach (string s in (JArray)jsonMessage[key])
                     {
                         msg += "\n\t" + s;
                     }
