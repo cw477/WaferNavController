@@ -46,40 +46,43 @@ namespace WaferNavController {
         private Dictionary<string, string> incomingMessageProcessor(Dictionary<String, object> messages)
         {
             Dictionary<string, string> returnMessage = null;
-            switch ((string)messages["directive"])
-            {
-                case "GET_NEW_BLU":
-                    returnMessage = NavigationHandler.getNewBlu(messages);
-                    break;
-                case "ACCEPT_NEW_BLU":
-                    returnMessage = NavigationHandler.acceptNewBlu(messages);
-                    break;
-                case "COMPLETE_NEW_BLU":
-                    returnMessage = NavigationHandler.completeNewBlu(messages);
-                    break;
-                case "GET_NEW_SLT":
-                    returnMessage = NavigationHandler.getNewSlt(messages);
-                    break;
-                case "ACCEPT_NEW_SLT":
-                    returnMessage = NavigationHandler.acceptNewSlt(messages);
-                    break;
-                case "COMPLETE_NEW_SLT":
-                    returnMessage = NavigationHandler.completeNewSlt(messages);
-                    break;
-                case "GET_DONE_BLU":
-                    returnMessage = NavigationHandler.getDoneBlu(messages);
-                    break;
-                case "ACCEPT_DONE_BLU":
-                    returnMessage = NavigationHandler.acceptDoneBlu(messages);
-                    break;
-                case "COMPLETE_DONE_BLU":
-                    returnMessage = NavigationHandler.completeDoneBlu(messages);
-                    break;
-                default:
-                    Console.Error.WriteLine("incomingMessageProcessor: Directive unrecognized.");
-                    break;
+            try {
+                switch ((string) messages["directive"]) {
+                    case "GET_NEW_BLU":
+                        returnMessage = NavigationHandler.getNewBlu(messages);
+                        break;
+                    case "ACCEPT_NEW_BLU":
+                        returnMessage = NavigationHandler.acceptNewBlu(messages);
+                        break;
+                    case "COMPLETE_NEW_BLU":
+                        returnMessage = NavigationHandler.completeNewBlu(messages);
+                        break;
+                    case "GET_NEW_SLT":
+                        returnMessage = NavigationHandler.getNewSlt(messages);
+                        break;
+                    case "ACCEPT_NEW_SLT":
+                        returnMessage = NavigationHandler.acceptNewSlt(messages);
+                        break;
+                    case "COMPLETE_NEW_SLT":
+                        returnMessage = NavigationHandler.completeNewSlt(messages);
+                        break;
+                    case "GET_DONE_BLU":
+                        returnMessage = NavigationHandler.getDoneBlu(messages);
+                        break;
+                    case "ACCEPT_DONE_BLU":
+                        returnMessage = NavigationHandler.acceptDoneBlu(messages);
+                        break;
+                    case "COMPLETE_DONE_BLU":
+                        returnMessage = NavigationHandler.completeDoneBlu(messages);
+                        break;
+                    default:
+                        Console.Error.WriteLine("incomingMessageProcessor: Directive unrecognized.");
+                        break;
+                }
             }
-
+            catch (Exception e) {
+                returnMessage = new Dictionary<string, string> {["error"] = e.Message};
+            }
             return returnMessage;
         }
 
