@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -89,10 +89,11 @@ namespace WaferNavController
             //“sltId”
             //----------------------------------------------------------
             // remove wafer and blu from assignment load table, transfer data to historic tables
-            DatabaseHandler.removeBluAssignmentLoad((string)messages["bluId"]);
+
+            //DatabaseHandler.removeBluAssignmentLoad((string)messages["bluId"]); //TODO uncomment this
 
             // Mark original BLU as available
-            DatabaseHandler.SetBluToAvailable((string)messages["bluId"]);
+            //DatabaseHandler.SetBluToAvailable((string)messages["bluId"]); // TODO uncomment this
 
             // Get first available SLT id
             var sltId = DatabaseHandler.GetFirstAvailableSltId();
@@ -105,7 +106,7 @@ namespace WaferNavController
             }
 
             // Add bibs to active
-            DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]);
+            //DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]); // TODO uncomment this
 
             // Get slt info
             var returnJson = DatabaseHandler.GetSlt(sltId);

@@ -338,16 +338,16 @@ namespace WaferNavController {
         private static void PopulateSltTable()
         {
             var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
-                "('75ae9068-c245-4af4-9cab-7ff6c520de8c', 'United States', 1)," +
-                "('15e29295-9d53-4f52-bf3d-3fe69cae7a8d', 'New Guinea', 1)," +
-                "('dcdb8b88-d6ac-43a7-a7a2-0ad31bf82023', 'China', 1)," +
-                "('d62e4d59-1196-45c4-9243-e6fbf8ffe8b9', 'Japan', 1)," +
-                "('4e0c2ba6-7430-41e3-97e6-bf43953cfd20', 'Ireland', 1)," +
-                "('feb76ebf-0d7a-4bba-a178-8f17bd032ac8', 'Brazil', 1)," +
-                "('6f9e8b82-5452-493a-b317-f2fb47552c62', 'Norway', 1)," +
-                "('a13ffc81-43b7-423d-8b25-2f536ad5b0b2', 'Sweden', 1)," +
-                "('1f828955-f791-403c-8b03-d4e9e9eff8a1', 'Congo', 1)," +
-                "('05f97d5c-7899-43de-a77a-c389af36a88e', 'Peru', 1);";
+                "('dfbbdb1c-8346-44a6-ac0f-be627312460b', 'Los Angeles', 1)," +
+                "('e5def8d6-e466-4706-99c8-0a49980dd548', 'New York', 1)," +
+                "('e95584d7-829f-4e68-afaf-cc566444049f', 'Chicago', 1)," +
+                "('5bd3d648-eb9b-49ef-9d26-d9ad6a0b695e', 'San Francisco', 1)," +
+                "('d045c5b5-e544-4bb3-9690-640fdf54a0de', 'Boston', 1)," +
+                "('029a0825-e991-4b34-8ae6-cf362d36ccf0', 'Miami', 1)," +
+                "('32c0ef0c-7ae3-4dbd-a32b-5975bf80126c', 'Seattle', 1)," +
+                "('f7c03c6b-7bbc-48d3-bcc4-a693acf852e7', 'Portland', 1)," +
+                "('cdfc868c-a672-4746-907a-f8a9067230a6', 'New Orleans', 1)," +
+                "('7270c8e7-10f3-4e2b-ba02-bf083157fdd0', 'Austin', 1);";
             var insertCommand = new SqlCommand(query, connection);
             insertCommand.ExecuteNonQuery();
         }
