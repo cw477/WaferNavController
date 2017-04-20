@@ -159,6 +159,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\aws.json" />
     <None Include="WaferNavController_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

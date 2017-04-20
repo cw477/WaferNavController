@@ -10,16 +10,16 @@ namespace WaferNavController {
         private static SqlConnection connection;
 
         public static void ConnectToDatabase() {
-
-            connection = new SqlConnection(
-                "Data Source=localhost;" +
-                "Initial Catalog=wafer_nav;" +
-                "Persist Security Info=True;" +
-                "User ID=appuser;" +
-                "Password=appuser;" +
-                "connection timeout=10");
+            byte[] jsonByteArr = Properties.Resources.aws;
+            string jsonStr = System.Text.Encoding.UTF8.GetString(jsonByteArr);
+            JObject jsonObject = JObject.Parse(jsonStr);
+            string connectionString = "";
+            foreach (var kp in jsonObject) {
+                connectionString += $"{kp.Key}={kp.Value};";
+            }
+            connection = new SqlConnection(connectionString);
             connection.Open();
-        }   
+        }
 
         public static void ResetDatabase() {
             RemoveAllBlus();
