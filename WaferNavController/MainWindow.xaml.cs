@@ -97,6 +97,7 @@ namespace WaferNavController {
             });
 
             var returnJson = incomingMessageProcessor(incommingJson);
+            returnJson["computerName"] = Environment.MachineName;
 
             // Print outgoing message to window
             Dispatcher.Invoke(() => {
