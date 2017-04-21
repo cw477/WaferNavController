@@ -165,10 +165,10 @@ namespace WaferNavController
             //“bluId”
             //----------------------------------------------------------
             // remove bibs and slt from assignment table, transfer data to historic tables
-            DatabaseHandler.removeSltAssignments((string)messages["sltId"]);
+            //DatabaseHandler.removeSltAssignments((string)messages["sltId"]); // TODO uncomment this
 
             // Mark original BLU as available
-            DatabaseHandler.SetBluToAvailable((string)messages["bluId"]);
+            //DatabaseHandler.SetBluToAvailable((string)messages["bluId"]); // TODO uncomment this
 
             //get available blu
             var bluId = DatabaseHandler.GetFirstAvailableBluId();

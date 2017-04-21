@@ -147,8 +147,10 @@ namespace WaferNavController {
         }
 
         private void AppendCurrentDatabaseData() {
+            AppendLine("\n" + DateTime.Now.ToString(), true);
+
             var data = DatabaseHandler.GetAllBlus();
-            AppendDatabaseDataToTextBox("\nAll BLUs:", data);
+            AppendDatabaseDataToTextBox("All BLUs:", data);
 
             data = DatabaseHandler.GetAllActiveBibs();
             AppendDatabaseDataToTextBox("Active BIBs: ", data);
