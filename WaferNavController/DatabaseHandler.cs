@@ -213,7 +213,7 @@ namespace WaferNavController {
             var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
             foreach (string s in bibIds)
             {
-                sqlText += $"({sltId}, " + s + "),";
+                sqlText += $"('{sltId}', '{s}'),";
             }
 
             sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);

@@ -126,10 +126,10 @@ namespace WaferNavController
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
             // Add bibs and slt to slt assigment table
-            DatabaseHandler.AddSltAssignmentLoad((JArray)messages["bibIds"], (string)messages["sltId"]);
+            //DatabaseHandler.AddSltAssignmentLoad((JArray)messages["bibIds"], (string)messages["sltId"]); // TODO uncomment this
 
             // Mark SLT as unavailable
-            DatabaseHandler.SetSLTToUnavailable((string)messages["sltId"]);
+            //DatabaseHandler.SetSLTToUnavailable((string)messages["sltId"]); // TODO uncomment this
 
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "ACCEPT_NEW_SLT_RETURN");
