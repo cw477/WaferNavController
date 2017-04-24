@@ -34,6 +34,7 @@ namespace WaferNavController
             // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
             var returnJson = DatabaseHandler.GetBlu(bluId);
             returnJson.Add("directive", "GET_NEW_BLU_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
 
             // Create JSON string to send back
             return returnJson;
@@ -56,6 +57,7 @@ namespace WaferNavController
 
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "ACCEPT_NEW_BLU_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
             returnJson.Add("confirm", "true");
             return returnJson;
         }
@@ -69,6 +71,7 @@ namespace WaferNavController
 
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_NEW_BLU_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
             if (DatabaseHandler.confirmNewBlu((string)messages["bluId"]))
             {
                 returnJson.Add("confirm", "true");
@@ -111,6 +114,7 @@ namespace WaferNavController
             // Get slt info
             var returnJson = DatabaseHandler.GetSlt(sltId);
             returnJson.Add("directive", "GET_NEW_SLT_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
 
             // Create JSON string to send back
             return returnJson;
@@ -133,6 +137,7 @@ namespace WaferNavController
 
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "ACCEPT_NEW_SLT_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
             returnJson.Add("confirm", "true");
             return returnJson;
         }
@@ -146,6 +151,7 @@ namespace WaferNavController
             //----------------------------------------------------------
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_NEW_SLT_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
             if (DatabaseHandler.confirmNewSlt((string)messages["sltId"]))
             {
                 returnJson.Add("confirm", "true");
@@ -183,6 +189,7 @@ namespace WaferNavController
             // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
             var returnJson = DatabaseHandler.GetBlu(bluId);
             returnJson.Add("directive", "GET_DONE_BLU_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
 
             // Create JSON string to send back
             return returnJson;
@@ -204,6 +211,7 @@ namespace WaferNavController
 
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "ACCEPT_DONE_BLU_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
             returnJson.Add("confirm", "true");
             return returnJson;
         }
@@ -217,6 +225,7 @@ namespace WaferNavController
             //----------------------------------------------------------
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_DONE_BLU_RETURN");
+            returnJson.Add("clientId", (string)messages["clientId"]);
             if (DatabaseHandler.confirmDoneBlu((string)messages["bluId"]))
             {
                 returnJson.Add("confirm", "true");
