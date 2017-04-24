@@ -197,10 +197,10 @@ namespace WaferNavController
             //“confirm” boolean, let it be a string though, “true / false” lowercase
             //----------------------------------------------------------
             // Add bibs and slt to slt assigment table
-            DatabaseHandler.AddBluAssignmentUnload((string[])messages["bibIds"], (string)messages["bluId"]);
+            //DatabaseHandler.AddBluAssignmentUnload((string[])messages["bibIds"], (string)messages["bluId"]); // TODO uncomment this
 
             // Mark BLU as unavailable
-            DatabaseHandler.SetBluToUnavailable((string)messages["bluId"]);
+            //DatabaseHandler.SetBluToUnavailable((string)messages["bluId"]); // TODO uncomment this
 
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "ACCEPT_DONE_BLU_RETURN");
