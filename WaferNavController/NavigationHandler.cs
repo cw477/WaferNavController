@@ -27,7 +27,7 @@ namespace WaferNavController
         /// </returns>
         public static Dictionary<string, string> getNewBlu(Dictionary<string, object> messages)
         {
-            // Get first available BLU id
+            // get available blu
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
             //HACK: Reset database and try again if no available BLUs
@@ -37,15 +37,20 @@ namespace WaferNavController
                 bluId = DatabaseHandler.GetFirstAvailableBluId();
             }
 
-            // Add wafertype to active_wafer_type
+            //add new lot id
             DatabaseHandler.AddNewActiveWaferType((string)messages["lotId"]);
+
+            //add assignment
+            DatabaseHandler.AddBluAssignmentLoad((string)messages["lotId"], bluId);
+
+            //set blu to unavailable
+            DatabaseHandler.SetBluToUnavailable(bluId);
 
             // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
             var returnJson = DatabaseHandler.GetBlu(bluId);
+
             returnJson.Add("directive", "GET_NEW_BLU_RETURN");
             returnJson.Add("clientId", (string)messages["clientId"]);
-
-            // Create JSON string to send back
             return returnJson;
         }
 
@@ -65,11 +70,6 @@ namespace WaferNavController
         /// </returns>
         public static Dictionary<string, string> completeNewBlu(Dictionary<string, object> messages)
         {
-            //COMPLETE_NEW_BLU: Message will be contain scanned blu id, and return confirm
-
-            //“confirm” boolean, let it be a string though, “true / false” lowercase
-            //----------------------------------------------------------
-
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_NEW_BLU_RETURN");
             returnJson.Add("clientId", (string)messages["clientId"]);
@@ -102,19 +102,9 @@ namespace WaferNavController
         /// </returns>
         public static Dictionary<string, string> getNewSlt(Dictionary<string, object> messages)
         {
-            //GET_NEW_SLT: Message will contain previous BLU ID plus all BIB ID’s, and return a message with a SLT identifier and its information.
-
-            //“bluId”
-            //“bibIds” THIS IS AN ARRAY/ LIST
-            //“sltId”
-            //----------------------------------------------------------
-            // remove wafer and blu from assignment load table, transfer data to historic tables
-
-            //DatabaseHandler.removeBluAssignmentLoad((string)messages["bluId"]); //TODO uncomment this
-
-            // Mark original BLU as available
-            //DatabaseHandler.SetBluToAvailable((string)messages["bluId"]); // TODO uncomment this
-
+            //remove assignment
+            DatabaseHandler.finishBluLoad((string)messages["bluId"]);
+        
             // Get first available SLT id
             var sltId = DatabaseHandler.GetFirstAvailableSltId();
 
@@ -126,16 +116,20 @@ namespace WaferNavController
             }
 
             // Add bibs to active
-            //DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]); // TODO uncomment this
+            DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]);
+
+            // Add assignment
+            DatabaseHandler.AddSltAssignmentLoad((JArray)messages["bibIds"], sltId);
+
+            // Set slt to unavailable
+            DatabaseHandler.SetSLTToUnavailable(sltId);
 
             // Get slt info
             var returnJson = DatabaseHandler.GetSlt(sltId);
+
             returnJson.Add("directive", "GET_NEW_SLT_RETURN");
             returnJson.Add("clientId", (string)messages["clientId"]);
-
-            // Create JSON string to send back
             return returnJson;
-
         }
 
         /// <summary>
@@ -154,11 +148,6 @@ namespace WaferNavController
         /// </returns>
         public static Dictionary<string, string> completeNewSlt(Dictionary<string, object> messages)
         {
-            //COMPLETE_NEW_SLT: Message will contain SLT ID and return confirm
-
-            //“sltId” 
-            //“confirm” boolean, let it be a string though, “true / false” lowercase
-            //----------------------------------------------------------
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_NEW_SLT_RETURN");
             returnJson.Add("clientId", (string)messages["clientId"]);
@@ -191,16 +180,8 @@ namespace WaferNavController
         /// </returns>
         public static Dictionary<string, string> getDoneBlu(Dictionary<string, object> messages)
         {
-            //GET_DONE_BLU: Message will contain SLT ID, and return a message with a BLU identifier and its information.
-
-            //“sltId”
-            //“bluId”
-            //----------------------------------------------------------
-            // remove bibs and slt from assignment table, transfer data to historic tables
-            //DatabaseHandler.removeSltAssignments((string)messages["sltId"]); // TODO uncomment this
-
-            // Mark original BLU as available
-            //DatabaseHandler.SetBluToAvailable((string)messages["bluId"]); // TODO uncomment this
+            //remove assignment
+            DatabaseHandler.finishSlt((string)messages["sltId"]);
 
             //get available blu
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
@@ -212,12 +193,16 @@ namespace WaferNavController
                 bluId = DatabaseHandler.GetFirstAvailableBluId();
             }
 
-            // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
+            //add assignment
+            DatabaseHandler.AddBluAssignmentUnload((JArray)messages["bibIds"], bluId);
+
+            //set blu to unavailable
+            DatabaseHandler.SetBluToUnavailable(bluId);
+            
+            //get blu info
             var returnJson = DatabaseHandler.GetBlu(bluId);
             returnJson.Add("directive", "GET_DONE_BLU_RETURN");
             returnJson.Add("clientId", (string)messages["clientId"]);
-
-            // Create JSON string to send back
             return returnJson;
         }
 
@@ -237,11 +222,6 @@ namespace WaferNavController
         /// </returns>
         public static Dictionary<string, string> completeDoneBlu(Dictionary<string, object> messages)
         {
-            //COMPLETE_DONE_BLU: Message will contain BLU ID, and return a confirm
-
-            //“bluId”
-            //“confirm” boolean, let it be a string though, “true / false” lowercase
-            //----------------------------------------------------------
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_DONE_BLU_RETURN");
             returnJson.Add("clientId", (string)messages["clientId"]);
@@ -253,6 +233,7 @@ namespace WaferNavController
             {
                 returnJson.Add("confirm", "false");
             }
+            DatabaseHandler.finishBluUnload((string)messages["bluId"]);
             return returnJson;
         }
     }

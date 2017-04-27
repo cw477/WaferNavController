@@ -106,7 +106,7 @@ namespace WaferNavController {
             return true;
         }
 
-        public static void removeBluAssignmentLoad(string bluId)
+        public static void finishBluLoad(string bluId)
         {
             //get waftertype associated
             var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';")[0];
@@ -208,6 +208,11 @@ namespace WaferNavController {
             return bluId;
         }
 
+        public static void finishBluUnload(string bluId)
+        {
+            //TODO: Create method to reset the blu and add bibs to historics if they arent there etc.
+        }
+
         public static void AddSltAssignmentLoad(JArray bibIds, string sltId)
         {
             var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
@@ -272,7 +277,7 @@ namespace WaferNavController {
             throw new NotImplementedException();
         }
 
-        public static void removeSltAssignments(string v)
+        public static void finishSlt(string v)
         {
             //DONT MOVE BIBS ONLY THE ASSIGNMENTS
             throw new NotImplementedException();
@@ -299,7 +304,7 @@ namespace WaferNavController {
             command.ExecuteNonQuery();
         }
 
-        public static void AddBluAssignmentUnload(string[] v1, string v2)
+        public static void AddBluAssignmentUnload(JArray bibIds, string bluId)
         {
             throw new NotImplementedException();
         }
