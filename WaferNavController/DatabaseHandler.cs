@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WaferNavController {
 
-    class DatabaseHandler {
+    public class DatabaseHandler {
 
         private static SqlConnection connection;
 
@@ -34,7 +34,7 @@ namespace WaferNavController {
             return GetData("SELECT * FROM [wn].[BLU];");
         }
 
-        internal static void AddNewActiveWaferType(string waferType)
+        public static void AddNewActiveWaferType(string waferType)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace WaferNavController {
             }
         }
 
-        internal static string jsonToStr(Dictionary<string, string> jsonMessage)
+        public static string jsonToStr(Dictionary<string, string> jsonMessage)
         {
             var msg = "";
             msg += "\nJson:";
@@ -61,7 +61,7 @@ namespace WaferNavController {
             return msg;
         }
 
-        internal static string jsonToStr(Dictionary<string, object> jsonMessage)
+        public static string jsonToStr(Dictionary<string, object> jsonMessage)
         {
             var msg = "";
             msg += "\nJson:";
@@ -86,7 +86,7 @@ namespace WaferNavController {
             return msg;
         }
 
-        internal static void AddBluAssignmentLoad(string lotId, string bluId)
+        public static void AddBluAssignmentLoad(string lotId, string bluId)
         {
             try
             {
@@ -100,13 +100,13 @@ namespace WaferNavController {
             }
         }
 
-        internal static bool confirmNewBlu(string v)
+        public static bool confirmNewBlu(string v)
         {
             //TODO: Add some checking logic?
             return true;
         }
 
-        internal static void removeBluAssignmentLoad(string bluId)
+        public static void removeBluAssignmentLoad(string bluId)
         {
             //get waftertype associated
             var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';")[0];
@@ -157,13 +157,13 @@ namespace WaferNavController {
             return data;
         }
 
-        internal static Dictionary<string, string> GetSlt(object sltId)
+        public static Dictionary<string, string> GetSlt(object sltId)
         {
             //TODO: handle the case where there are no available SLTs
             return GetData($"SELECT [id] AS [sltId], [location] AS [sltInfo] FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
         }
 
-        internal static void AddNewActiveBibs(JArray v)
+        public static void AddNewActiveBibs(JArray v)
         {
             var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
             foreach (string s in v)
@@ -178,7 +178,7 @@ namespace WaferNavController {
             insertCommand.ExecuteNonQuery();
         }
 
-        internal static string GetFirstAvailableSltId()
+        public static string GetFirstAvailableSltId()
         {
             var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
             var sqlCommand = new SqlCommand(query, connection);
@@ -208,7 +208,7 @@ namespace WaferNavController {
             return bluId;
         }
 
-        internal static void AddSltAssignmentLoad(JArray bibIds, string sltId)
+        public static void AddSltAssignmentLoad(JArray bibIds, string sltId)
         {
             var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
             foreach (string s in bibIds)
@@ -223,7 +223,7 @@ namespace WaferNavController {
             insertCommand.ExecuteNonQuery();
         }
 
-        internal static void SetSLTToUnavailable(string sltId)
+        public static void SetSLTToUnavailable(string sltId)
         {
             var query = "UPDATE[wafer_nav].[wn].[SLT] " +
             "SET available = 0 " +
@@ -246,7 +246,7 @@ namespace WaferNavController {
             updateCommand.ExecuteNonQuery();
         }
 
-        internal static bool confirmNewSlt(string v)
+        public static bool confirmNewSlt(string v)
         {
             return true;
         }
@@ -267,12 +267,12 @@ namespace WaferNavController {
             updateCommand.ExecuteNonQuery();
         }
 
-        internal static void SetSltToAvailable(string v)
+        public static void SetSltToAvailable(string v)
         {
             throw new NotImplementedException();
         }
 
-        internal static void removeSltAssignments(string v)
+        public static void removeSltAssignments(string v)
         {
             //DONT MOVE BIBS ONLY THE ASSIGNMENTS
             throw new NotImplementedException();
@@ -299,7 +299,7 @@ namespace WaferNavController {
             command.ExecuteNonQuery();
         }
 
-        internal static void AddBluAssignmentUnload(string[] v1, string v2)
+        public static void AddBluAssignmentUnload(string[] v1, string v2)
         {
             throw new NotImplementedException();
         }
@@ -352,12 +352,11 @@ namespace WaferNavController {
             insertCommand.ExecuteNonQuery();
         }
 
-        internal static bool confirmDoneBlu(string v)
+        public static bool confirmDoneBlu(string v)
         {
             //move bibs that are at this blu to historic
             return true;
         }
-
 
         public static void RemoveAllActiveBibs() {
             var query = "DELETE FROM [wn].[active_bib];";

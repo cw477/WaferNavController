@@ -8,16 +8,25 @@ using System.Threading.Tasks;
 
 namespace WaferNavController
 {
-    class NavigationHandler
+    public static class NavigationHandler
     {
-        internal static Dictionary<string, string> getNewBlu(Dictionary<string, object> messages)
+        /// <summary>
+        /// Process GET_NEW_BLU message.
+        /// </summary>
+        /// <param name="messages">
+        /// Incoming Json:
+        /// lotId
+        /// clientId
+        /// </param>
+        /// <returns>
+        /// Outgoing Json:
+        /// directive
+        /// clientId
+        /// bluId
+        /// bluInfo
+        /// </returns>
+        public static Dictionary<string, string> getNewBlu(Dictionary<string, object> messages)
         {
-            //GET_NEW_BLU: Message will contain LOT ID, and return a message with a BLU Identifier and its information.
-
-            //“lotId”
-            //“bluId”
-            //“bluInfo”
-            //----------------------------------------------------------
             // Get first available BLU id
             var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
@@ -40,29 +49,21 @@ namespace WaferNavController
             return returnJson;
         }
 
-        internal static Dictionary<string, string> acceptNewBlu(Dictionary<string, object> messages)
-        {
-            //ACCEPT_NEW_BLU: Message will be minimal. Return message will confirm acceptance
-
-            //"lotId"
-            //"bluId"
-            //“confirm” boolean, let it be a string though, “true / false” lowercase
-            //----------------------------------------------------------
-
-            // Add wafer and blu to blu assigment load table
-            DatabaseHandler.AddBluAssignmentLoad((string)messages["lotId"], (string)messages["bluId"]);
-
-            // Mark BLU as unavailable
-            DatabaseHandler.SetBluToUnavailable((string)messages["bluId"]);
-
-            var returnJson = new Dictionary<string, string>();
-            returnJson.Add("directive", "ACCEPT_NEW_BLU_RETURN");
-            returnJson.Add("clientId", (string)messages["clientId"]);
-            returnJson.Add("confirm", "true");
-            return returnJson;
-        }
-
-        internal static Dictionary<string, string> completeNewBlu(Dictionary<string, object> messages)
+        /// <summary>
+        /// Process COMPLETE_NEW_BLU message.
+        /// </summary>
+        /// <param name="messages">
+        /// Incoming Json:
+        /// bluId
+        /// clientId
+        /// </param>
+        /// <returns>
+        /// Outgoing Json:
+        /// directive
+        /// clientId
+        /// confirm
+        /// </returns>
+        public static Dictionary<string, string> completeNewBlu(Dictionary<string, object> messages)
         {
             //COMPLETE_NEW_BLU: Message will be contain scanned blu id, and return confirm
 
@@ -83,7 +84,23 @@ namespace WaferNavController
             return returnJson;
         }
 
-        internal static Dictionary<string, string> getNewSlt(Dictionary<string, object> messages)
+        /// <summary>
+        /// process GET_NEW_SLT message.
+        /// </summary>
+        /// <param name="messages">
+        /// Incoming Json:
+        /// bluId
+        /// bibIds (JArray)
+        /// clientId
+        /// </param>
+        /// <returns>
+        /// Outgoing Json:
+        /// directive
+        /// clientId
+        /// sltId
+        /// sltInfo
+        /// </returns>
+        public static Dictionary<string, string> getNewSlt(Dictionary<string, object> messages)
         {
             //GET_NEW_SLT: Message will contain previous BLU ID plus all BIB ID’s, and return a message with a SLT identifier and its information.
 
@@ -121,28 +138,21 @@ namespace WaferNavController
 
         }
 
-        internal static Dictionary<string, string> acceptNewSlt(Dictionary<string, object> messages)
-        {
-            //ACCEPT_NEW_SLT: Message will contain BIB ID’s again for confirmation purposes. Return message will confirm acceptance(minimal message).
-
-            //"bibIds"
-            //"sltId"
-            //“confirm” boolean, let it be a string though, “true / false” lowercase
-            //----------------------------------------------------------
-            // Add bibs and slt to slt assigment table
-            //DatabaseHandler.AddSltAssignmentLoad((JArray)messages["bibIds"], (string)messages["sltId"]); // TODO uncomment this
-
-            // Mark SLT as unavailable
-            //DatabaseHandler.SetSLTToUnavailable((string)messages["sltId"]); // TODO uncomment this
-
-            var returnJson = new Dictionary<string, string>();
-            returnJson.Add("directive", "ACCEPT_NEW_SLT_RETURN");
-            returnJson.Add("clientId", (string)messages["clientId"]);
-            returnJson.Add("confirm", "true");
-            return returnJson;
-        }
-
-        internal static Dictionary<string, string> completeNewSlt(Dictionary<string, object> messages)
+        /// <summary>
+        /// process COMPLETE_NEW_SLT message.
+        /// </summary>
+        /// <param name="messages">
+        /// Incoming Json:
+        /// sltId
+        /// clientId
+        /// </param>
+        /// <returns>
+        /// Outgoing Json:
+        /// directive
+        /// clientId
+        /// confirm
+        /// </returns>
+        public static Dictionary<string, string> completeNewSlt(Dictionary<string, object> messages)
         {
             //COMPLETE_NEW_SLT: Message will contain SLT ID and return confirm
 
@@ -163,7 +173,23 @@ namespace WaferNavController
             return returnJson;
         }
 
-        internal static Dictionary<string, string> getDoneBlu(Dictionary<string, object> messages)
+        /// <summary>
+        /// Process GET_DONE_BLU message.
+        /// </summary>
+        /// <param name="messages">
+        /// Incoming Json:
+        /// sltId
+        /// bibIds (JArray)
+        /// clientId
+        /// </param>
+        /// <returns>
+        /// Outgoing Json:
+        /// directive
+        /// clientId
+        /// bluId
+        /// bluInfo
+        /// </returns>
+        public static Dictionary<string, string> getDoneBlu(Dictionary<string, object> messages)
         {
             //GET_DONE_BLU: Message will contain SLT ID, and return a message with a BLU identifier and its information.
 
@@ -195,28 +221,21 @@ namespace WaferNavController
             return returnJson;
         }
 
-        internal static Dictionary<string, string> acceptDoneBlu(Dictionary<string, object> messages)
-        {
-            //ACCEPT_DONE_BLU: Message will contain LOT ID again for confirmation purposes. Return message will confirm acceptance(minimal message).
-
-            //"bibIds"
-            //"bluId"
-            //“confirm” boolean, let it be a string though, “true / false” lowercase
-            //----------------------------------------------------------
-            // Add bibs and slt to slt assigment table
-            //DatabaseHandler.AddBluAssignmentUnload((string[])messages["bibIds"], (string)messages["bluId"]); // TODO uncomment this
-
-            // Mark BLU as unavailable
-            //DatabaseHandler.SetBluToUnavailable((string)messages["bluId"]); // TODO uncomment this
-
-            var returnJson = new Dictionary<string, string>();
-            returnJson.Add("directive", "ACCEPT_DONE_BLU_RETURN");
-            returnJson.Add("clientId", (string)messages["clientId"]);
-            returnJson.Add("confirm", "true");
-            return returnJson;
-        }
-
-        internal static Dictionary<string, string> completeDoneBlu(Dictionary<string, object> messages)
+        /// <summary>
+        /// Process COMPLETE_DONE_BLU message.
+        /// </summary>
+        /// <param name="messages">
+        /// Incoming Json:
+        /// bluId
+        /// clientId
+        /// </param>
+        /// <returns>
+        /// Outgoing Json:
+        /// directive
+        /// clientId
+        /// confirm
+        /// </returns>
+        public static Dictionary<string, string> completeDoneBlu(Dictionary<string, object> messages)
         {
             //COMPLETE_DONE_BLU: Message will contain BLU ID, and return a confirm
 
