@@ -113,6 +113,10 @@ namespace WaferNavController {
             {
                 AppendCurrentDatabaseData();
             }
+            if (e.Key == Key.S)
+            {
+                DatabaseHandler.ResetDatabase();
+            }
         }
 
         private void ConnectToDatabase() {
@@ -143,11 +147,38 @@ namespace WaferNavController {
             var data = DatabaseHandler.GetAllBlus();
             AppendDatabaseDataToTextBox("All BLUs:", data);
 
+            data = DatabaseHandler.GetAllSlts();
+            AppendDatabaseDataToTextBox("All SLTs:", data);
+
             data = DatabaseHandler.GetAllActiveBibs();
             AppendDatabaseDataToTextBox("Active BIBs: ", data);
 
             data = DatabaseHandler.GetAllHistoricBibs();
             AppendDatabaseDataToTextBox("Historic BIBs: ", data);
+
+            data = DatabaseHandler.GetAllActiveWafers();
+            AppendDatabaseDataToTextBox("Active Wafers: ", data);
+
+            data = DatabaseHandler.GetAllHistoricWafers();
+            AppendDatabaseDataToTextBox("Historic Wafers: ", data);
+
+            data = DatabaseHandler.GetAllBluLoadAssignments();
+            AppendDatabaseDataToTextBox("BLU Loading Assignments: ", data);
+
+            data = DatabaseHandler.GetAllHistoricBluLoadAssignments();
+            AppendDatabaseDataToTextBox("Historic BLU Loading Assignments: ", data);
+
+            data = DatabaseHandler.GetAllBluUnloadAssignments();
+            AppendDatabaseDataToTextBox("BLU Unloading Assignments: ", data);
+
+            data = DatabaseHandler.GetAllHistoricBluUnloadAssignments();
+            AppendDatabaseDataToTextBox("Historic BLU Unloading Assignments: ", data);
+
+            data = DatabaseHandler.GetAllSltAssignments();
+            AppendDatabaseDataToTextBox("Slt Assignments: ", data);
+
+            data = DatabaseHandler.GetAllHistoricSltAssignments();
+            AppendDatabaseDataToTextBox("Historic Slt Assignments: ", data);
         }
 
         private void AppendDatabaseDataToTextBox(string header, List<Dictionary<string, string>> data) {

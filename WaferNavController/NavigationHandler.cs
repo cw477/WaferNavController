@@ -193,6 +193,8 @@ namespace WaferNavController
                 bluId = DatabaseHandler.GetFirstAvailableBluId();
             }
 
+            //add bibs to active
+            DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]);
             //add assignment
             DatabaseHandler.AddBluAssignmentUnload((JArray)messages["bibIds"], bluId);
 
