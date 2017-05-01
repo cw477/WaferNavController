@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace WaferNavController
 {
@@ -25,17 +26,36 @@ namespace WaferNavController
             InitializeComponent();
         }
 
+     
+
+        private void button_selectFile_Click(object sender, RoutedEventArgs e)
+        {
+            //Create OpenFileDialog
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            //Set default file extension
+            ofd.DefaultExt = ".csv";
+
+           if(ofd.ShowDialog()==true)
+            {
+                string filename = ofd.FileName;
+                FileNameTxtBx.Text = filename;
+                
+            }
+            
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
         {
 
         }

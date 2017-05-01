@@ -18,33 +18,38 @@
             <!--Config-->
             <TabItem Header="Config" Margin="-2,0,-15,0">
                 <Grid>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="25,497,33,37"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="196,93,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
-                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,162,0,0" Stroke="Black" VerticalAlignment="Top" Width="536"/>
-                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="148" Margin="25,323,0,0" Stroke="Black" VerticalAlignment="Top" Width="536"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="74*"/>
+                        <ColumnDefinition Width="13*"/>
+                        <ColumnDefinition Width="507*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="59,10,148,439" Grid.Column="2"/>
+                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="25,497,33,37" Grid.ColumnSpan="3"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="116,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="2"/>
+                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,162,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
+                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="148" Margin="25,323,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
                     <!--Config Section-->
-                    <TextBlock HorizontalAlignment="Left" Height="19" Margin="25,138,0,0" TextWrapping="Wrap" Text="Load Configuration File " VerticalAlignment="Top" Width="178" FontSize="14" FontWeight="Bold"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="25,299,0,0" TextWrapping="Wrap" Text="View / Add / Update Route" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
-                    <TextBox HorizontalAlignment="Left" Height="33" Margin="34,178,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="266" TextChanged="TextBox_TextChanged" Background="White" BorderBrush="#FFABADB3" Foreground="#FFA2A2A2" FontSize="14"/>
+                    <TextBlock HorizontalAlignment="Left" Height="19" Margin="25,138,0,0" TextWrapping="Wrap" Text="Load Configuration File " VerticalAlignment="Top" Width="178" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="3"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="25,299,0,0" TextWrapping="Wrap" Text="View / Add / Update Route" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="FileNameTxtBx" HorizontalAlignment="Left" Height="33" Margin="34,178,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="266" TextChanged="TextBox_TextChanged" Background="White" BorderBrush="#FFABADB3" Foreground="#FFA2A2A2" FontSize="14" Grid.ColumnSpan="3"/>
                     <!--View, Add, Update Section-->
-                    <Button Content="View" HorizontalAlignment="Left" Margin="247,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
-                    <Button Content="Add" HorizontalAlignment="Left" Margin="356,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
-                    <Button Content="Update" HorizontalAlignment="Left" Margin="467,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
-                    <TextBox HorizontalAlignment="Left" Height="33" Margin="34,348,0,0" TextWrapping="Wrap" Text="Barcode" VerticalAlignment="Top" Width="152" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14"/>
-                    <TextBox HorizontalAlignment="Left" Height="33" Margin="411,348,0,0" TextWrapping="Wrap" Text="Type" VerticalAlignment="Top" Width="131" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14"/>
-                    <TextBox HorizontalAlignment="Left" Height="33" Margin="227,348,0,0" TextWrapping="Wrap" Text="Location" VerticalAlignment="Top" Width="137" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14"/>
-                    <Button Content="Select File" HorizontalAlignment="Left" Margin="335,178,0,0" VerticalAlignment="Top" Width="96" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
-                    <Button Content="Set" HorizontalAlignment="Left" Margin="448,178,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" />
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
+                    <Button Content="View" HorizontalAlignment="Left" Margin="160,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <Button Content="Add" HorizontalAlignment="Left" Margin="269,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <Button Content="Update" HorizontalAlignment="Left" Margin="380,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <TextBox HorizontalAlignment="Left" Height="33" Margin="34,348,0,0" TextWrapping="Wrap" Text="Barcode" VerticalAlignment="Top" Width="152" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14" Grid.ColumnSpan="3"/>
+                    <TextBox HorizontalAlignment="Left" Height="33" Margin="324,348,0,0" TextWrapping="Wrap" Text="Type" VerticalAlignment="Top" Width="131" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14" Grid.Column="2"/>
+                    <TextBox HorizontalAlignment="Left" Height="33" Margin="140,348,0,0" TextWrapping="Wrap" Text="Location" VerticalAlignment="Top" Width="137" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14" Grid.Column="2"/>
+                    <Button x:Name="BtnSelectFile" Content="Select File" HorizontalAlignment="Left" Margin="248,178,0,0" VerticalAlignment="Top" Width="96" Click="button_selectFile_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <Button Content="Set" HorizontalAlignment="Left" Margin="361,178,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="3"/>
                     <Label Content="Status.." HorizontalAlignment="Left" Margin="25,497,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <!--Status-->
-            <TabItem Header="Status" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
+            <TabItem Header="Log" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
                 <Grid>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="196,93,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="196,110,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
                     <TextBox TextWrapping="Wrap" Text="MESSAGES" Margin="67,169,66,91" TextChanged="TextBox_TextChanged_2"/>
                 </Grid>
