@@ -115,7 +115,9 @@ namespace WaferNavController {
             }
             if (e.Key == Key.S)
             {
+                AppendLine(DateTime.Now.ToString() + ": Resetting DB...", true);
                 DatabaseHandler.ResetDatabase();
+                AppendLine(DateTime.Now.ToString() + ": Resetting DB Finished.", true);
             }
         }
 
