@@ -279,12 +279,12 @@ namespace WaferNavController {
         }
 
 
-        public static void AddNewHistoricBibs(List<string> bibIds)
+        public static void AddNewHistoricBibs(List<string> bibIds, DateTime nowDateTime)
         {
-            var sqlText = $"INSERT INTO [wn].[historic_bib] (id) Values ";
+            var sqlText = $"INSERT INTO [wn].[historic_bib] (id, inserted_at) Values ";
             foreach (string s in bibIds)
             {
-                sqlText += $"('" + s + "'),";
+                sqlText += $"('" + s + "','" + nowDateTime + "'),";
             }
 
             sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
@@ -415,6 +415,8 @@ namespace WaferNavController {
         {
             SqlCommand cmd;
 
+            var nowDateTime = DateTime.Now;
+
             //get bibs assigned to the slt
             List<Dictionary<string, string>> oldBibIds = GetData($"SELECT [bib_id] FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}';");
 
@@ -424,7 +426,7 @@ namespace WaferNavController {
                 oldBibList.Add(oldBibId["bib_id"]);
             }
             //create historic bibs
-            AddNewHistoricBibs(oldBibList);
+            AddNewHistoricBibs(oldBibList, nowDateTime);
 
             //remove relation
             try
@@ -437,27 +439,27 @@ namespace WaferNavController {
                 Console.Error.WriteLine(e.Message);
             }
 
-            //remove bibs from active
-  
-            foreach (string oldBibId in oldBibList)
-            {
-                try
-                { 
-                    cmd = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{oldBibId}';", connection);
-                    cmd.ExecuteNonQuery();
-                }
-                catch(SqlException e)
-                {
-                    Console.Error.WriteLine(e);
-                }
-            }
+            //TODO: Figure out how to finish recycling bibIds, in conjunction with finishing bluUnload
+            ////remove bibs from active
+            //foreach (string oldBibId in oldBibList)
+            //{
+            //    try
+            //    { 
+            //        cmd = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{oldBibId}';", connection);
+            //        cmd.ExecuteNonQuery();
+            //    }
+            //    catch(SqlException e)
+            //    {
+            //        Console.Error.WriteLine(e);
+            //    }
+            //}
 
             //add entries to historic
             foreach (string oldBibId in oldBibList)
             { 
                 try
                 {
-                    cmd = new SqlCommand($"INSERT INTO [wn].[historic_slt_assignment] (slt_id, bib_id) Values ('{sltId}','{oldBibId}');", connection);
+                    cmd = new SqlCommand($"INSERT INTO [wn].[historic_slt_assignment] (slt_id, bib_id, bib_id_inserted_at) Values ('{sltId}','{oldBibId}','{nowDateTime}');", connection);
                     cmd.ExecuteNonQuery();
                 }
                 catch (SqlException e)
@@ -505,7 +507,7 @@ namespace WaferNavController {
             { 
                 try
                 {
-                    var insertCommand = new SqlCommand($"INSERT INTO [wn].[blu_assignment_unload] (blu_id, wafer_type_id) Values ('{bluId}','{bibId}');", connection);
+                    var insertCommand = new SqlCommand($"INSERT INTO [wn].[blu_assignment_unload] (blu_id, bib_id) Values ('{bluId}','{bibId}');", connection);
                     insertCommand.ExecuteNonQuery();
                 }
                 catch (SqlException e)
