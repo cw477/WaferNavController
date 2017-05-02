@@ -197,7 +197,7 @@ namespace WaferNavController {
             //add entry to historic
             try
             { 
-            cmd = new SqlCommand($"INSERT INTO [wn].[historic_blu_assignment_load] (blu_id, wafer_type_id, completed_at) Values ('{bluId}','{wafertype["wafer_type_id"]}', CURRENT_TIMESTAMP);", connection);
+            cmd = new SqlCommand($"INSERT INTO [wn].[historic_blu_assignment_load] (blu_id, wafer_type_id) Values ('{bluId}','{wafertype["wafer_type_id"]}');", connection);
             cmd.ExecuteNonQuery();
             }
             catch (SqlException e)
@@ -258,7 +258,7 @@ namespace WaferNavController {
             var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
             foreach (string s in bibIds)
             {
-                sqlText += $"(' + s + '),";
+                sqlText += $"('" + s + "'),";
             }
 
             sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
@@ -281,7 +281,7 @@ namespace WaferNavController {
             var sqlText = $"INSERT INTO [wn].[historic_bib] (id) Values ";
             foreach (string s in bibIds)
             {
-                sqlText += $"(' + s + '),";
+                sqlText += $"('" + s + "'),";
             }
 
             sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
@@ -454,7 +454,7 @@ namespace WaferNavController {
             { 
                 try
                 {
-                    cmd = new SqlCommand($"INSERT INTO [wn].[historic_slt_assignment] (slt_id, bib_id, completed_at) Values ('{sltId}','{oldBibId}', CURRENT_TIMESTAMP);", connection);
+                    cmd = new SqlCommand($"INSERT INTO [wn].[historic_slt_assignment] (slt_id, bib_id) Values ('{sltId}','{oldBibId}');", connection);
                     cmd.ExecuteNonQuery();
                 }
                 catch (SqlException e)
