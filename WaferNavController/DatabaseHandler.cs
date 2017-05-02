@@ -106,7 +106,7 @@ namespace WaferNavController {
             {
                 msg += "\n" + key + ": " + jsonMessage[key];
             }
-            Console.WriteLine(":End Json");
+            msg += ":End Json";
             return msg;
         }
 
@@ -131,7 +131,7 @@ namespace WaferNavController {
                     msg += "\n]";
                 }
             }
-            Console.WriteLine(":End Json");
+            msg += ":End Json";
             return msg;
         }
 
@@ -204,6 +204,9 @@ namespace WaferNavController {
             {
                 Console.Error.WriteLine(e.Message);
             }
+
+            //free blu
+            SetBluToAvailable(bluId);
         }
 
         public static Dictionary<string, string> GetBlu(string bluId) {
