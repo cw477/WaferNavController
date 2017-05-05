@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Newtonsoft.Json.Linq;
-using System.Data;
 using System.Reflection;
+using System.Collections;
+using System.Windows.Controls;
+using System.Data;
 
 namespace WaferNavController {
 
@@ -11,16 +13,37 @@ namespace WaferNavController {
 
         private static SqlConnection connection;
 
-        public static void ConnectToDatabase() {
+        public static SqlConnection Connection { get => connection; set => connection = value; }
+
+        public static void TestConnectToDatabase()
+        {
+            string connectionString = generateConnectionString();
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+            }
+            catch (Exception e)
+            {
+
+                Console.Error.WriteLine("\n**Exception was thrown in method ");
+                Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
+                Console.Error.WriteLine(e);
+            }            
+        }
+
+        private static string generateConnectionString()
+        {
             byte[] jsonByteArr = Properties.Resources.aws;
             string jsonStr = System.Text.Encoding.UTF8.GetString(jsonByteArr);
             JObject jsonObject = JObject.Parse(jsonStr);
             string connectionString = "";
-            foreach (var kp in jsonObject) {
+            foreach (var kp in jsonObject)
+            {
                 connectionString += $"{kp.Key}={kp.Value};";
             }
-            connection = new SqlConnection(connectionString + "Initial Catalog=wafer_nav;");
-            connection.Open();
+
+            return connectionString;
         }
 
         public static void ResetDatabase() {
@@ -53,6 +76,17 @@ namespace WaferNavController {
         public static List<Dictionary<string, string>> GetAllHistoricWafers()
         {
             return GetData($"SELECT * FROM [wn].[historic_wafer_type];");
+        }
+
+        public static void fillItems(ref DataGrid dg, string tableName)
+        {
+            string cmdString = string.Empty;
+            cmdString = $"SELECT [id], [location], [available] FROM [wn].[{tableName}]";
+            SqlCommand cmd = new SqlCommand(cmdString, connection);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("BLU");
+            sda.Fill(dt);
+            dg.ItemsSource = dt.DefaultView;
         }
 
         public static List<Dictionary<string, string>> GetAllBluLoadAssignments()

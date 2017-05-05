@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.Windows.Input;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
@@ -36,6 +39,12 @@ namespace WaferNavController {
             mqttClient.Connect(CLIENT_ID);
             mqttClient.Subscribe(new[] {SUB_TOPIC}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
             AppendLine("Subscribed to " + SUB_TOPIC);
+        }
+
+        private void fillDataGrids()
+        {
+            DatabaseHandler.fillItems(ref dgBLU, "BLU");
+            DatabaseHandler.fillItems(ref dgSLT, "SLT");
         }
 
         /// <summary>
@@ -119,6 +128,10 @@ namespace WaferNavController {
                 DatabaseHandler.ResetDatabase();
                 AppendLine(DateTime.Now.ToString() + ": Resetting DB Finished.", true);
             }
+            if (e.Key == Key.D)
+            {
+                fillDataGrids();
+            }
         }
 
         private void ConnectToDatabase() {
@@ -129,7 +142,7 @@ namespace WaferNavController {
             makeDotsThread.Start();
 
             try {
-                DatabaseHandler.ConnectToDatabase();
+                DatabaseHandler.TestConnectToDatabase();
 
                 killMakeDotsThread = true;
                 AppendLine(" success!", true);
