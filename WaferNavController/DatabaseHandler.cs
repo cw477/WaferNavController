@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Newtonsoft.Json.Linq;
+using System.Data;
+using System.Reflection;
 
 namespace WaferNavController {
 
@@ -17,7 +19,7 @@ namespace WaferNavController {
             foreach (var kp in jsonObject) {
                 connectionString += $"{kp.Key}={kp.Value};";
             }
-            connection = new SqlConnection(connectionString);
+            connection = new SqlConnection(connectionString + "Initial Catalog=wafer_nav;");
             connection.Open();
         }
 
@@ -333,8 +335,75 @@ namespace WaferNavController {
 
         public static void finishBluUnload(string bluId)
         {
-            //TODO: Create method to reset the blu and add bibs to historics if they arent there etc.
-            Console.Error.WriteLine("**********************FINISH BLU UNLOAD NOT IMPLEMENTED YET*********************");
+
+            //assignment data
+            string cmd = "SELECT * " +
+                "FROM [wafer_nav].[wn].[blu_assignment_unload] " +
+                $"WHERE blu_id = '{bluId}';";
+            var assignmentData = GetData(cmd);
+
+            //historic data
+            cmd = "SELECT *" +
+                "FROM [wafer_nav].[wn].[historic_blu_assignment_unload] " +
+                $"WHERE blu_id = '{bluId}';";
+            var historicData = GetData(cmd);
+
+            foreach (Dictionary<string,string> entry in assignmentData)
+            {
+                var theBib = entry["bib_id"];
+
+                //add historic bib
+                DateTime insertedAt = addBibToHistoric(entry["bib_id"]);
+
+                //add historic row
+                try
+                {
+                    cmd = "INSERT INTO [wn].[historic_blu_assignment_unload] " +
+                        "(blu_id, bib_id, bib_id_inserted_at) VALUES " +
+                        $"('{bluId}','{theBib}','{insertedAt}');";
+                    new SqlCommand(cmd, connection).ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("\n**Exception was thrown in method ");
+                    Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
+                    Console.Error.WriteLine(e);
+                }
+
+                //remove active row
+                try
+                {
+                    cmd = "DELETE FROM [wn].[blu_assignment_unload] " +
+                        $"WHERE [bib_id] = '{theBib}'";
+                    if((new SqlCommand(cmd, connection)).ExecuteNonQuery() == 0)
+                    {
+                        throw new Exception("ERROR: NO ROWS WERE DELETED DURING REMOVAL OF ACTIVE ASSIGNMENT ROW");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("\n**Exception was thrown in method ");
+                    Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
+                    Console.Error.WriteLine(e);
+                }
+
+                //remove active bib
+                try
+                {
+                    var query = $"DELETE FROM [wn].[active_bib] WHERE [id] = {theBib};";
+                    var sqlCommand = new SqlCommand(query, connection);
+                    sqlCommand.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+                    Console.Error.WriteLine("\n**Exception was thrown in method ");
+                    Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
+                    Console.Error.WriteLine(e);
+                }
+
+            }
+
+            SetBluToAvailable(bluId);
         }
 
         public static void AddSltAssignmentLoad(JArray bibIds, string sltId)
@@ -471,7 +540,7 @@ namespace WaferNavController {
             //make slt available
             try
             {
-                cmd = new SqlCommand($"UPDATE[wafer_nav].[wn].[BLU] SET available = 1 WHERE id = '{sltId}';", connection);
+                cmd = new SqlCommand($"UPDATE[wafer_nav].[wn].[SLT] SET available = 1 WHERE id = '{sltId}';", connection);
                 cmd.ExecuteNonQuery();
             }
             catch(SqlException e)
@@ -491,14 +560,19 @@ namespace WaferNavController {
             }
         }
 
-        public static void MoveActiveBibToHistoricBib(string bibId) {
-            var query = $"DELETE FROM[wn].[active_bib] where id = '{bibId}';";
-            var command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-
-            query = $"INSERT INTO [wn].[historic_bib] (id) Values ('{bibId}');";
-            command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
+        public static DateTime addBibToHistoric(string bibId) {
+            var nowDateTime = DateTime.Now;
+            try
+            {
+                var query = $"INSERT INTO [wn].[historic_bib] (id, inserted_at) Values ('{bibId}','{nowDateTime}');";
+                var command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                Console.Error.WriteLine(e);
+            }
+            return nowDateTime;
         }
 
         public static void AddBluAssignmentUnload(JArray bibIds, string bluId)

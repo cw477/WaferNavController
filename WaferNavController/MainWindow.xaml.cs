@@ -130,7 +130,6 @@ namespace WaferNavController {
 
             try {
                 DatabaseHandler.ConnectToDatabase();
-                DatabaseHandler.ResetDatabase();
 
                 killMakeDotsThread = true;
                 AppendLine(" success!", true);
@@ -144,43 +143,44 @@ namespace WaferNavController {
         }
 
         private void AppendCurrentDatabaseData() {
-            AppendLine("\n" + DateTime.Now.ToString(), true);
-
+            AppendLine("\n**********Current Database Information************" +
+                "\n**********Current Time:" + DateTime.Now.ToString() + "********", true);
             var data = DatabaseHandler.GetAllBlus();
-            AppendDatabaseDataToTextBox("All BLUs:", data);
-
+            AppendDatabaseDataToTextBox("\nAll BLUs:", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllSlts();
-            AppendDatabaseDataToTextBox("All SLTs:", data);
-
+            AppendDatabaseDataToTextBox("\nAll SLTs:", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllActiveBibs();
-            AppendDatabaseDataToTextBox("Active BIBs: ", data);
-
+            AppendDatabaseDataToTextBox("\nActive BIBs: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllHistoricBibs();
-            AppendDatabaseDataToTextBox("Historic BIBs: ", data);
-
+            AppendDatabaseDataToTextBox("\nHistoric BIBs: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllActiveWafers();
-            AppendDatabaseDataToTextBox("Active Wafers: ", data);
-
+            AppendDatabaseDataToTextBox("\nActive Wafers: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllHistoricWafers();
-            AppendDatabaseDataToTextBox("Historic Wafers: ", data);
-
+            AppendDatabaseDataToTextBox("\nHistoric Wafers: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllBluLoadAssignments();
-            AppendDatabaseDataToTextBox("BLU Loading Assignments: ", data);
-
+            AppendDatabaseDataToTextBox("\nBLU Loading Assignments: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllHistoricBluLoadAssignments();
-            AppendDatabaseDataToTextBox("Historic BLU Loading Assignments: ", data);
-
+            AppendDatabaseDataToTextBox("\nHistoric BLU Loading Assignments: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllBluUnloadAssignments();
-            AppendDatabaseDataToTextBox("BLU Unloading Assignments: ", data);
-
+            AppendDatabaseDataToTextBox("\nBLU Unloading Assignments: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllHistoricBluUnloadAssignments();
-            AppendDatabaseDataToTextBox("Historic BLU Unloading Assignments: ", data);
-
+            AppendDatabaseDataToTextBox("\nHistoric BLU Unloading Assignments: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllSltAssignments();
-            AppendDatabaseDataToTextBox("Slt Assignments: ", data);
-
+            AppendDatabaseDataToTextBox("\nSlt Assignments: ", data);
+            AppendLine("\n**************************************************");
             data = DatabaseHandler.GetAllHistoricSltAssignments();
-            AppendDatabaseDataToTextBox("Historic Slt Assignments: ", data);
+            AppendDatabaseDataToTextBox("\nHistoric Slt Assignments: ", data);
+            AppendLine("\n**************************************************");
         }
 
         private void AppendDatabaseDataToTextBox(string header, List<Dictionary<string, string>> data) {

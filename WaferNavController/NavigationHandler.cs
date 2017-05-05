@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WaferNavController
@@ -233,7 +234,12 @@ namespace WaferNavController
             {
                 returnJson.Add("confirm", "false");
             }
-            DatabaseHandler.finishBluUnload((string)messages["bluId"]);
+
+            Task finish = Task.Run(() =>
+            {
+                System.Threading.Thread.Sleep(10000);
+                DatabaseHandler.finishBluUnload((string)messages["bluId"]);
+            });
             return returnJson;
         }
     }
