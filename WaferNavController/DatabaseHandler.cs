@@ -12,8 +12,6 @@ namespace WaferNavController
 
         private static SqlConnection connection;
 
-        public static SqlConnection Connection { get => connection; set => connection = value; }
-
         public static void TestConnectToDatabase()
         {
             string connectionString = generateConnectionString();
