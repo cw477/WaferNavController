@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
-using System.Collections;
 using System.Windows.Controls;
 using System.Data;
 
-namespace WaferNavController {
-
+namespace WaferNavController
+{
     public class DatabaseHandler {
 
         private static SqlConnection connection;
@@ -21,14 +20,24 @@ namespace WaferNavController {
             connection = new SqlConnection(connectionString);
             try
             {
-                connection.Open();
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+
             }
             catch (Exception e)
             {
 
                 Console.Error.WriteLine("\n**Exception was thrown in method ");
                 Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
             }            
         }
 
@@ -42,7 +51,6 @@ namespace WaferNavController {
             {
                 connectionString += $"{kp.Key}={kp.Value};";
             }
-
             return connectionString;
         }
 
@@ -80,13 +88,21 @@ namespace WaferNavController {
 
         public static void fillItems(ref DataGrid dg, string tableName)
         {
-            string cmdString = string.Empty;
-            cmdString = $"SELECT [id], [location], [available] FROM [wn].[{tableName}]";
-            SqlCommand cmd = new SqlCommand(cmdString, connection);
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable("BLU");
-            sda.Fill(dt);
-            dg.ItemsSource = dt.DefaultView;
+            try
+            {
+                string cmdString = string.Empty;
+                cmdString = $"SELECT [id], [location], [available] FROM [wn].[{tableName}]";
+                SqlCommand cmd = new SqlCommand(cmdString, connection);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable("BLU");
+                sda.Fill(dt);
+                dg.ItemsSource = dt.DefaultView;
+            }
+            catch (InvalidOperationException e)
+            {
+
+                Console.Error.WriteLine(e.Message);
+            }
         }
 
         public static List<Dictionary<string, string>> GetAllBluLoadAssignments()
@@ -121,6 +137,12 @@ namespace WaferNavController {
 
         public static void AddNewActiveWaferType(string waferType)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             try
             {
                 var insertCommand = new SqlCommand($"INSERT INTO [wn].[active_wafer_type] (id, description) Values ('{waferType}', 'unknown');", connection); //TODO: remove literal
@@ -131,10 +153,20 @@ namespace WaferNavController {
                 //TODO: Do something with exception instead of just swallowing it
                 Console.Error.WriteLine(e.Message);
             }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static string jsonToStr(Dictionary<string, string> jsonMessage)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var msg = "";
             msg += "\nJson:";
             var keys = jsonMessage.Keys;
@@ -143,6 +175,10 @@ namespace WaferNavController {
                 msg += "\n" + key + ": " + jsonMessage[key];
             }
             msg += ":End Json";
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
             return msg;
         }
 
@@ -173,6 +209,12 @@ namespace WaferNavController {
 
         public static void AddBluAssignmentLoad(string lotId, string bluId)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             try
             {
                 var insertCommand = new SqlCommand($"INSERT INTO [wn].[blu_assignment_load] (blu_id, wafer_type_id) Values ('{bluId}','{lotId}');", connection);
@@ -183,9 +225,13 @@ namespace WaferNavController {
                 //TODO: Do something with exception instead of just swallowing it
                 Console.Error.WriteLine(e.Message);
             }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
-        public static bool confirmNewBlu(string v)
+        public static bool confirmNewBlu(string bluId)
         {
             //TODO: Add some checking logic?
             return true;
@@ -193,6 +239,12 @@ namespace WaferNavController {
 
         public static void finishBluLoad(string bluId)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             SqlCommand cmd;
             //get waftertype associated
             var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';")[0];
@@ -243,6 +295,10 @@ namespace WaferNavController {
 
             //free blu
             SetBluToAvailable(bluId);
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static Dictionary<string, string> GetBlu(string bluId) {
@@ -259,6 +315,12 @@ namespace WaferNavController {
         }
 
         private static List<Dictionary<string, string>> GetData(string query) {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             SqlDataReader reader = null;
             try
             {
@@ -267,7 +329,7 @@ namespace WaferNavController {
             }
             catch (SqlException e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
             }
             var data = new List<Dictionary<string, string>>();
 
@@ -283,6 +345,10 @@ namespace WaferNavController {
                 data.Add(row);
             }
             reader.Close();
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
             return data;
         }
 
@@ -294,6 +360,12 @@ namespace WaferNavController {
 
         public static void AddNewActiveBibs(JArray bibIds)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
             foreach (string s in bibIds)
             {
@@ -310,13 +382,22 @@ namespace WaferNavController {
             }
             catch (SqlException e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
             }
         }
 
-
         public static void AddNewHistoricBibs(List<string> bibIds, DateTime nowDateTime)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var sqlText = $"INSERT INTO [wn].[historic_bib] (id, inserted_at) Values ";
             foreach (string s in bibIds)
             {
@@ -333,12 +414,22 @@ namespace WaferNavController {
             }
             catch (SqlException e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
             }
         }
 
         public static string GetFirstAvailableSltId()
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
             var sqlCommand = new SqlCommand(query, connection);
             var reader = sqlCommand.ExecuteReader();
@@ -350,10 +441,20 @@ namespace WaferNavController {
                 break;
             }
             reader.Close();
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
             return sltId;
         }
 
         public static string GetFirstAvailableBluId() {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
             var sqlCommand = new SqlCommand(query, connection);
             var reader = sqlCommand.ExecuteReader();
@@ -364,12 +465,21 @@ namespace WaferNavController {
                 break;
             }
             reader.Close();
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
             return bluId;
         }
 
         public static void finishBluUnload(string bluId)
         {
-
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             //assignment data
             string cmd = "SELECT * " +
                 "FROM [wafer_nav].[wn].[blu_assignment_unload] " +
@@ -401,7 +511,7 @@ namespace WaferNavController {
                 {
                     Console.Error.WriteLine("\n**Exception was thrown in method ");
                     Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                    Console.Error.WriteLine(e);
+                    Console.Error.WriteLine(e.Message);
                 }
 
                 //remove active row
@@ -418,7 +528,7 @@ namespace WaferNavController {
                 {
                     Console.Error.WriteLine("\n**Exception was thrown in method ");
                     Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                    Console.Error.WriteLine(e);
+                    Console.Error.WriteLine(e.Message);
                 }
 
                 //remove active bib
@@ -432,16 +542,26 @@ namespace WaferNavController {
                 {
                     Console.Error.WriteLine("\n**Exception was thrown in method ");
                     Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                    Console.Error.WriteLine(e);
+                    Console.Error.WriteLine(e.Message);
                 }
 
             }
 
             SetBluToAvailable(bluId);
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void AddSltAssignmentLoad(JArray bibIds, string sltId)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
             foreach (string s in bibIds)
             {
@@ -458,12 +578,22 @@ namespace WaferNavController {
             }
             catch (SqlException e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
             }
         }
 
         public static void SetSLTToUnavailable(string sltId)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var query = "UPDATE[wafer_nav].[wn].[SLT] " +
             "SET available = 0 " +
             $"WHERE id = '{sltId}';";
@@ -476,21 +606,58 @@ namespace WaferNavController {
             {
                 Console.WriteLine(e);
             }
-
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void SetAllBluToAvailable() {
-            var query = "UPDATE[wafer_nav].[wn].[BLU]" +
-                        "SET available = 1;";
-            var updateCommand = new SqlCommand(query, connection);
-            updateCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "UPDATE[wafer_nav].[wn].[BLU]" +
+                    "SET available = 1;";
+                var updateCommand = new SqlCommand(query, connection);
+                updateCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void SetAllBluToUnavailable() {
-            var query = "UPDATE[wafer_nav].[wn].[BLU]" +
-                        "SET available = 0;";
-            var updateCommand = new SqlCommand(query, connection);
-            updateCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "UPDATE[wafer_nav].[wn].[BLU]" +
+                    "SET available = 0;";
+                var updateCommand = new SqlCommand(query, connection);
+                updateCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static bool confirmNewSlt(string sltId)
@@ -499,23 +666,63 @@ namespace WaferNavController {
         }
 
         public static void SetBluToAvailable(string bluId) {
-            var query = "UPDATE[wafer_nav].[wn].[BLU] " +
-                        "SET available = 1 " +
-                        $"WHERE id = '{bluId}';";
-            var updateCommand = new SqlCommand(query, connection);
-            updateCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "UPDATE[wafer_nav].[wn].[BLU] " +
+                    "SET available = 1 " +
+                    $"WHERE id = '{bluId}';";
+                var updateCommand = new SqlCommand(query, connection);
+                updateCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void SetBluToUnavailable(string bluId) {
-            var query = "UPDATE[wafer_nav].[wn].[BLU] " +
-                        "SET available = 0 " +
-                        $"WHERE id = '{bluId}';";
-            var updateCommand = new SqlCommand(query, connection);
-            updateCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "UPDATE[wafer_nav].[wn].[BLU] " +
+                    "SET available = 0 " +
+                    $"WHERE id = '{bluId}';";
+                var updateCommand = new SqlCommand(query, connection);
+                updateCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void finishSlt(string sltId)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             SqlCommand cmd;
 
             var nowDateTime = DateTime.Now;
@@ -553,7 +760,7 @@ namespace WaferNavController {
             //    }
             //    catch(SqlException e)
             //    {
-            //        Console.Error.WriteLine(e);
+            //        Console.Error.WriteLine(e.Message);
             //    }
             //}
 
@@ -579,12 +786,23 @@ namespace WaferNavController {
             }
             catch(SqlException e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
             }
         }
 
         public static void AddNewActiveBib(string bibId) {
-            try {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
                 var insertCommand = new SqlCommand($"INSERT INTO [wn].[active_bib] (id) Values ('{bibId}');", connection);
                 insertCommand.ExecuteNonQuery();
             }
@@ -592,9 +810,19 @@ namespace WaferNavController {
                 //TODO - Do something with exception instead of just swallowing it
                 Console.Error.WriteLine(e.StackTrace);
             }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static DateTime addBibToHistoric(string bibId) {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             var nowDateTime = DateTime.Now;
             try
             {
@@ -604,13 +832,23 @@ namespace WaferNavController {
             }
             catch (SqlException e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
             }
             return nowDateTime;
         }
 
         public static void AddBluAssignmentUnload(JArray bibIds, string bluId)
         {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
             foreach (string bibId in bibIds)
             { 
                 try
@@ -624,71 +862,214 @@ namespace WaferNavController {
                     Console.Error.WriteLine(e.Message);
                 }
             }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         private static void RemoveAllBlus()
         {
-            var query = "DELETE FROM [wn].[BLU];";
-            var deleteCommand = new SqlCommand(query, connection);
-            deleteCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "DELETE FROM [wn].[BLU];";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         private static void RemoveAllSlts()
         {
-            var query = "DELETE FROM [wn].[SLT];";
-            var deleteCommand = new SqlCommand(query, connection);
-            deleteCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "DELETE FROM [wn].[SLT];";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         private static void PopulateBluTable()
         {
-            var query = "INSERT INTO[wn].[BLU] (id, location, available) VALUES " +
-                "('123456', 'BLU#1,Handler 1,East', 1)," +
-                "('234567', 'BLU#2,Handler 2,West', 1);";
-            var insertCommand = new SqlCommand(query, connection);
-            insertCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "INSERT INTO[wn].[BLU] (id, location, available) VALUES " +
+            "('123456', 'BLU#1,Handler 1,East', 1)," +
+            "('234567', 'BLU#2,Handler 2,West', 1);";
+                var insertCommand = new SqlCommand(query, connection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         private static void PopulateSltTable()
         {
-            var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
-                "('890123', 'SLT#1,Test chamber1, North', 1)," +
-                "('901234', 'SLT#2,Test chamber2, South', 1)," +
-                "('012345', 'SLT#3,Test chamber3, East', 1)," +
-                "('123456', 'SLT#4,Test chamber4, West', 1);";
-            var insertCommand = new SqlCommand(query, connection);
-            insertCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
+            "('890123', 'SLT#1,Test chamber1, North', 1)," +
+            "('901234', 'SLT#2,Test chamber2, South', 1)," +
+            "('012345', 'SLT#3,Test chamber3, East', 1)," +
+            "('123456', 'SLT#4,Test chamber4, West', 1);";
+                var insertCommand = new SqlCommand(query, connection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
-        public static bool confirmDoneBlu(string v)
+        public static bool confirmDoneBlu(string bluId)
         {
             return true;
         }
 
         public static void RemoveAllActiveBibs() {
-            var query = "DELETE FROM [wn].[active_bib];";
-            var deleteCommand = new SqlCommand(query, connection);
-            deleteCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "DELETE FROM [wn].[active_bib];";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception s)
+            {
+                Console.Error.WriteLine(s.Message);
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void RemoveAllActiveWafers()
         {
-            var query = "DELETE FROM [wn].[active_wafer_type];";
-            var deleteCommand = new SqlCommand(query, connection);
-            deleteCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "DELETE FROM [wn].[active_wafer_type];";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                throw;
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void RemoveAllHistoricBibs() {
-            var query = "DELETE FROM [wn].[historic_bib];";
-            var deleteCommand = new SqlCommand(query, connection);
-            deleteCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "DELETE FROM [wn].[historic_bib];";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                throw;
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void RemoveAllHistoricWafers()
         {
-            var query = "DELETE FROM [wn].[historic_wafer_type];";
-            var deleteCommand = new SqlCommand(query, connection);
-            deleteCommand.ExecuteNonQuery();
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try
+            {
+                var query = "DELETE FROM [wn].[historic_wafer_type];";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                throw;
+            }
+            if (connectionOpenedHere)
+            {
+                connection.Close();
+            }
         }
 
         public static void RemoveAllRelations()
@@ -706,18 +1087,24 @@ namespace WaferNavController {
             {
                 try
                 {
+                    bool connectionOpenedHere = false;
+                    if (connection.State == ConnectionState.Closed)
+                    {
+                        connection.Open();
+                        connectionOpenedHere = true;
+                    }
                     cmd = new SqlCommand(query, connection);
                     cmd.ExecuteNonQuery();
+                    if (connectionOpenedHere)
+                    {
+                        connection.Close();
+                    }
                 }
                 catch (SqlException e)
                 {
-                    Console.Error.WriteLine(e);
+                    Console.Error.WriteLine(e.Message);
                 }
             }
-        }
-
-        public static void CloseConnection() {
-            connection.Close();
         }
     }
 }

@@ -135,7 +135,7 @@ namespace WaferNavController {
         }
 
         private void ConnectToDatabase() {
-            AppendText("Connecting to database . . .", true);
+            AppendText("Testing Database Connection . . .", true);
 
             killMakeDotsThread = false;
             var makeDotsThread = new Thread(MakeDots);
@@ -255,7 +255,6 @@ namespace WaferNavController {
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
             mqttClient.Disconnect();
-            DatabaseHandler.CloseConnection();
             Application.Current.Shutdown();
         }
     }
