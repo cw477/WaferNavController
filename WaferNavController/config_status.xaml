@@ -49,7 +49,7 @@
             <TabItem Header="Log" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
                 <Grid>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="196,110,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="198,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
                     <TextBox x:Name="logBox" TextWrapping="Wrap" Text="MESSAGES" Margin="67,169,66,91" TextChanged="TextBox_TextChanged_2">
                         <TextBox.ContextMenu>
@@ -66,7 +66,7 @@
             <TabItem Header="Log Out" Margin="440,0,-444,-2">
                 <Grid>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="196,93,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="196,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
                     <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>
                     <Button Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19"/>
