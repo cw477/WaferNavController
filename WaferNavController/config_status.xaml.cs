@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.IO;
 
 namespace WaferNavController
 {
@@ -27,7 +28,7 @@ namespace WaferNavController
         }
 
      
-
+        //Open FIle Dialog, Select File Button 
         private void button_selectFile_Click(object sender, RoutedEventArgs e)
         {
             //Create OpenFileDialog
@@ -44,7 +45,20 @@ namespace WaferNavController
             }
             
         }
+        //Save File Dialog Method Log Tab 
+        private void saveFD(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".text";
+            
 
+            if(sfd.ShowDialog() == true)
+            {
+                string filename = sfd.FileName;
+                File.WriteAllText(filename, logBox.Text);
+            }  
+
+        }
         private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
         {
 

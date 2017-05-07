@@ -51,7 +51,15 @@
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
                     <TextBlock HorizontalAlignment="Left" Margin="196,110,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
-                    <TextBox TextWrapping="Wrap" Text="MESSAGES" Margin="67,169,66,91" TextChanged="TextBox_TextChanged_2"/>
+                    <TextBox x:Name="logBox" TextWrapping="Wrap" Text="MESSAGES" Margin="67,169,66,91" TextChanged="TextBox_TextChanged_2">
+                        <TextBox.ContextMenu>
+                            <ContextMenu x:Name="cmSave">
+                                <MenuItem Header="Save to Text File"
+                                          Click="saveFD">
+                                </MenuItem>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                    </TextBox>
                 </Grid>
             </TabItem>
             <!--Log Out-->
