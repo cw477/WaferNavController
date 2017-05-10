@@ -22,9 +22,12 @@ namespace WaferNavController {
         private readonly string SUB_TOPIC = "wafernav/location_requests";
         private readonly MqttClient mqttClient;
         private bool killMakeDotsThread = false;
+        private Config configPage;
 
         public MainWindow() {
             InitializeComponent();
+            configPage = new Config();
+            this.Content = configPage;
                 
             var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;
             var hBitmap = bmp.GetHbitmap();
@@ -43,8 +46,8 @@ namespace WaferNavController {
 
         private void fillDataGrids()
         {
-            DatabaseHandler.fillItems(ref dgBLU, "BLU");
-            DatabaseHandler.fillItems(ref dgSLT, "SLT");
+            DatabaseHandler.fillItems(ref configPage.dgBLU, "BLU");
+            DatabaseHandler.fillItems(ref configPage.dgSLT, "SLT");
         }
 
         /// <summary>
@@ -91,9 +94,9 @@ namespace WaferNavController {
 
             // Print received message to window
             Dispatcher.Invoke(() => {
-                textBlock.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '"
+                configPage.logBox.Text += DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: '"
                     + DatabaseHandler.jsonToStr(incommingJson) + "\n\n";
-                scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+                configPage.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
             var returnJson = incomingMessageProcessor(incommingJson);
@@ -101,8 +104,8 @@ namespace WaferNavController {
 
             // Print outgoing message to window
             Dispatcher.Invoke(() => {
-                textBlock.Text += DateTime.Now + "  Message outgoing:" + DatabaseHandler.jsonToStr(returnJson) + "\n\n";
-                scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+                configPage.logBox.Text += DateTime.Now + "  Message outgoing:" + DatabaseHandler.jsonToStr(returnJson) + "\n\n";
+                configPage.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
             });
 
             // Publish return message
@@ -243,13 +246,13 @@ namespace WaferNavController {
         }
 
         private void AppendText(string text) {
-            textBlock.Text += text;
-            scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+            configPage.logBox.Text += text;
+            configPage.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
         }
 
         private void AppendLine(string text) {
-            textBlock.Text += text + "\n";
-            scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+            configPage.logBox.Text += text + "\n";
+            configPage.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
         }
 
         protected override void OnClosed(EventArgs e) {

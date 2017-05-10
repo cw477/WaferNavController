@@ -5,14 +5,4 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="WaferNavController" Height="800" Width="1024">
-    <Grid>
-        <ScrollViewer x:Name="scrollViewer" Margin="0,0,424,0">
-            <TextBlock x:Name="textBlock" Margin="10" TextWrapping="Wrap" RenderTransformOrigin="4.058,4.073" FontFamily="Consolas"/>
-        </ScrollViewer>
-        <DataGrid x:Name="dgBLU" Margin="597,47,0,398" />
-        <DataGrid x:Name="dgSLT" Margin="597,407,0,0" />
-        <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="597,376,0,0" VerticalAlignment="Top" Width="409" HorizontalContentAlignment="Center"/>
-        <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="597,21,0,0" VerticalAlignment="Top" Width="409" HorizontalContentAlignment="Center"/>
-    </Grid>
-</Window>
+        Title="WaferNavController" Height="800" Width="1024" SizeToContent="WidthAndHeight"/>

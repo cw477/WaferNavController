@@ -1,4 +1,4 @@
-﻿<Page x:Class="WaferNavController.Config"
+<Page x:Class="WaferNavController.Config"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -51,15 +51,17 @@
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
                     <TextBlock HorizontalAlignment="Left" Margin="198,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
-                    <TextBox x:Name="logBox" TextWrapping="Wrap" Text="MESSAGES" Margin="67,169,66,91" TextChanged="TextBox_TextChanged_2">
-                        <TextBox.ContextMenu>
-                            <ContextMenu x:Name="cmSave">
-                                <MenuItem Header="Save to Text File"
+                    <ScrollViewer x:Name="scrollViewer" Margin="0,0,0,0">
+                        <TextBox x:Name="logBox" TextWrapping="Wrap" TextChanged="TextBox_TextChanged_2" Width="594" Height="245" FontFamily="Consolas" IsReadOnly="True">
+                            <TextBox.ContextMenu>
+                                <ContextMenu x:Name="cmSave">
+                                    <MenuItem Header="Save to Text File"
                                           Click="saveFD">
-                                </MenuItem>
-                            </ContextMenu>
-                        </TextBox.ContextMenu>
-                    </TextBox>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </TextBox.ContextMenu>
+                        </TextBox>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
             <!--Log Out-->
@@ -71,6 +73,14 @@
                     <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>
                     <Button Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19"/>
                     <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="-38.4,0,0,0">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="dgBLU" Margin="10,26,10.4,342.8" />
+                    <DataGrid x:Name="dgSLT" Margin="10,254,10.4,9.8" />
+                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,223,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center"/>
+                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26"/>
                 </Grid>
             </TabItem>
         </TabControl>
