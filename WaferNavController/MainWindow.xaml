@@ -5,4 +5,4 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="WaferNavController" Height="800" Width="1024" SizeToContent="WidthAndHeight"/>
+        Title="WaferNavController" Height="800" Width="1024" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize"/>
