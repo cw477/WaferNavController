@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Controls;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
@@ -119,21 +120,26 @@ namespace WaferNavController {
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
         }
 
-        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
-        {
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.A)
             {
-                AppendCurrentDatabaseData();
+                if (((TabItem) configPage.TabControl.SelectedItem).Name == "LogTabItem") {
+                    AppendCurrentDatabaseData();
+                }
             }
             if (e.Key == Key.S)
             {
-                AppendLine(DateTime.Now.ToString() + ": Resetting DB...", true);
-                DatabaseHandler.ResetDatabase();
-                AppendLine(DateTime.Now.ToString() + ": Resetting DB Finished.", true);
+                if (((TabItem) configPage.TabControl.SelectedItem).Name == "LogTabItem") {
+                    AppendLine(DateTime.Now.ToString() + ": Resetting DB...", true);
+                    DatabaseHandler.ResetDatabase();
+                    AppendLine(DateTime.Now.ToString() + ": Resetting DB Finished.", true);
+                }
             }
             if (e.Key == Key.D)
             {
-                fillDataGrids();
+                if (((TabItem) configPage.TabControl.SelectedItem).Name == "StatusTabItem") {
+                    fillDataGrids();
+                }
             }
         }
 

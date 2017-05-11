@@ -14,9 +14,9 @@
             <ColumnDefinition Width="37*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Grid.ColumnSpan="2" Fill="#FFFFFF" HorizontalAlignment="Left" Height="600" Stroke="Black" VerticalAlignment="Top" Width="600"/>
-        <TabControl Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="590" Margin="0,10,0,0" VerticalAlignment="Top" Width="600">
+        <TabControl x:Name="TabControl" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="590" Margin="0,10,0,0" VerticalAlignment="Top" Width="600">
             <!--Config-->
-            <TabItem Header="Config" Margin="-2,0,-15,0">
+            <TabItem x:Name="ConfigTabItem" Header="Config" Margin="-2,0,-15,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="74*"/>
@@ -46,7 +46,7 @@
                 </Grid>
             </TabItem>
             <!--Status-->
-            <TabItem Header="Log" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
+            <TabItem x:Name="LogTabItem" Header="Log" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
                 <Grid>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
                     <TextBlock HorizontalAlignment="Left" Margin="198,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
@@ -65,7 +65,7 @@
                 </Grid>
             </TabItem>
             <!--Log Out-->
-            <TabItem Header="Log Out" Margin="440,0,-444,-2">
+            <TabItem x:Name="LogOutTabItem" Header="Log Out" Margin="440,0,-444,-2">
                 <Grid>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
                     <TextBlock HorizontalAlignment="Left" Margin="196,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
@@ -75,7 +75,7 @@
                     <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="-38.4,0,0,0">
+            <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="-38.4,0,0,0">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="dgBLU" Margin="10,26,10.4,342.8" />
                     <DataGrid x:Name="dgSLT" Margin="10,254,10.4,9.8" />
