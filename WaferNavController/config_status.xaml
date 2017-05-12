@@ -64,18 +64,8 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <!--Log Out-->
-            <TabItem x:Name="LogOutTabItem" Header="Log Out" Margin="440,0,-444,-2">
-                <Grid>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="196,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
-                    <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>
-                    <Button Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19"/>
-                    <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E"/>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="-38.4,0,0,0">
+            <!-- Status -->
+            <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="16.8,0,-16.4,0">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="dgBLU" Margin="10,0,10.4,252.8" Height="125" VerticalAlignment="Bottom" />
                     <DataGrid x:Name="dgSLT" Margin="10,338,10.4,97.8" Height="125" />
@@ -83,6 +73,18 @@
                     <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26"/>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146.3,10,148.1,439"/>
                     <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
+                </Grid>
+            </TabItem>
+            <!--Log Out-->
+            <TabItem x:Name="LogOutTabItem" Header="Log Out" Margin="407.4,0,-411.2,-1.6">
+                <Grid>
+                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
+                    <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>
+                    <Button Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19"/>
+                    <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E"/>
                 </Grid>
             </TabItem>
         </TabControl>
