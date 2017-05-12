@@ -1,4 +1,4 @@
-﻿<Page x:Class="WaferNavController.Config"
+<Page x:Class="WaferNavController.Config"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -49,7 +49,7 @@
             <TabItem x:Name="LogTabItem" Header="Log" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
                 <Grid>
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="198,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,166,10,10">
                         <TextBox x:Name="logBox" TextWrapping="Wrap" TextChanged="TextBox_TextChanged_2" FontFamily="Consolas" IsReadOnly="True" Width="567">
@@ -77,10 +77,12 @@
             </TabItem>
             <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="-38.4,0,0,0">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="dgBLU" Margin="10,26,10.4,342.8" />
-                    <DataGrid x:Name="dgSLT" Margin="10,254,10.4,9.8" />
-                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,223,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center"/>
-                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26"/>
+                    <DataGrid x:Name="dgBLU" Margin="10,0,10.4,252.8" Height="125" VerticalAlignment="Bottom" />
+                    <DataGrid x:Name="dgSLT" Margin="10,338,10.4,97.8" Height="125" />
+                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center"/>
+                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26"/>
+                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146.3,10,148.1,439"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                 </Grid>
             </TabItem>
         </TabControl>
