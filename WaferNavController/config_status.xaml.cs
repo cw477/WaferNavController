@@ -94,5 +94,13 @@ namespace WaferNavController
                 textBox.GotFocus += TextBox_GotFocus;
             }
         }
+
+        private void LogOutButton_Click(object sender, RoutedEventArgs e) {
+            Application.Current.Shutdown();
+        }
+
+        private void CancelLogOutButton_Click(object sender, RoutedEventArgs e) {
+            TabControl.SelectedIndex = 0;
+        }
     }
 }

@@ -83,8 +83,8 @@
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
                     <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>
-                    <Button Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19"/>
-                    <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E"/>
+                    <Button x:Name="LogOutButton" Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19" Click="LogOutButton_Click"/>
+                    <Button x:Name="CancelLogOutButton" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E" Click="CancelLogOutButton_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>
