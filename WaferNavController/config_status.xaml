@@ -74,6 +74,7 @@
                     <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146.3,10,148.1,439"/>
                     <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
+                    <Label x:Name="lastRefreshedLabel" Content="Last refreshed: " HorizontalAlignment="Left" Margin="10,524,0,0" VerticalAlignment="Top" Width="574" Tag="Last refreshed: "/>
                 </Grid>
             </TabItem>
             <!--Log Out-->

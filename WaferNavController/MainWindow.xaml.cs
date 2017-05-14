@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace WaferNavController {
@@ -45,10 +46,10 @@ namespace WaferNavController {
             AppendLine("Subscribed to " + SUB_TOPIC);
         }
 
-        private void fillDataGrids()
-        {
+        private void fillDataGrids() {
             DatabaseHandler.fillItems(ref configPage.dgBLU, "BLU");
             DatabaseHandler.fillItems(ref configPage.dgSLT, "SLT");
+            configPage.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
         }
 
         /// <summary>
@@ -117,7 +118,13 @@ namespace WaferNavController {
             base.OnContentRendered(e);
             var thread = new Thread(ConnectToDatabase);
             thread.Start();
-            this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
+            this.KeyDown += MainWindow_KeyDown;
+            Task.Run(() => {
+                while (true) {
+                    Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
+                    Thread.Sleep(3000);
+                }
+            });
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
