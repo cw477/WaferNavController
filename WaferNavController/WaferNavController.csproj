@@ -142,6 +142,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MqttConnectionHandler.cs" />
     <Compile Include="NavigationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
