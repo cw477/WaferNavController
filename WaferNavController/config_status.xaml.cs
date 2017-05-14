@@ -49,13 +49,14 @@ namespace WaferNavController
         private void saveFD(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.DefaultExt = ".text";
-            
+            sfd.DefaultExt = ".txt";
+            sfd.AddExtension = true;
+            sfd.Filter = "Text Files (*.txt)|*.txt";
 
-            if(sfd.ShowDialog() == true)
+            if (sfd.ShowDialog() == true)
             {
                 string filename = sfd.FileName;
-                File.WriteAllText(filename, logBox.Text);
+                File.WriteAllText(filename, logBox.Text.Replace("\n", "\r\n"));
             }  
 
         }
