@@ -52,6 +52,7 @@ namespace WaferNavController
             sfd.DefaultExt = ".txt";
             sfd.AddExtension = true;
             sfd.Filter = "Text Files (*.txt)|*.txt";
+            sfd.FileName = DateTime.Now.ToString("yyyy-MM-dd--HH-mm-ss") + "-WaferNavController-Log";
 
             if (sfd.ShowDialog() == true)
             {
