@@ -34,12 +34,6 @@ namespace WaferNavController {
             var thread = new Thread(ConnectToDatabase);
             thread.Start();
             this.KeyDown += MainWindow_KeyDown;
-            Task.Run(() => {
-                while (true) {
-                    Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
-                    Thread.Sleep(3000);
-                }
-            });
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
@@ -66,6 +60,15 @@ namespace WaferNavController {
             }
         }
 
+        private void CreateFillDataGridsTask() {
+            Task.Run(() => {
+                while (true) {
+                    Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
+                    Thread.Sleep(3000);
+                }
+            });
+        }
+
         private void fillDataGrids() {
             DatabaseHandler.fillItems(ref configPage.dgBLU, "BLU");
             DatabaseHandler.fillItems(ref configPage.dgSLT, "SLT");
@@ -84,6 +87,7 @@ namespace WaferNavController {
 
                 killMakeDotsThread = true;
                 AppendLine(" success!", true);
+                CreateFillDataGridsTask();
             }
 
             catch (Exception exception) {
