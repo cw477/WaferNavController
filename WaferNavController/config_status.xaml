@@ -45,13 +45,17 @@
                     <Label Content="Status.." HorizontalAlignment="Left" Margin="25,497,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <!--Status-->
+            <!--Log-->
             <TabItem x:Name="LogTabItem" Header="Log" Height="22" VerticalAlignment="Bottom" Margin="14,0,-18,0">
                 <Grid>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
-                    <ScrollViewer x:Name="scrollViewer" Margin="10,166,10,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="131*"/>
+                        <ColumnDefinition Width="463*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="15,10,148,439" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="72,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="1"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
+                    <ScrollViewer x:Name="scrollViewer" Margin="10,166,10,10" Grid.ColumnSpan="2">
                         <TextBox x:Name="logBox" TextWrapping="Wrap" TextChanged="TextBox_TextChanged_2" FontFamily="Consolas" IsReadOnly="True" Width="567">
                             <TextBox.ContextMenu>
                                 <ContextMenu x:Name="cmSave">
@@ -66,15 +70,19 @@
             </TabItem>
             <!-- Status -->
             <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="16.8,0,-16.4,0">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="dgBLU" Margin="10,0,10.4,252.8" Height="125" VerticalAlignment="Bottom" />
-                    <DataGrid x:Name="dgSLT" Margin="10,338,10.4,97.8" Height="125" />
-                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center"/>
-                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26"/>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146.3,10,148.1,439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
-                    <Label x:Name="lastRefreshedLabel" Content="Last refreshed: " HorizontalAlignment="Left" Margin="10,524,0,0" VerticalAlignment="Top" Width="574" Tag="Last refreshed: "/>
+                <Grid Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="47*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="dgBLU" Margin="10,0,10,253" Height="125" VerticalAlignment="Bottom" Grid.ColumnSpan="2" />
+                    <DataGrid x:Name="dgSLT" Margin="10,338,10,97" Height="125" Grid.ColumnSpan="2" />
+                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26" Grid.ColumnSpan="2"/>
+                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="69,10,148,439" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="126,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="1"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
+                    <Label x:Name="lastRefreshedLabel" Content="Last refreshed: " HorizontalAlignment="Left" Margin="10,524,0,0" VerticalAlignment="Top" Width="574" Tag="Last refreshed: " Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
             <!--Log Out-->
