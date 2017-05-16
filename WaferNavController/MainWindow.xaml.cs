@@ -61,12 +61,12 @@ namespace WaferNavController {
         }
 
         private void CreateFillDataGridsTask() {
-            Task.Run(() => {
-                while (true) {
-                    Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
-                    Thread.Sleep(3000);
-                }
-            });
+            //Task.Run(() => {
+            //    while (true) {
+            //        Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
+            //        Thread.Sleep(3000);
+            //    }
+            //});
         }
 
         private void fillDataGrids() {

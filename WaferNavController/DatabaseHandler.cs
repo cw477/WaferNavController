@@ -135,25 +135,25 @@ namespace WaferNavController
 
         public static void AddNewActiveWaferType(string waferType)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
                 var insertCommand = new SqlCommand($"INSERT INTO [wn].[active_wafer_type] (id, description) Values ('{waferType}', 'unknown');", connection); //TODO: remove literal
                 insertCommand.ExecuteNonQuery();
+
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
-                //TODO: Do something with exception instead of just swallowing it
-                Console.Error.WriteLine(e.Message);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
+                throw e;
             }
         }
 
@@ -207,267 +207,306 @@ namespace WaferNavController
 
         public static void AddBluAssignmentLoad(string lotId, string bluId)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
                 var insertCommand = new SqlCommand($"INSERT INTO [wn].[blu_assignment_load] (blu_id, wafer_type_id) Values ('{bluId}','{lotId}');", connection);
                 insertCommand.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                //TODO: Do something with exception instead of just swallowing it
-                Console.Error.WriteLine(e.Message);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
-            }
-        }
-
-        public static bool confirmNewBlu(string bluId)
-        {
-            //TODO: Add some checking logic?
-            return true;
-        }
-
-        public static void finishBluLoad(string bluId)
-        {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            SqlCommand cmd;
-            //get waftertype associated
-            var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';")[0];
-            
-            //create historic wafertype
-            try
-            {
-                cmd = new SqlCommand($"INSERT INTO [wn].[historic_wafer_type] (id) Values ('{wafertype["wafer_type_id"]}');", connection);
-                cmd.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
-
-            //remove relation
-            try
-            {
-                cmd = new SqlCommand($"DELETE FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';", connection);
-                cmd.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
-
-            //remove wafertype
-            try
-            {
-                cmd = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{wafertype["wafer_type_id"]}';", connection);
-                cmd.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
-
-            //add entry to historic
-            try
-            { 
-            cmd = new SqlCommand($"INSERT INTO [wn].[historic_blu_assignment_load] (blu_id, wafer_type_id) Values ('{bluId}','{wafertype["wafer_type_id"]}');", connection);
-            cmd.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
-
-            //free blu
-            SetBluToAvailable(bluId);
-            if (connectionOpenedHere)
-            {
-                connection.Close();
-            }
-        }
-
-        public static Dictionary<string, string> GetBlu(string bluId) {
-            //TODO: handle the case where there are no available BLUs
-            return GetData($"SELECT [id] AS [bluId], [location] AS [bluInfo] FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
-        }
-
-        public static List<Dictionary<string, string>> GetAllActiveBibs() {
-            return GetData($"SELECT * FROM [wn].[active_bib];");
-        }
-
-        public static List<Dictionary<string, string>> GetAllHistoricBibs() {
-            return GetData($"SELECT * FROM [wn].[historic_bib];");
-        }
-
-        private static List<Dictionary<string, string>> GetData(string query) {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            SqlDataReader reader = null;
-            try
-            {
-                var sqlCommand = new SqlCommand(query, connection);
-                reader = sqlCommand.ExecuteReader();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
-            var data = new List<Dictionary<string, string>>();
-
-            // Iterate through rows
-            while (reader.Read()) {
-                var row = new Dictionary<string, string>();
-
-                // Iterate through columns
-                for (var i = 0; i < reader.FieldCount; i++) {
-                    var colName = reader.GetName(i);
-                    row.Add(colName, reader[colName].ToString());
-                }
-                data.Add(row);
-            }
-            reader.Close();
-            if (connectionOpenedHere)
-            {
-                connection.Close();
-            }
-            return data;
-        }
-
-        public static Dictionary<string, string> GetSlt(object sltId)
-        {
-            //TODO: handle the case where there are no available SLTs
-            return GetData($"SELECT [id] AS [sltId], [location] AS [sltInfo] FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
-        }
-
-        public static void AddNewActiveBibs(JArray bibIds)
-        {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
-            foreach (string s in bibIds)
-            {
-                sqlText += $"('" + s + "'),";
-            }
-
-            sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
-            sqlText += ";";
-
-            try
-            {
-                var insertCommand = new SqlCommand(sqlText, connection);
-                insertCommand.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
                 if (connectionOpenedHere)
                 {
                     connection.Close();
                 }
             }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static bool confirmNewBlu(string bluId)
+        {
+            try
+            {
+                //TODO: Add some checking logic?
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static void finishBluLoad(string bluId)
+        {
+            try
+            {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                SqlCommand cmd;
+
+                //get waftertype associated
+                var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';")[0];
+                //create historic wafertype
+                cmd = new SqlCommand($"INSERT INTO [wn].[historic_wafer_type] (id) Values ('{wafertype["wafer_type_id"]}');", connection);
+                cmd.ExecuteNonQuery();
+                //remove relation
+                cmd = new SqlCommand($"DELETE FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';", connection);
+                cmd.ExecuteNonQuery();
+                //remove wafertype
+                cmd = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{wafertype["wafer_type_id"]}';", connection);
+                cmd.ExecuteNonQuery();
+                //add entry to historic
+                cmd = new SqlCommand($"INSERT INTO [wn].[historic_blu_assignment_load] (blu_id, wafer_type_id) Values ('{bluId}','{wafertype["wafer_type_id"]}');", connection);
+                cmd.ExecuteNonQuery();
+                //free blu
+                SetBluToAvailable(bluId);
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static Dictionary<string, string> GetBlu(string bluId) {
+            //TODO: handle the case where there are no available BLUs
+            try
+            {
+                return GetData($"SELECT [id] AS [bluId], [location] AS [bluInfo] FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static List<Dictionary<string, string>> GetAllActiveBibs() {
+            try
+            {
+                return GetData($"SELECT * FROM [wn].[active_bib];");
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static List<Dictionary<string, string>> GetAllHistoricBibs() {
+            try
+            {
+                return GetData($"SELECT * FROM [wn].[historic_bib];");
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        private static List<Dictionary<string, string>> GetData(string query) {
+            try
+            {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                SqlDataReader reader = null;
+                var sqlCommand = new SqlCommand(query, connection);
+                reader = sqlCommand.ExecuteReader();
+                var data = new List<Dictionary<string, string>>();
+                // Iterate through rows
+                while (reader.Read())
+                {
+                    var row = new Dictionary<string, string>();
+
+                    // Iterate through columns
+                    for (var i = 0; i < reader.FieldCount; i++)
+                    {
+                        var colName = reader.GetName(i);
+                        row.Add(colName, reader[colName].ToString());
+                    }
+                    data.Add(row);
+                }
+                reader.Close();
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+                return data;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static Dictionary<string, string> GetSlt(object sltId)
+        {
+            try
+            {
+                //TODO: handle the case where there are no available SLTs
+                return GetData($"SELECT [id] AS [sltId], [location] AS [sltInfo] FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public static void AddNewActiveBibs(JArray bibIds)
+        {
+            try
+            {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
+                foreach (string s in bibIds)
+                {
+                    sqlText += $"('" + s + "'),";
+                }
+
+                sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
+                sqlText += ";";
+
+                var insertCommand = new SqlCommand(sqlText, connection);
+                insertCommand.ExecuteNonQuery();
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public static void AddNewHistoricBibs(List<string> bibIds, DateTime nowDateTime)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            var sqlText = $"INSERT INTO [wn].[historic_bib] (id, inserted_at) Values ";
-            foreach (string s in bibIds)
-            {
-                sqlText += $"('" + s + "','" + nowDateTime + "'),";
-            }
-
-            sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
-            sqlText += ";";
-
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                var sqlText = $"INSERT INTO [wn].[historic_bib] (id, inserted_at) Values ";
+                foreach (string s in bibIds)
+                {
+                    sqlText += $"('" + s + "','" + nowDateTime + "'),";
+                }
+
+                sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
+                sqlText += ";";
+
                 var insertCommand = new SqlCommand(sqlText, connection);
                 insertCommand.ExecuteNonQuery();
+
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
-                Console.Error.WriteLine(e.Message);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
+
+                throw e;
             }
         }
 
         public static string GetFirstAvailableSltId()
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
+            try
             {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
-            var sqlCommand = new SqlCommand(query, connection);
-            var reader = sqlCommand.ExecuteReader();
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
+                var sqlCommand = new SqlCommand(query, connection);
+                var reader = sqlCommand.ExecuteReader();
 
-            string sltId = null;
-            while (reader.Read())
-            {
-                sltId = reader["id"].ToString();
-                break;
+                string sltId = null;
+                while (reader.Read())
+                {
+                    sltId = reader["id"].ToString();
+                    break;
+                }
+                reader.Close();
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+                return sltId;
             }
-            reader.Close();
-            if (connectionOpenedHere)
+            catch (Exception e)
             {
-                connection.Close();
+
+                throw e;
             }
-            return sltId;
         }
 
         public static string GetFirstAvailableBluId() {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
+            try
             {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
-            var sqlCommand = new SqlCommand(query, connection);
-            var reader = sqlCommand.ExecuteReader();
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
+                var sqlCommand = new SqlCommand(query, connection);
+                var reader = sqlCommand.ExecuteReader();
 
-            string bluId = null;
-            while (reader.Read()) {
-                bluId = reader["id"].ToString();
-                break;
+                string bluId = null;
+                while (reader.Read())
+                {
+                    bluId = reader["id"].ToString();
+                    break;
+                }
+                reader.Close();
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+                return bluId;
             }
-            reader.Close();
-            if (connectionOpenedHere)
+            catch (Exception e)
             {
-                connection.Close();
+                throw e;
             }
-            return bluId;
         }
 
         public static void finishBluUnload(string bluId)
@@ -477,6 +516,12 @@ namespace WaferNavController
             {
                 connection.Open();
                 connectionOpenedHere = true;
+            }
+            //throw exception if the assignment doesn't exist
+            var query = new SqlCommand($"SELECT * FROM [wn].[blu_assignment_unload] WHERE [blu_id] = '{bluId}';", connection);
+            if (query.ExecuteNonQuery() == 0)
+            {
+                throw new Exception($"There is nothing to pick up at the blu specified: {bluId}");
             }
             //assignment data
             string cmd = "SELECT * " +
@@ -492,57 +537,37 @@ namespace WaferNavController
 
             foreach (Dictionary<string,string> entry in assignmentData)
             {
-                var theBib = entry["bib_id"];
-
-                //add historic bib
-                DateTime insertedAt = addBibToHistoric(entry["bib_id"]);
-
-                //add historic row
                 try
                 {
+                    var theBib = entry["bib_id"];
+
+                    //add historic bib
+                    DateTime insertedAt = addBibToHistoric(entry["bib_id"]);
+
+                    //add historic row
                     cmd = "INSERT INTO [wn].[historic_blu_assignment_unload] " +
                         "(blu_id, bib_id, bib_id_inserted_at) VALUES " +
                         $"('{bluId}','{theBib}','{insertedAt}');";
                     new SqlCommand(cmd, connection).ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine("\n**Exception was thrown in method ");
-                    Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                    Console.Error.WriteLine(e.Message);
-                }
 
-                //remove active row
-                try
-                {
+                    //remove active row
                     cmd = "DELETE FROM [wn].[blu_assignment_unload] " +
                         $"WHERE [bib_id] = '{theBib}'";
-                    if((new SqlCommand(cmd, connection)).ExecuteNonQuery() == 0)
+                    if ((new SqlCommand(cmd, connection)).ExecuteNonQuery() == 0)
                     {
                         throw new Exception("ERROR: NO ROWS WERE DELETED DURING REMOVAL OF ACTIVE ASSIGNMENT ROW");
                     }
+
+                    //remove active bib
+                    cmd = $"DELETE FROM [wn].[active_bib] WHERE [id] = {theBib};";
+                    var sqlCommand = new SqlCommand(cmd, connection);
+                    sqlCommand.ExecuteNonQuery();
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine("\n**Exception was thrown in method ");
-                    Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                    Console.Error.WriteLine(e.Message);
-                }
 
-                //remove active bib
-                try
-                {
-                    var query = $"DELETE FROM [wn].[active_bib] WHERE [id] = {theBib};";
-                    var sqlCommand = new SqlCommand(query, connection);
-                    sqlCommand.ExecuteNonQuery();
+                    throw e;
                 }
-                catch (SqlException e)
-                {
-                    Console.Error.WriteLine("\n**Exception was thrown in method ");
-                    Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
-                    Console.Error.WriteLine(e.Message);
-                }
-
             }
 
             SetBluToAvailable(bluId);
@@ -554,59 +579,64 @@ namespace WaferNavController
 
         public static void AddSltAssignmentLoad(JArray bibIds, string sltId)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
-            foreach (string s in bibIds)
-            {
-                sqlText += $"('{sltId}', '{s}'),";
-            }
-
-            sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
-            sqlText += ";";
-
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                var sqlText = $"INSERT INTO [wn].[slt_assignment] (slt_id, bib_id) Values ";
+                foreach (string s in bibIds)
+                {
+                    sqlText += $"('{sltId}', '{s}'),";
+                }
+
+                sqlText = sqlText.Remove(sqlText.LastIndexOf(","), 1);
+                sqlText += ";";
+
                 var insertCommand = new SqlCommand(sqlText, connection);
                 insertCommand.ExecuteNonQuery();
+
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
-                Console.Error.WriteLine(e.Message);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
+
+                throw e;
             }
         }
 
         public static void SetSLTToUnavailable(string sltId)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            var query = "UPDATE[wafer_nav].[wn].[SLT] " +
-            "SET available = 0 " +
-            $"WHERE id = '{sltId}';";
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                var query = "UPDATE[wafer_nav].[wn].[SLT] " +
+                "SET available = 0 " +
+                $"WHERE id = '{sltId}';";
+
                 var updateCommand = new SqlCommand(query, connection);
                 updateCommand.ExecuteNonQuery();
+
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
+
+                throw e;
             }
         }
 
@@ -660,7 +690,15 @@ namespace WaferNavController
 
         public static bool confirmNewSlt(string sltId)
         {
-            return true;
+            try
+            {
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public static void SetBluToAvailable(string bluId) {
@@ -689,106 +727,100 @@ namespace WaferNavController
         }
 
         public static void SetBluToUnavailable(string bluId) {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
                 var query = "UPDATE[wafer_nav].[wn].[BLU] " +
                     "SET available = 0 " +
                     $"WHERE id = '{bluId}';";
                 var updateCommand = new SqlCommand(query, connection);
                 updateCommand.ExecuteNonQuery();
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine(e.Message);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
+
+                throw e;
             }
         }
 
         public static void finishSlt(string sltId)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            SqlCommand cmd;
-
-            var nowDateTime = DateTime.Now;
-
-            //get bibs assigned to the slt
-            List<Dictionary<string, string>> oldBibIds = GetData($"SELECT [bib_id] FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}';");
-
-            List<string> oldBibList = new List<string>();
-            foreach (Dictionary<string,string> oldBibId in oldBibIds)
-            {
-                oldBibList.Add(oldBibId["bib_id"]);
-            }
-            //create historic bibs
-            AddNewHistoricBibs(oldBibList, nowDateTime);
-
-            //remove relation
             try
             {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                SqlCommand cmd;
+
+                var nowDateTime = DateTime.Now;
+
+                //get bibs assigned to the slt
+                List<Dictionary<string, string>> oldBibIds = GetData($"SELECT [bib_id] FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}';");
+
+                List<string> oldBibList = new List<string>();
+                foreach (Dictionary<string, string> oldBibId in oldBibIds)
+                {
+                    oldBibList.Add(oldBibId["bib_id"]);
+                }
+
+                //create historic bibs
+                AddNewHistoricBibs(oldBibList, nowDateTime);
+
+                //remove relation
                 cmd = new SqlCommand($"DELETE FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}';", connection);
                 cmd.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
 
-            //TODO: Figure out how to finish recycling bibIds, in conjunction with finishing bluUnload
-            ////remove bibs from active
-            //foreach (string oldBibId in oldBibList)
-            //{
-            //    try
-            //    { 
-            //        cmd = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{oldBibId}';", connection);
-            //        cmd.ExecuteNonQuery();
-            //    }
-            //    catch(SqlException e)
-            //    {
-            //        Console.Error.WriteLine(e.Message);
-            //    }
-            //}
 
-            //add entries to historic
-            foreach (string oldBibId in oldBibList)
-            { 
-                try
+                //TODO: Figure out how to finish recycling bibIds, in conjunction with finishing bluUnload
+                ////remove bibs from active
+                //foreach (string oldBibId in oldBibList)
+                //{
+                //    try
+                //    { 
+                //        cmd = new SqlCommand($"DELETE FROM [wn].[active_wafer_type] WHERE [id] = '{oldBibId}';", connection);
+                //        cmd.ExecuteNonQuery();
+                //    }
+                //    catch(SqlException e)
+                //    {
+                //        Console.Error.WriteLine(e.Message);
+                //    }
+                //}
+
+                //add entries to historic
+                foreach (string oldBibId in oldBibList)
                 {
+
                     cmd = new SqlCommand($"INSERT INTO [wn].[historic_slt_assignment] (slt_id, bib_id, bib_id_inserted_at) Values ('{sltId}','{oldBibId}','{nowDateTime}');", connection);
                     cmd.ExecuteNonQuery();
-                }
-                catch (SqlException e)
-                {
-                    Console.Error.WriteLine(e.Message);
-                }
-            }
 
-            //make slt available
-            try
-            {
+                }
+                //make slt available
                 cmd = new SqlCommand($"UPDATE[wafer_nav].[wn].[SLT] SET available = 1 WHERE id = '{sltId}';", connection);
                 cmd.ExecuteNonQuery();
+
+
+                if (connectionOpenedHere)
+                {
+                    connection.Close();
+                }
+
             }
-            catch(SqlException e)
+            catch (Exception e)
             {
-                Console.Error.WriteLine(e.Message);
-            }
-            if (connectionOpenedHere)
-            {
-                connection.Close();
+
+                throw e;
             }
         }
 
@@ -841,28 +873,28 @@ namespace WaferNavController
 
         public static void AddBluAssignmentUnload(JArray bibIds, string bluId)
         {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed)
+            try
             {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            foreach (string bibId in bibIds)
-            { 
-                try
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                foreach (string bibId in bibIds)
                 {
                     var insertCommand = new SqlCommand($"INSERT INTO [wn].[blu_assignment_unload] (blu_id, bib_id) Values ('{bluId}','{bibId}');", connection);
                     insertCommand.ExecuteNonQuery();
                 }
-                catch (SqlException e)
+                if (connectionOpenedHere)
                 {
-                    //TODO: Do something with exception instead of just swallowing it
-                    Console.Error.WriteLine(e.Message);
+                    connection.Close();
                 }
             }
-            if (connectionOpenedHere)
+            catch (Exception e)
             {
-                connection.Close();
+
+                throw e;
             }
         }
 
@@ -970,7 +1002,15 @@ namespace WaferNavController
 
         public static bool confirmDoneBlu(string bluId)
         {
-            return true;
+            try
+            {
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public static void RemoveAllActiveBibs() {
