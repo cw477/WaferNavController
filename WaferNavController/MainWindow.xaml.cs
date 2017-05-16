@@ -17,7 +17,7 @@ namespace WaferNavController {
 
         public MainWindow() {
             InitializeComponent();
-            configPage = new Config();
+            configPage = new Config(this);
             this.Content = configPage;
                 
             var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;

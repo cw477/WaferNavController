@@ -20,10 +20,11 @@ namespace WaferNavController
     /// <summary>
     /// Interaction logic for Config.xaml
     /// </summary>
-    public partial class Config : Page
-    {
-        public Config()
-        {
+    public partial class Config : Page {
+        private MainWindow mainWindow;
+
+        public Config(MainWindow mainWindow) {
+            this.mainWindow = mainWindow;
             InitializeComponent();
         }
 
@@ -103,6 +104,12 @@ namespace WaferNavController
 
         private void CancelLogOutButton_Click(object sender, RoutedEventArgs e) {
             TabControl.SelectedIndex = 0;
+        }
+
+        private void FindButton_Click(object sender, RoutedEventArgs e) {
+            FindWindow findWindow = new FindWindow();
+            findWindow.Owner = mainWindow;
+            findWindow.ShowDialog();
         }
     }
 }
