@@ -922,11 +922,15 @@ namespace WaferNavController
                 connection.Open();
                 connectionOpenedHere = true;
             }
-            try
-            {
+            try {
                 var query = "INSERT INTO[wn].[BLU] (id, location, available) VALUES " +
-            "('123456', 'BLU#1,Handler 1,East', 1)," +
-            "('234567', 'BLU#2,Handler 2,West', 1);";
+                            "('123456', 'BLU#1,Handler 1,East', 1)," +
+                            "('234567', 'BLU#2,Handler 2,West', 1)," +
+                            "('111111', 'BLU#111,Handler 111,West', 1)," +
+                            "('222222', 'BLU#222,Handler 222,West', 1)," +
+                            "('333333', 'BLU#333,Handler 333,West', 1)," +
+                            "('444444', 'BLU#444,Handler 444,West', 1)," +
+                            "('555555', 'BLU#555,Handler 555,West', 1);";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
@@ -948,13 +952,17 @@ namespace WaferNavController
                 connection.Open();
                 connectionOpenedHere = true;
             }
-            try
-            {
+            try {
                 var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
-            "('890123', 'SLT#1,Test chamber1, North', 1)," +
-            "('901234', 'SLT#2,Test chamber2, South', 1)," +
-            "('012345', 'SLT#3,Test chamber3, East', 1)," +
-            "('123456', 'SLT#4,Test chamber4, West', 1);";
+                            "('890123', 'SLT#1,Test chamber1, North', 1)," +
+                            "('901234', 'SLT#2,Test chamber2, South', 1)," +
+                            "('012345', 'SLT#3,Test chamber3, East', 1)," +
+                            "('123456', 'SLT#4,Test chamber4, West', 1)," +
+                            "('111111', 'SLT#111,Test chamber111, West', 1)," +
+                            "('222222', 'SLT#222,Test chamber222, West', 1)," +
+                            "('333333', 'SLT#333,Test chamber333, West', 1)," +
+                            "('444444', 'SLT#444,Test chamber444, West', 1)," +
+                            "('555555', 'SLT#555,Test chamber555, West', 1);";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
