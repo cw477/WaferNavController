@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -34,6 +34,9 @@ namespace WaferNavController {
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
             }
+            else if (e.Key == Key.Escape) {
+                DialogResult = false;
+            }
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e) {
@@ -59,6 +62,7 @@ namespace WaferNavController {
                 var barcodeId = row.Row[0].ToString();
                 if (enteredBarcodeId == barcodeId) {
                     configPage.dgBLU.SelectedItem = row;
+                    configPage.dgBLU.ScrollIntoView(configPage.dgBLU.SelectedItem);
                     DialogResult = true;
                     return;
                 }
@@ -68,6 +72,7 @@ namespace WaferNavController {
                 var barcodeId = row.Row[0].ToString();
                 if (enteredBarcodeId == barcodeId) {
                     configPage.dgSLT.SelectedItem = row;
+                    configPage.dgSLT.ScrollIntoView(configPage.dgSLT.SelectedItem);
                     DialogResult = true;
                     return;
                 }
