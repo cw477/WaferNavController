@@ -64,7 +64,7 @@ namespace WaferNavController {
             Task.Run(() => {
                 while (true) {
                     Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
-                    Thread.Sleep(3000);
+                    Thread.Sleep(60000);
                 }
             });
         }

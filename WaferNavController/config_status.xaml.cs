@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,7 +108,7 @@ namespace WaferNavController
         }
 
         private void FindButton_Click(object sender, RoutedEventArgs e) {
-            FindWindow findWindow = new FindWindow();
+            FindWindow findWindow = new FindWindow(this);
             findWindow.Owner = mainWindow;
             findWindow.ShowDialog();
         }
