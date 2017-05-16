@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.IO;
 
 namespace WaferNavController {
     class MqttConnectionHandler {
@@ -76,6 +77,13 @@ namespace WaferNavController {
             }
             catch (Exception e) {
                 returnMessage = new Dictionary<string, string> { ["error"] = e.Message };
+                returnMessage.Add("directive", "ERROR");
+                using (StreamWriter writer = new StreamWriter(@"Error.txt", true))
+                {
+                    writer.WriteLine("Message :" + e.Message + "<br/>" + Environment.NewLine + "StackTrace :" + e.StackTrace +
+                       "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+                    writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+                }
             }
             return returnMessage;
         }
