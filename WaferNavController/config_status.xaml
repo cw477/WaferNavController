@@ -32,6 +32,7 @@
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
                     <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Left" Margin="295,534,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1"/>
                     <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="10,486,0,0" VerticalAlignment="Top" Width="75" Click="FindButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2" />
+                    <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="69,486,0,0" VerticalAlignment="Top" Width="75" Click="AddButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" />
                 </Grid>
             </TabItem>
 

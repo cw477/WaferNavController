@@ -112,5 +112,11 @@ namespace WaferNavController
             findWindow.Owner = mainWindow;
             findWindow.ShowDialog();
         }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e) {
+            AddWindow addWindow = new AddWindow(this);
+            addWindow.Owner = mainWindow;
+            addWindow.ShowDialog();
+        }
     }
 }
