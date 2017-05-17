@@ -1152,5 +1152,51 @@ namespace WaferNavController
                 }
             }
         }
+
+        public static bool AddBlu(string bluId, string name, string description, string location) {
+            bool success = true;
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try {
+                var query = "INSERT INTO[wn].[BLU] (id, location, available) VALUES " +
+                            $"('{bluId}', '{name},{description},{location}', 1);";
+                var insertCommand = new SqlCommand(query, connection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                success = false;
+            }
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return success;
+        }
+
+        public static bool AddSlt(string sltId, string name, string description, string location) {
+            bool success = true;
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try {
+                var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
+                            $"('{sltId}', '{name},{description},{location}', 1);";
+                var insertCommand = new SqlCommand(query, connection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                success = false;
+            }
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return success;
+        }
     }
 }
