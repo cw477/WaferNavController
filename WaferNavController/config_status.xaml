@@ -23,16 +23,17 @@
                         <ColumnDefinition Width="7*"/>
                         <ColumnDefinition Width="47*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgBLU" Margin="10,0,10,253" Height="125" VerticalAlignment="Bottom" Grid.ColumnSpan="2" />
-                    <DataGrid x:Name="dgSLT" Margin="10,338,10,97" Height="125" Grid.ColumnSpan="2" />
+                    <DataGrid x:Name="dgBLU" Margin="10,0,10,253" Height="125" VerticalAlignment="Bottom" Grid.ColumnSpan="2" CellEditEnding="DataGrid_CellEditEnding" MouseUp="DataGrid_MouseUp" SelectionChanged="DataGrid_SelectionChanged" SelectedCellsChanged="DataGrid_SelectedCellsChanged" />
+                    <DataGrid x:Name="dgSLT" Margin="10,338,10,97" Height="125" Grid.ColumnSpan="2" SelectedCellsChanged="DataGrid_SelectedCellsChanged" SelectionChanged="DataGrid_SelectionChanged" MouseUp="DataGrid_MouseUp" CellEditEnding="DataGrid_CellEditEnding" />
                     <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Grid.ColumnSpan="2"/>
                     <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26" Grid.ColumnSpan="2"/>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="69,10,148,439" Grid.Column="1"/>
+                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="69,10,148,439" Grid.Column="1"/>
                     <TextBlock HorizontalAlignment="Left" Margin="126,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="1"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
                     <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Left" Margin="295,534,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1"/>
                     <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="10,486,0,0" VerticalAlignment="Top" Width="75" Click="FindButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2" />
                     <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="69,486,0,0" VerticalAlignment="Top" Width="75" Click="AddButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" />
+                    <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="200.2,486,0,0" VerticalAlignment="Top" Width="75" Click="SaveButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" />
                 </Grid>
             </TabItem>
 
@@ -43,7 +44,7 @@
                         <ColumnDefinition Width="131*"/>
                         <ColumnDefinition Width="463*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="15,10,148,439" Grid.Column="1"/>
+                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="15,10,148,439" Grid.Column="1"/>
                     <TextBlock HorizontalAlignment="Left" Margin="72,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="1"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,166,10,10" Grid.ColumnSpan="2">
@@ -68,7 +69,7 @@
                         <ColumnDefinition Width="13*"/>
                         <ColumnDefinition Width="507*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="59,10,148,439" Grid.Column="2"/>
+                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="59,10,148,439" Grid.Column="2"/>
                     <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="25,497,33,37" Grid.ColumnSpan="3"/>
                     <TextBlock HorizontalAlignment="Left" Margin="116,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="2"/>
                     <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,162,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
@@ -94,7 +95,7 @@
             <!--Log Out-->
             <TabItem x:Name="LogOutTabItem" Header="Log Out" Margin="352,0,-356,0">
                 <Grid>
-                    <Image Source="astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
+                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
                     <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
                     <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>

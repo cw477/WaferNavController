@@ -18,11 +18,12 @@ namespace WaferNavController {
     /// <summary>
     /// Interaction logic for AddWindow.xaml
     /// </summary>
-    public partial class AddWindow : Window {
+    public partial class AddWindow : BaseWindow {
         private Config configPage;
 
         public AddWindow(Config configPage) {
             this.configPage = configPage;
+            this.KeyDown += Esc_KeyDown;
             this.KeyDown += AddWindow_KeyDown;
             InitializeComponent();
         }
@@ -32,25 +33,6 @@ namespace WaferNavController {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(AddButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
-            }
-            else if (e.Key == Key.Escape) {
-                DialogResult = false;
-            }
-        }
-
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e) {
-            TextBox textBox = (TextBox)sender;
-            textBox.Text = string.Empty;
-            textBox.Foreground = Brushes.Black;
-            textBox.GotFocus -= TextBox_GotFocus;
-        }
-
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e) {
-            TextBox textBox = sender as TextBox;
-            if (textBox.Text.Trim().Equals(string.Empty)) {
-                textBox.Text = (string)textBox.Tag;
-                textBox.Foreground = Brushes.LightGray;
-                textBox.GotFocus += TextBox_GotFocus;
             }
         }
 

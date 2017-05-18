@@ -128,6 +128,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FindWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,10 +147,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseWindow.cs" />
     <Compile Include="config_status.xaml.cs">
       <DependentUpon>config_status.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="EditWindow.xaml.cs">
+      <DependentUpon>EditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FindWindow.xaml.cs">
       <DependentUpon>FindWindow.xaml</DependentUpon>
     </Compile>
@@ -183,7 +191,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resources\aws.json" />
-    <None Include="WaferNavController_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -193,9 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\nielsen_ninjas_LogoTranspBack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="nielsen_ninjas_logotranspback_hmP_icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\nielsen_ninjas_logotranspback_hmP_icon.ico" />
@@ -213,13 +217,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="astronics_logo.png" />
+    <Resource Include="Resources\astronics_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
