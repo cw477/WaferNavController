@@ -29,5 +29,16 @@ namespace WaferNavController {
             LocationTextBox.Text = location;
             AvailableCheckBox.IsChecked = available;
         }
+
+        private void SaveButton_Clicked(object sender, RoutedEventArgs e) {
+            configPage.dgBLU.SelectedIndex = -1;
+            configPage.dgSLT.SelectedIndex = -1;
+            DialogResult = false;
+        }
+
+        private void EditWindow_Closed(object sender, EventArgs e) {
+            configPage.dgBLU.SelectedIndex = -1;
+            configPage.dgSLT.SelectedIndex = -1;
+        }
     }
 }
