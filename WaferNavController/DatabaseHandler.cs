@@ -89,7 +89,7 @@ namespace WaferNavController
             try
             {
                 string cmdString = string.Empty;
-                cmdString = $"SELECT [id], [location], [available] FROM [wn].[{tableName}]";
+                cmdString = $"SELECT [id], [site_name], [site_description], [site_location], [available] FROM [wn].[{tableName}]";
                 SqlCommand cmd = new SqlCommand(cmdString, connection);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable("BLU");
@@ -323,7 +323,9 @@ namespace WaferNavController
             //TODO: handle the case where there are no available BLUs
             try
             {
-                return GetData($"SELECT [id] AS [bluId], [location] AS [bluInfo] FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
+                return GetData("SELECT [id] AS [bluId], " +
+                    "[site_name] AS [siteName], [site_description] as [siteDescription], [site_location] as [siteLocation] " +
+                    $"FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
 
             }
             catch (Exception e)
@@ -444,7 +446,9 @@ namespace WaferNavController
             try
             {
                 //TODO: handle the case where there are no available SLTs
-                return GetData($"SELECT [id] AS [sltId], [location] AS [sltInfo] FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
+                return GetData("SELECT [id] AS [sltId], " +
+                    "[site_name] AS [siteName], [site_description] as [siteDescription], [site_location] as [siteLocation] " +
+                    $"FROM [wn].[BLU] WHERE id = '{sltId}';")[0];
 
             }
             catch (Exception e)
@@ -935,14 +939,14 @@ namespace WaferNavController
                 connectionOpenedHere = true;
             }
             try {
-                var query = "INSERT INTO[wn].[BLU] (id, location, available) VALUES " +
-                            "('123456', 'BLU#1,Handler 1,East', 1)," +
-                            "('234567', 'BLU#2,Handler 2,West', 1)," +
-                            "('111111', 'BLU#111,Handler 111,West', 1)," +
-                            "('222222', 'BLU#222,Handler 222,West', 1)," +
-                            "('333333', 'BLU#333,Handler 333,West', 1)," +
-                            "('444444', 'BLU#444,Handler 444,West', 1)," +
-                            "('555555', 'BLU#555,Handler 555,West', 1);";
+                var query = "INSERT INTO[wn].[BLU] (id, available, site_name, site_description, site_location) VALUES " +
+                            "('123456', 1,'BLU#1', 'Handler 1', 'East')," +
+                            "('234567', 1,'BLU#2', 'Handler 2', 'West')," +
+                            "('111111', 1,'BLU#3', 'Handler 3', 'South')," +
+                            "('222222', 1,'BLU#4', 'Handler 4', 'West')," +
+                            "('333333', 1,'BLU#5', 'Handler 5', 'North')," +
+                            "('444444', 1,'BLU#6', 'Handler 6', 'West')," +
+                            "('555555', 1,'BLU#7', 'Handler 7', 'East');";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
@@ -965,16 +969,14 @@ namespace WaferNavController
                 connectionOpenedHere = true;
             }
             try {
-                var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
-                            "('890123', 'SLT#1,Test chamber1, North', 1)," +
-                            "('901234', 'SLT#2,Test chamber2, South', 1)," +
-                            "('012345', 'SLT#3,Test chamber3, East', 1)," +
-                            "('123456', 'SLT#4,Test chamber4, West', 1)," +
-                            "('111111', 'SLT#111,Test chamber111, West', 1)," +
-                            "('222222', 'SLT#222,Test chamber222, West', 1)," +
-                            "('333333', 'SLT#333,Test chamber333, West', 1)," +
-                            "('444444', 'SLT#444,Test chamber444, West', 1)," +
-                            "('555555', 'SLT#555,Test chamber555, West', 1);";
+                var query = "INSERT INTO[wn].[SLT] (id, available, site_name, site_description, site_location) VALUES " +
+                            "('123456', 1,'BLU#1', 'Test Chamber 1', 'East')," +
+                            "('234567', 1,'BLU#2', 'Test Chamber 2', 'West')," +
+                            "('111111', 1,'BLU#3', 'Test Chamber 3', 'South')," +
+                            "('222222', 1,'BLU#4', 'Test Chamber 4', 'West')," +
+                            "('333333', 1,'BLU#5', 'Test Chamber 5', 'North')," +
+                            "('444444', 1,'BLU#6', 'Test Chamber 6', 'West')," +
+                            "('555555', 1,'BLU#7', 'Test Chamber 7', 'East');";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
