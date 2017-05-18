@@ -1,9 +1,9 @@
-<Window x:Class="WaferNavController.FindWindow"
+<base:BaseWindow x:Class="WaferNavController.FindWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WaferNavController"
+        xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
         Title="FindWindow" Height="121" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow">
     <Grid>
@@ -19,4 +19,4 @@
         <Button x:Name="FindButton" Content="Find" Margin="5" Click="FindButton_Click" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Width="71" Height="26" VerticalAlignment="Center"/>
         <Label x:Name="label" Content="Enter BLU or SLT barcode" Margin="5" Grid.ColumnSpan="2" Height="26" VerticalAlignment="Center" HorizontalAlignment="Center" Width="253"/>
     </Grid>
-</Window>
+</base:BaseWindow>
