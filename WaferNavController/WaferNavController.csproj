@@ -203,9 +203,6 @@
     <None Include="Resources\nielsen_ninjas_LogoTranspBack.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="nielsen_ninjas_logotranspback_hmP_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\nielsen_ninjas_logotranspback_hmP_icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -221,7 +218,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="astronics_logo.png" />
+    <Resource Include="Resources\astronics_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
