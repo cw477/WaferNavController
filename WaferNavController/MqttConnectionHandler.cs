@@ -78,6 +78,7 @@ namespace WaferNavController {
             catch (Exception e) {
                 returnMessage = new Dictionary<string, string> { ["error"] = e.Message };
                 returnMessage.Add("directive", "ERROR");
+                returnMessage.Add("clientId", (string)messages["clientId"]);
                 using (StreamWriter writer = new StreamWriter(@"Error.txt", true))
                 {
                     writer.WriteLine("Message :" + e.Message + "<br/>" + Environment.NewLine + "StackTrace :" + e.StackTrace +

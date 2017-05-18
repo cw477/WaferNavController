@@ -30,23 +30,10 @@ namespace WaferNavController
                 // get available blu
                 var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
-                //HACK: Reset database and try again if no available BLUs
-                if (bluId == null)
-                {
-                    DatabaseHandler.ResetDatabase();
-                    bluId = DatabaseHandler.GetFirstAvailableBluId();
-                }
+                //add new lot id + add assignment + set blu to unavailable
+                DatabaseHandler.setForLoad((string)messages["lotId"], bluId);
 
-                //add new lot id
-                DatabaseHandler.AddNewActiveWaferType((string)messages["lotId"]);
-
-                //add assignment
-                DatabaseHandler.AddBluAssignmentLoad((string)messages["lotId"], bluId);
-
-                //set blu to unavailable
-                DatabaseHandler.SetBluToUnavailable(bluId);
-
-                // Get BLU info - TODO combine with GetFirstAvailableBluId call above (?)
+                // Get BLU info that we were successful
                 var returnJson = DatabaseHandler.GetBlu(bluId);
 
                 returnJson.Add("directive", "GET_NEW_BLU_RETURN");
@@ -120,29 +107,13 @@ namespace WaferNavController
         {
             try
             {
-                //remove assignment
-                DatabaseHandler.finishBluLoad((string)messages["bluId"]);
-
                 // Get first available SLT id
                 var sltId = DatabaseHandler.GetFirstAvailableSltId();
 
-                //HACK: Reset database and try again if no available SLTs
-                if (sltId == null)
-                {
-                    DatabaseHandler.ResetDatabase();
-                    sltId = DatabaseHandler.GetFirstAvailableSltId();
-                }
+                //remove previous data+assignments, add new assignments+data
+                DatabaseHandler.setForTest((string)messages["bluId"], (JArray)messages["bibIds"], sltId);
 
-                // Add bibs to active
-                DatabaseHandler.AddNewActiveBibs((JArray)messages["bibIds"]);
-
-                // Add assignment
-                DatabaseHandler.AddSltAssignmentLoad((JArray)messages["bibIds"], sltId);
-
-                // Set slt to unavailable
-                DatabaseHandler.SetSLTToUnavailable(sltId);
-
-                // Get slt info
+                // Get slt info since we were successful
                 var returnJson = DatabaseHandler.GetSlt(sltId);
 
                 returnJson.Add("directive", "GET_NEW_SLT_RETURN");
@@ -216,24 +187,11 @@ namespace WaferNavController
         {
             try
             {
-                //remove assignment
-                DatabaseHandler.finishSlt((string)messages["sltId"]);
-
                 //get available blu
                 var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
-                //HACK: Reset database and try again if no available BLUs
-                if (bluId == null)
-                {
-                    DatabaseHandler.ResetDatabase();
-                    bluId = DatabaseHandler.GetFirstAvailableBluId();
-                }
-
-                //add assignment
-                DatabaseHandler.AddBluAssignmentUnload((JArray)messages["bibIds"], bluId);
-
-                //set blu to unavailable
-                DatabaseHandler.SetBluToUnavailable(bluId);
+                //remove previous data+assignments, add new assignments+data
+                DatabaseHandler.setForUnload((string)messages["sltId"], (JArray)messages["bibIds"], bluId);
 
                 //get blu info
                 var returnJson = DatabaseHandler.GetBlu(bluId);
