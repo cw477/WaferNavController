@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
@@ -8,6 +11,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
+using Image = System.Windows.Controls.Image;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
@@ -70,9 +75,47 @@ namespace WaferNavController {
         }
 
         private void fillDataGrids() {
+
             DatabaseHandler.fillItems(ref configPage.dgBLU, "BLU");
             DatabaseHandler.fillItems(ref configPage.dgSLT, "SLT");
+
+            AddEditIconColumnToDataGrid(ref configPage.dgBLU);
+            AddEditIconColumnToDataGrid(ref configPage.dgSLT);
+
             configPage.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
+        }
+
+        public class DataObj {
+            public BitmapImage Image { get; set; }
+        }
+
+        private void AddEditIconColumnToDataGrid(ref DataGrid dataGrid) {
+            DataObj dataObj = new DataObj { Image = ToBitmapImage(Properties.Resources.edit_icon) };
+            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(Image));
+            Binding binding = new Binding("Image") { Source = dataObj }; // "Image" must match class data member name
+
+            factory.SetValue(Image.SourceProperty, binding);
+            DataTemplate cellTemplate = new DataTemplate() { VisualTree = factory };
+            DataGridTemplateColumn imgCol = new DataGridTemplateColumn() {
+                Header = "Edit",
+                CellTemplate = cellTemplate
+            };
+            dataGrid.Columns.Add(imgCol);
+        }
+
+        private BitmapImage ToBitmapImage(Bitmap bitmap) {
+            var memStream = new MemoryStream();
+            bitmap.Save(memStream, ImageFormat.Png);
+            memStream.Position = 0;
+
+            var bmpImg = new BitmapImage();
+            bmpImg.BeginInit();
+            bmpImg.StreamSource = memStream;
+            bmpImg.CacheOption = BitmapCacheOption.OnLoad;
+            bmpImg.DecodePixelHeight = 25;
+            bmpImg.EndInit();
+
+            return bmpImg;
         }
 
         private void ConnectToDatabase() {

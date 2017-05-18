@@ -118,5 +118,44 @@ namespace WaferNavController
             addWindow.Owner = mainWindow;
             addWindow.ShowDialog();
         }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e) {
+            mainWindow.AppendLine("SaveButton_Click called.", true);
+        }
+
+        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e) {
+            mainWindow.AppendLine("DataGrid_CellEditEnding called.", true);
+        }
+
+        private int DataGrid_SelectionChanged_count = 0;
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            DataGrid_SelectionChanged_count++;
+            mainWindow.AppendLine(DataGrid_SelectionChanged_count + " DataGrid_SelectionChanged called.", true);
+        }
+
+        private int DataGrid_SelectedCellsChanged_count = 0;
+        private void DataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e) {
+            DataGrid_SelectedCellsChanged_count++;
+            mainWindow.AppendLine(DataGrid_SelectedCellsChanged_count + " DataGrid_SelectedCellsChanged called.", true);
+        }
+
+        private void DataGrid_MouseUp(object sender, MouseButtonEventArgs e) {
+            mainWindow.AppendLine("DataGrid_MouseUp called.", true);
+            DataGrid dataGrid = (DataGrid) sender;
+            int row = dataGrid.SelectedIndex;
+            if (row == -1) { return; }  // clicked in DataGrid, but not in a cell
+            int col = dataGrid.CurrentCell.Column.DisplayIndex;
+            if (col == 3 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on edit column, and only 1 row selected
+                string id = (string) ((DataRowView) dataGrid.SelectedItem).Row[0];
+                string[] infoArr = ((string) ((DataRowView)dataGrid.SelectedItem).Row[1]).Split(',');
+                string name = infoArr[0];
+                string description = infoArr[1];
+                string location = infoArr[2];
+                bool available = (bool) ((DataRowView)dataGrid.SelectedItem).Row[2];
+                EditWindow editWindow = new EditWindow(this, id, name, description, location, available);
+                editWindow.Owner = mainWindow;
+                editWindow.ShowDialog();
+            }
+        }
     }
 }

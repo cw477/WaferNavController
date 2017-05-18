@@ -4,12 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace WaferNavController {
 
     public abstract class BaseWindow : Window {
+
+        protected void Esc_KeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Escape) {
+                DialogResult = false;
+            }
+        }
 
         protected void TextBox_GotFocus(object sender, RoutedEventArgs e) {
             TextBox textBox = (TextBox) sender;

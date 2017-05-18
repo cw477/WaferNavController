@@ -15,6 +15,7 @@ namespace WaferNavController {
 
         public FindWindow(Config configPage) {
             this.configPage = configPage;
+            this.KeyDown += Esc_KeyDown;
             this.KeyDown += FindWindow_KeyDown;
             InitializeComponent();
         }
@@ -24,9 +25,6 @@ namespace WaferNavController {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(FindButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
-            }
-            else if (e.Key == Key.Escape) {
-                DialogResult = false;
             }
         }
 

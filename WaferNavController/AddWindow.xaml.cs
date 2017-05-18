@@ -23,6 +23,7 @@ namespace WaferNavController {
 
         public AddWindow(Config configPage) {
             this.configPage = configPage;
+            this.KeyDown += Esc_KeyDown;
             this.KeyDown += AddWindow_KeyDown;
             InitializeComponent();
         }
@@ -32,9 +33,6 @@ namespace WaferNavController {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(AddButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
-            }
-            else if (e.Key == Key.Escape) {
-                DialogResult = false;
             }
         }
 
