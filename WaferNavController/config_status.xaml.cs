@@ -139,8 +139,10 @@ namespace WaferNavController
             mainWindow.AppendLine(DataGrid_SelectedCellsChanged_count + " DataGrid_SelectedCellsChanged called.", true);
         }
 
+        private int DataGrid_MouseUp_count = 0;
         private void DataGrid_MouseUp(object sender, MouseButtonEventArgs e) {
-            mainWindow.AppendLine("DataGrid_MouseUp called.", true);
+            DataGrid_MouseUp_count++;
+            mainWindow.AppendLine(DataGrid_MouseUp_count + " DataGrid_MouseUp called.", true);
             DataGrid dataGrid = (DataGrid) sender;
             int row = dataGrid.SelectedIndex;
             if (row == -1) { return; }  // clicked in DataGrid, but not in a cell
@@ -156,6 +158,12 @@ namespace WaferNavController
                 editWindow.Owner = mainWindow;
                 editWindow.ShowDialog();
             }
+        }
+
+        private int DataGrid_BeginningEdit_count = 0;
+        private void DataGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e) {
+            DataGrid_BeginningEdit_count++;
+            mainWindow.AppendLine(DataGrid_BeginningEdit_count + " DataGrid_BeginningEdit called.", true);
         }
     }
 }

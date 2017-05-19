@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
@@ -13,12 +14,15 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Image = System.Windows.Controls.Image;
+using Size = System.Drawing.Size;
 
 namespace WaferNavController {
     public partial class MainWindow : Window {
         private bool killMakeDotsThread = false;
         private readonly MqttConnectionHandler mqttConnectionHandler;
         private readonly Config configPage;
+        private readonly BitmapImage editIconBitmapImage;
+        private readonly BitmapImage deleteIconBitmapImage;
 
         public MainWindow() {
             InitializeComponent();
@@ -29,6 +33,11 @@ namespace WaferNavController {
             var hBitmap = bmp.GetHbitmap();
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             Icon = wpfBitmap;
+
+            Bitmap editIconBitmap = ResizeBitmap(Properties.Resources.edit_icon, new Size(25, 25));
+            Bitmap deleteIconBitmap = ResizeBitmap(Properties.Resources.delete_icon, new Size(20, 20));
+            editIconBitmapImage = BitmapToBitmapImage(editIconBitmap);
+            deleteIconBitmapImage = BitmapToBitmapImage(deleteIconBitmap);
 
             //TODO: move mqtt logic to app.xaml.cs hopefully possibly. The idea being this main window won't always be active.
             mqttConnectionHandler = new MqttConnectionHandler(this);
@@ -63,6 +72,10 @@ namespace WaferNavController {
                     fillDataGrids();
                 }
             }
+
+            if (e.Key == Key.F12) {
+                AppendLine("F12 pressed!", true);
+            }
         }
 
         private void CreateFillDataGridsTask() {
@@ -75,12 +88,25 @@ namespace WaferNavController {
         }
 
         private void fillDataGrids() {
-
             DatabaseHandler.fillItems(ref configPage.dgBLU, "BLU");
             DatabaseHandler.fillItems(ref configPage.dgSLT, "SLT");
 
-            AddEditIconColumnToDataGrid(ref configPage.dgBLU);
-            AddEditIconColumnToDataGrid(ref configPage.dgSLT);
+            AddIconColumnToDataGrid(ref configPage.dgBLU, editIconBitmapImage, "");
+            AddIconColumnToDataGrid(ref configPage.dgBLU, deleteIconBitmapImage, "");
+            AddIconColumnToDataGrid(ref configPage.dgSLT, editIconBitmapImage, "");
+            AddIconColumnToDataGrid(ref configPage.dgSLT, deleteIconBitmapImage, "");
+
+            configPage.dgBLU.Columns[0].Header = "ID";
+            configPage.dgBLU.Columns[1].Header = "Name";
+            configPage.dgBLU.Columns[2].Header = "Description";
+            configPage.dgBLU.Columns[3].Header = "Location";
+            configPage.dgBLU.Columns[4].Header = "Available";
+
+            configPage.dgSLT.Columns[0].Header = "ID";
+            configPage.dgSLT.Columns[1].Header = "Name";
+            configPage.dgSLT.Columns[2].Header = "Description";
+            configPage.dgSLT.Columns[3].Header = "Location";
+            configPage.dgSLT.Columns[4].Header = "Available";
 
             configPage.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
         }
@@ -89,32 +115,40 @@ namespace WaferNavController {
             public BitmapImage Image { get; set; }
         }
 
-        private void AddEditIconColumnToDataGrid(ref DataGrid dataGrid) {
-            DataObj dataObj = new DataObj { Image = ToBitmapImage(Properties.Resources.edit_icon) };
+        private void AddIconColumnToDataGrid(ref DataGrid dataGrid, BitmapImage bitmapImage, string headerName) {
+            DataObj dataObj = new DataObj { Image = bitmapImage };
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(Image));
             Binding binding = new Binding("Image") { Source = dataObj }; // "Image" must match class data member name
 
             factory.SetValue(Image.SourceProperty, binding);
             DataTemplate cellTemplate = new DataTemplate() { VisualTree = factory };
             DataGridTemplateColumn imgCol = new DataGridTemplateColumn() {
-                Header = "Edit",
+                Header = headerName,
                 CellTemplate = cellTemplate
             };
             dataGrid.Columns.Add(imgCol);
         }
 
-        private BitmapImage ToBitmapImage(Bitmap bitmap) {
+        private Bitmap ResizeBitmap(Bitmap imgToResize, Size size) {
+            Bitmap newImage = new Bitmap(size.Width, size.Height);
+            using (Graphics gr = Graphics.FromImage(newImage)) {
+                gr.SmoothingMode = SmoothingMode.HighQuality;
+                gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                gr.DrawImage(imgToResize, new Rectangle(0, 0, size.Width, size.Height));
+            }
+            return newImage;
+        }
+
+        private BitmapImage BitmapToBitmapImage(Bitmap bitmap) {
             var memStream = new MemoryStream();
             bitmap.Save(memStream, ImageFormat.Png);
             memStream.Position = 0;
-
             var bmpImg = new BitmapImage();
             bmpImg.BeginInit();
             bmpImg.StreamSource = memStream;
             bmpImg.CacheOption = BitmapCacheOption.OnLoad;
-            bmpImg.DecodePixelHeight = 25;
             bmpImg.EndInit();
-
             return bmpImg;
         }
 
