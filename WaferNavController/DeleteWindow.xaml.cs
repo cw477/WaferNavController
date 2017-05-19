@@ -56,5 +56,10 @@ namespace WaferNavController {
                 DialogResult = false;
             }
         }
+
+        private void DeleteWindow_Closed(object sender, EventArgs e) {
+            configPage.dgBLU.SelectedIndex = -1;
+            configPage.dgSLT.SelectedIndex = -1;
+        }
     }
 }
