@@ -324,7 +324,7 @@ namespace WaferNavController
             try
             {
                 return GetData("SELECT [id] AS [bluId], " +
-                    "[site_name] AS [siteName], [site_description] as [siteDescription], [site_location] as [siteLocation] " +
+                    "[site_name] AS [BluSiteName], [site_description] as [BluSiteDescription], [site_location] as [BluSiteLocation] " +
                     $"FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
 
             }
@@ -447,7 +447,7 @@ namespace WaferNavController
             {
                 //TODO: handle the case where there are no available SLTs
                 return GetData("SELECT [id] AS [sltId], " +
-                    "[site_name] AS [siteName], [site_description] as [siteDescription], [site_location] as [siteLocation] " +
+                    "[site_name] AS [sltSiteName], [site_description] as [sltSiteDescription], [site_location] as [sltSiteLocation] " +
                     $"FROM [wn].[BLU] WHERE id = '{sltId}';")[0];
 
             }
