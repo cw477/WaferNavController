@@ -146,7 +146,15 @@ namespace WaferNavController
             DataGrid dataGrid = (DataGrid) sender;
             int row = dataGrid.SelectedIndex;
             if (row == -1) { return; }  // clicked in DataGrid, but not in a cell
-            int col = dataGrid.CurrentCell.Column.DisplayIndex;
+
+            int col;
+            try {
+                col = dataGrid.CurrentCell.Column.DisplayIndex;
+            }
+            catch (NullReferenceException ex) {
+                mainWindow.AppendLine("NullReferenceException: " + ex.Message, true);
+                return;
+            }
 
             if (col == 5 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on edit column, and only 1 row selected
                 string type = dataGrid.Tag.ToString();
