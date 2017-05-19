@@ -23,17 +23,15 @@
                         <ColumnDefinition Width="7*"/>
                         <ColumnDefinition Width="47*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgBLU" Margin="10,0,10,253" Height="125" VerticalAlignment="Bottom" Grid.ColumnSpan="2" CellEditEnding="DataGrid_CellEditEnding" MouseUp="DataGrid_MouseUp" SelectionChanged="DataGrid_SelectionChanged" SelectedCellsChanged="DataGrid_SelectedCellsChanged" />
-                    <DataGrid x:Name="dgSLT" Margin="10,338,10,97" Height="125" Grid.ColumnSpan="2" SelectedCellsChanged="DataGrid_SelectedCellsChanged" SelectionChanged="DataGrid_SelectionChanged" MouseUp="DataGrid_MouseUp" CellEditEnding="DataGrid_CellEditEnding" />
-                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Grid.ColumnSpan="2"/>
-                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Center" Height="26" Grid.ColumnSpan="2"/>
-                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="69,10,148,439" Grid.Column="1"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="126,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="1"/>
+                    <DataGrid x:Name="dgBLU" Margin="10,0,10,322" Height="174" VerticalAlignment="Bottom" Grid.ColumnSpan="2" CellEditEnding="DataGrid_CellEditEnding" MouseUp="DataGrid_MouseUp" SelectionChanged="DataGrid_SelectionChanged" SelectedCellsChanged="DataGrid_SelectedCellsChanged" />
+                    <DataGrid x:Name="dgSLT" Margin="10,277,10,109" Grid.ColumnSpan="2" SelectedCellsChanged="DataGrid_SelectedCellsChanged" SelectionChanged="DataGrid_SelectionChanged" MouseUp="DataGrid_MouseUp" CellEditEnding="DataGrid_CellEditEnding" />
+                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,243,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16" Height="34"/>
+                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="34" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
                     <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Left" Margin="295,534,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1"/>
-                    <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="10,486,0,0" VerticalAlignment="Top" Width="75" Click="FindButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2" />
-                    <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="69,486,0,0" VerticalAlignment="Top" Width="75" Click="AddButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" />
-                    <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="200.2,486,0,0" VerticalAlignment="Top" Width="75" Click="SaveButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" />
+                    <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="10,475,0,0" VerticalAlignment="Top" Width="75" Click="FindButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2" RenderTransformOrigin="0.6,-0.212" />
+                    <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="65,475,0,0" VerticalAlignment="Top" Width="75" Click="AddButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" RenderTransformOrigin="0.6,0.515" />
+                    <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="200,475,0,0" VerticalAlignment="Top" Width="75" Click="SaveButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" />
                 </Grid>
             </TabItem>
 
@@ -44,11 +42,9 @@
                         <ColumnDefinition Width="131*"/>
                         <ColumnDefinition Width="463*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="15,10,148,439" Grid.Column="1"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="72,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="1"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
-                    <ScrollViewer x:Name="scrollViewer" Margin="10,166,10,10" Grid.ColumnSpan="2">
-                        <TextBox x:Name="logBox" TextWrapping="Wrap" TextChanged="TextBox_TextChanged_2" FontFamily="Consolas" IsReadOnly="True" Width="567">
+                    <ScrollViewer x:Name="scrollViewer" Margin="10,35,10,42" Grid.ColumnSpan="2">
+                        <TextBox x:Name="logBox" TextWrapping="Wrap" TextChanged="TextBox_TextChanged_2" FontFamily="Consolas" IsReadOnly="True" Width="567" Height="483">
                             <TextBox.ContextMenu>
                                 <ContextMenu x:Name="cmSave">
                                     <MenuItem Header="Save to Text File"
@@ -69,26 +65,16 @@
                         <ColumnDefinition Width="13*"/>
                         <ColumnDefinition Width="507*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="59,10,148,439" Grid.Column="2"/>
-                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="25,497,33,37" Grid.ColumnSpan="3"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="116,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24" Grid.Column="2"/>
-                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,162,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
-                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="148" Margin="25,323,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
+                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="25,203,33,331" Grid.ColumnSpan="3"/>
+                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
                     <!--Config Section-->
-                    <TextBlock HorizontalAlignment="Left" Height="19" Margin="25,138,0,0" TextWrapping="Wrap" Text="Load Configuration File " VerticalAlignment="Top" Width="178" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="3"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="25,299,0,0" TextWrapping="Wrap" Text="View / Add / Update Route" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="3"/>
-                    <TextBox x:Name="FileNameTxtBx" HorizontalAlignment="Left" Height="33" Margin="34,178,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="266" TextChanged="TextBox_TextChanged" Background="White" BorderBrush="#FFABADB3" Foreground="#FFA2A2A2" FontSize="14" Grid.ColumnSpan="3" Tag="File Name"/>
+                    <TextBlock HorizontalAlignment="Left" Height="31" Margin="25,47,0,0" TextWrapping="Wrap" Text="Load Configuration File " VerticalAlignment="Top" Width="228" FontSize="16" FontWeight="Bold" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="FileNameTxtBx" HorizontalAlignment="Left" Height="33" Margin="34,94,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="266" TextChanged="TextBox_TextChanged" Background="White" BorderBrush="#FFABADB3" Foreground="#FFA2A2A2" FontSize="14" Grid.ColumnSpan="3" Tag="File Name"/>
                     <!--View, Add, Update Section-->
-                    <Button Content="View" HorizontalAlignment="Left" Margin="160,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
-                    <Button Content="Add" HorizontalAlignment="Left" Margin="269,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
-                    <Button Content="Update" HorizontalAlignment="Left" Margin="380,423,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
-                    <TextBox x:Name="BarcodeTextBox" HorizontalAlignment="Left" Height="33" Margin="34,348,0,0" TextWrapping="Wrap" Text="Barcode" VerticalAlignment="Top" Width="152" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14" Grid.ColumnSpan="3" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" AutomationProperties.HelpText="" Tag="Barcode"/>
-                    <TextBox x:Name="TypeTextBox" HorizontalAlignment="Left" Height="33" Margin="324,348,0,0" TextWrapping="Wrap" Text="Type" VerticalAlignment="Top" Width="131" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14" Grid.Column="2" GotFocus="TextBox_GotFocus" Tag="Type" LostFocus="TextBox_LostFocus"/>
-                    <TextBox x:Name="LocationTextBox" HorizontalAlignment="Left" Height="33" Margin="140,348,0,0" TextWrapping="Wrap" Text="Location" VerticalAlignment="Top" Width="137" TextChanged="TextBox_TextChanged_1" Foreground="Gray" FontSize="14" Grid.Column="2" GotFocus="TextBox_GotFocus" Tag="Location" LostFocus="TextBox_LostFocus"/>
-                    <Button x:Name="BtnSelectFile" Content="Select File" HorizontalAlignment="Left" Margin="248,178,0,0" VerticalAlignment="Top" Width="96" Click="button_selectFile_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
-                    <Button Content="Set" HorizontalAlignment="Left" Margin="361,178,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <Button x:Name="BtnSelectFile" Content="Select File" HorizontalAlignment="Left" Margin="248,94,0,0" VerticalAlignment="Top" Width="96" Click="button_selectFile_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
+                    <Button Content="Import" HorizontalAlignment="Left" Margin="361,94,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="3"/>
-                    <Label Content="Status.." HorizontalAlignment="Left" Margin="25,497,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Status.." HorizontalAlignment="Left" Margin="30,203,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
 
@@ -97,10 +83,10 @@
                 <Grid>
                     <Image Source="Resources/astronics_logo.png" Stretch="Fill" Width="300" Margin="146,10,148,439"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="203.2,112,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav" VerticalAlignment="Top" Height="40" Width="207" FontSize="24"/>
-                    <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="159,174,148,351"/>
-                    <Button x:Name="LogOutButton" Content="Yes, log out" HorizontalAlignment="Left" Margin="318,229,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19" Click="LogOutButton_Click"/>
-                    <Button x:Name="CancelLogOutButton" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="159,229,0,0" Background="#FF6E6E6E" Click="CancelLogOutButton_Click"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="136,121,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav Controller" VerticalAlignment="Top" Height="31" Width="320" FontSize="24"/>
+                    <TextBlock TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="152,202,154,323"/>
+                    <Button x:Name="LogOutButton" Content="Yes, log out" HorizontalAlignment="Left" Margin="312,258,0,0" VerticalAlignment="Top" Width="128" Height="42" Background="#FF428BCA" Foreground="White" FontWeight="Bold" FontSize="19" Click="LogOutButton_Click"/>
+                    <Button x:Name="CancelLogOutButton" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="42" Foreground="White" FontWeight="Bold" FontSize="19" Margin="146,258,0,0" Background="#FF6E6E6E" Click="CancelLogOutButton_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

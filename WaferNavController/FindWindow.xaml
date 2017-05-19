@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="FindWindow" Height="121" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow">
+        Title="" Height="121" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -16,7 +16,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBox x:Name="BarcodeTextBox" Margin="5" TextWrapping="Wrap" Text="Barcode" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" AutomationProperties.HelpText="" Tag="Barcode" Grid.Row="1" VerticalContentAlignment="Center" Height="26" VerticalAlignment="Center" HorizontalAlignment="Center" Width="162"/>
-        <Button x:Name="FindButton" Content="Find" Margin="5" Click="FindButton_Click" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Width="71" Height="26" VerticalAlignment="Center"/>
-        <Label x:Name="label" Content="Enter BLU or SLT barcode" Margin="5" Grid.ColumnSpan="2" Height="26" VerticalAlignment="Center" HorizontalAlignment="Center" Width="253"/>
+        <Button x:Name="FindButton" Content="Find" Margin="5" Click="FindButton_Click" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Width="71" Height="26" VerticalAlignment="Center" FontWeight="Bold"/>
+        <Label x:Name="label" Content="Enter BLU or SLT barcode" Margin="5" Grid.ColumnSpan="2" Height="26" VerticalAlignment="Center" HorizontalAlignment="Center" Width="253" FontWeight="Bold" FontSize="14"/>
     </Grid>
 </base:BaseWindow>
