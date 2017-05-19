@@ -11,7 +11,6 @@ namespace WaferNavController {
     /// Interaction logic for FindWindow.xaml
     /// </summary>
     public partial class FindWindow : BaseWindow {
-        private Config configPage;
 
         public FindWindow(Config configPage) {
             this.configPage = configPage;

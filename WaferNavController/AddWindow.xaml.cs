@@ -19,7 +19,6 @@ namespace WaferNavController {
     /// Interaction logic for AddWindow.xaml
     /// </summary>
     public partial class AddWindow : BaseWindow {
-        private Config configPage;
 
         public AddWindow(Config configPage) {
             this.configPage = configPage;

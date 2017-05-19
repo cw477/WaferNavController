@@ -17,7 +17,6 @@ namespace WaferNavController {
     /// Interaction logic for EditWindow.xaml
     /// </summary>
     public partial class EditWindow : BaseWindow {
-        private Config configPage;
         private string type;
         private string startId;
 

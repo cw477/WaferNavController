@@ -19,7 +19,6 @@ namespace WaferNavController {
     /// Interaction logic for DeleteWindow.xaml
     /// </summary>
     public partial class DeleteWindow : BaseWindow {
-        private Config configPage;
         private string type;
         private string id;
 

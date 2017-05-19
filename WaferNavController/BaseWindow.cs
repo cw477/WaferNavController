@@ -14,9 +14,13 @@ namespace WaferNavController {
 
     public abstract class BaseWindow : Window {
 
+        protected Config configPage;
+
         protected void Esc_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Escape) {
                 DialogResult = false;
+                configPage.dgBLU.SelectedIndex = -1;
+                configPage.dgSLT.SelectedIndex = -1;
             }
         }
 
