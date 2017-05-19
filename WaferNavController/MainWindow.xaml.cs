@@ -48,6 +48,9 @@ namespace WaferNavController {
             var thread = new Thread(ConnectToDatabase);
             thread.Start();
             this.KeyDown += MainWindow_KeyDown;
+            LoginWindow loginWindow = new LoginWindow(this, configPage);
+            loginWindow.Owner = this;
+            loginWindow.ShowDialog();
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
@@ -76,6 +79,9 @@ namespace WaferNavController {
 
             if (e.Key == Key.F12) {
                 AppendLine("F12 pressed!", true);
+//                LoginWindow loginWindow = new LoginWindow(this, configPage);
+//                loginWindow.Owner = this;
+//                loginWindow.ShowDialog();
             }
         }
 
