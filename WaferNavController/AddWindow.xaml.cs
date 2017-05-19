@@ -41,16 +41,16 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
-            var barcode = BarcodeTextBox.Text;
+            var id = BarcodeTextBox.Text;
             var name = NameTextBox.Text;
             var description = DescriptionTextBox.Text;
             var location = LocationTextBox.Text;
 
             bool result;
             if (bluRadioButton.IsChecked != null && (bool) bluRadioButton.IsChecked) {
-                result = DatabaseHandler.AddBlu(barcode, name, description, location);
+                result = DatabaseHandler.AddBlu(id, name, description, location);
             } else {
-                result = DatabaseHandler.AddSlt(barcode, name, description, location);
+                result = DatabaseHandler.AddSlt(id, name, description, location);
             }
             DialogResult = result;
         }

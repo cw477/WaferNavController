@@ -69,7 +69,8 @@ namespace WaferNavController {
             if (e.Key == Key.D)
             {
                 if (currentTabName == "StatusTabItem") {
-                    fillDataGrids();
+                    fillDataGrids(ref configPage.dgBLU, "BLU");
+                    fillDataGrids(ref configPage.dgSLT, "SLT");
                 }
             }
 
@@ -87,26 +88,19 @@ namespace WaferNavController {
             //});
         }
 
-        private void fillDataGrids() {
-            DatabaseHandler.fillItems(ref configPage.dgBLU, "BLU");
-            DatabaseHandler.fillItems(ref configPage.dgSLT, "SLT");
+        private void fillDataGrids(ref DataGrid dataGrid, string tableName) {
+            dataGrid.ItemsSource = null;
+            dataGrid.Columns.Clear();
 
-            AddIconColumnToDataGrid(ref configPage.dgBLU, editIconBitmapImage, "");
-            AddIconColumnToDataGrid(ref configPage.dgBLU, deleteIconBitmapImage, "");
-            AddIconColumnToDataGrid(ref configPage.dgSLT, editIconBitmapImage, "");
-            AddIconColumnToDataGrid(ref configPage.dgSLT, deleteIconBitmapImage, "");
+            DatabaseHandler.fillItems(ref dataGrid, tableName);
+            AddIconColumnToDataGrid(ref dataGrid, editIconBitmapImage, "");
+            AddIconColumnToDataGrid(ref dataGrid, deleteIconBitmapImage, "");
 
-            configPage.dgBLU.Columns[0].Header = "ID";
-            configPage.dgBLU.Columns[1].Header = "Name";
-            configPage.dgBLU.Columns[2].Header = "Description";
-            configPage.dgBLU.Columns[3].Header = "Location";
-            configPage.dgBLU.Columns[4].Header = "Available";
-
-            configPage.dgSLT.Columns[0].Header = "ID";
-            configPage.dgSLT.Columns[1].Header = "Name";
-            configPage.dgSLT.Columns[2].Header = "Description";
-            configPage.dgSLT.Columns[3].Header = "Location";
-            configPage.dgSLT.Columns[4].Header = "Available";
+            dataGrid.Columns[0].Header = "ID";
+            dataGrid.Columns[1].Header = "Name";
+            dataGrid.Columns[2].Header = "Description";
+            dataGrid.Columns[3].Header = "Location";
+            dataGrid.Columns[4].Header = "Available";
 
             configPage.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
         }

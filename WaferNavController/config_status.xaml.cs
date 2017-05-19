@@ -147,16 +147,24 @@ namespace WaferNavController
             int row = dataGrid.SelectedIndex;
             if (row == -1) { return; }  // clicked in DataGrid, but not in a cell
             int col = dataGrid.CurrentCell.Column.DisplayIndex;
-            if (col == 3 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on edit column, and only 1 row selected
+
+            if (col == 5 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on edit column, and only 1 row selected
+                string type = dataGrid.Tag.ToString();
                 string id = (string) ((DataRowView) dataGrid.SelectedItem).Row[0];
-                string[] infoArr = ((string) ((DataRowView)dataGrid.SelectedItem).Row[1]).Split(',');
-                string name = infoArr[0];
-                string description = infoArr[1];
-                string location = infoArr[2];
-                bool available = (bool) ((DataRowView)dataGrid.SelectedItem).Row[2];
-                EditWindow editWindow = new EditWindow(this, id, name, description, location, available);
+                string name = (string)((DataRowView)dataGrid.SelectedItem).Row[1];
+                string description = (string)((DataRowView)dataGrid.SelectedItem).Row[2];
+                string location = (string)((DataRowView)dataGrid.SelectedItem).Row[3];
+                bool available = (bool) ((DataRowView)dataGrid.SelectedItem).Row[4];
+                EditWindow editWindow = new EditWindow(this, type, id, name, description, location, available);
                 editWindow.Owner = mainWindow;
                 editWindow.ShowDialog();
+            }
+            else if (col == 6 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on delete column, and only 1 row selected
+                string type = dataGrid.Tag.ToString();
+                string id = (string) ((DataRowView) dataGrid.SelectedItem).Row[0];
+                DeleteWindow deleteWindow = new DeleteWindow(this, type, id);
+                deleteWindow.Owner = mainWindow;
+                deleteWindow.ShowDialog();
             }
         }
 

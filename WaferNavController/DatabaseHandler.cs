@@ -1143,8 +1143,31 @@ namespace WaferNavController
                 connectionOpenedHere = true;
             }
             try {
-                var query = "INSERT INTO[wn].[BLU] (id, location, available) VALUES " +
-                            $"('{bluId}', '{name},{description},{location}', 1);";
+                var query = "INSERT INTO[wn].[BLU] (id, site_name, site_description, site_location, available) VALUES " +
+                            $"('{bluId}', '{name}', '{description}', '{location}', 1);";
+                var insertCommand = new SqlCommand(query, connection);
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                success = false;
+            }
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return success;
+        }
+        
+        public static bool AddSlt(string sltId, string name, string description, string location) {
+            bool success = true;
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try {
+                var query = "INSERT INTO[wn].[SLT] (id, site_name, site_description, site_location, available) VALUES " +
+                            $"('{sltId}', '{name}', '{description}', '{location}', 1);";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
@@ -1158,7 +1181,7 @@ namespace WaferNavController
             return success;
         }
 
-        public static bool AddSlt(string sltId, string name, string description, string location) {
+        public static bool RemoveBlu(string bluId) {
             bool success = true;
             bool connectionOpenedHere = false;
             if (connection.State == ConnectionState.Closed) {
@@ -1166,10 +1189,81 @@ namespace WaferNavController
                 connectionOpenedHere = true;
             }
             try {
-                var query = "INSERT INTO[wn].[SLT] (id, location, available) VALUES " +
-                            $"('{sltId}', '{name},{description},{location}', 1);";
-                var insertCommand = new SqlCommand(query, connection);
-                insertCommand.ExecuteNonQuery();
+                var query = $"DELETE FROM [wn].[BLU] WHERE [id] = '{bluId}';";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                success = false;
+            }
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return success;
+        }
+
+        public static bool RemoveSlt(string sltId) {
+            bool success = true;
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try {
+                var query = $"DELETE FROM [wn].[SLT] WHERE [id] = '{sltId}';";
+                var deleteCommand = new SqlCommand(query, connection);
+                deleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                success = false;
+            }
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return success;
+        }
+
+        public static bool UpdateBlu(string startId, string newId, string name, string description, string location, bool available) {
+            bool success = true;
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try {
+                //TODO also set id
+                string query = "UPDATE[wafer_nav].[wn].[BLU] " +
+                               $"SET id = '{newId}', site_name = '{name}', site_description = '{description}', site_location = '{location}', available = '{Convert.ToInt32(available)}' " +
+                               $"WHERE id = '{startId}';";
+                var updateCommand = new SqlCommand(query, connection);
+                updateCommand.ExecuteNonQuery();
+            }
+            catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                success = false;
+            }
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return success;
+        }
+
+        public static bool UpdateSlt(string startId, string newId, string name, string description, string location, bool available) {
+            bool success = true;
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            try {
+                //TODO also set id
+                string query = "UPDATE[wafer_nav].[wn].[SLT] " +
+                               $"SET id = '{newId}', site_name = '{name}', site_description = '{description}', site_location = '{location}', available = '{Convert.ToInt32(available)}' " +
+                               $"WHERE id = '{startId}';";
+                var updateCommand = new SqlCommand(query, connection);
+                updateCommand.ExecuteNonQuery();
             }
             catch (Exception e) {
                 Console.Error.WriteLine(e.Message);

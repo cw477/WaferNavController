@@ -23,8 +23,8 @@
                         <ColumnDefinition Width="7*"/>
                         <ColumnDefinition Width="47*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgBLU" Margin="10,0,10,322" Height="174" VerticalAlignment="Bottom" Grid.ColumnSpan="2" CellEditEnding="DataGrid_CellEditEnding" MouseUp="DataGrid_MouseUp" SelectionChanged="DataGrid_SelectionChanged" SelectedCellsChanged="DataGrid_SelectedCellsChanged" BeginningEdit="DataGrid_BeginningEdit" />
-                        <DataGrid x:Name="dgSLT" Margin="10,277,10,109" Grid.ColumnSpan="2" SelectedCellsChanged="DataGrid_SelectedCellsChanged" SelectionChanged="DataGrid_SelectionChanged" MouseUp="DataGrid_MouseUp" CellEditEnding="DataGrid_CellEditEnding" />
+                    <DataGrid x:Name="dgBLU" Margin="10,0,10,322" Height="174" VerticalAlignment="Bottom" Grid.ColumnSpan="2" CellEditEnding="DataGrid_CellEditEnding" MouseUp="DataGrid_MouseUp" SelectionChanged="DataGrid_SelectionChanged" SelectedCellsChanged="DataGrid_SelectedCellsChanged" BeginningEdit="DataGrid_BeginningEdit" Tag="BLU" />
+                        <DataGrid x:Name="dgSLT" Margin="10,277,10,109" Grid.ColumnSpan="2" SelectedCellsChanged="DataGrid_SelectedCellsChanged" SelectionChanged="DataGrid_SelectionChanged" MouseUp="DataGrid_MouseUp" CellEditEnding="DataGrid_CellEditEnding" Tag="SLT" />
                     <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,243,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16" Height="34"/>
                     <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="34" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>

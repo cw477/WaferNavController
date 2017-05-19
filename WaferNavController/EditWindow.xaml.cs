@@ -18,11 +18,15 @@ namespace WaferNavController {
     /// </summary>
     public partial class EditWindow : BaseWindow {
         private Config configPage;
+        private string type;
+        private string startId;
 
-        public EditWindow(Config configPage, string id, string name, string description, string location, bool available) {
+        public EditWindow(Config configPage, string type, string id, string name, string description, string location, bool available) {
             this.configPage = configPage;
             this.KeyDown += Esc_KeyDown;
             InitializeComponent();
+            this.type = type;
+            this.startId = id;
             BarcodeTextBox.Text = id;
             NameTextBox.Text = name;
             DescriptionTextBox.Text = description;
@@ -31,14 +35,43 @@ namespace WaferNavController {
         }
 
         private void SaveButton_Clicked(object sender, RoutedEventArgs e) {
-            configPage.dgBLU.SelectedIndex = -1;
-            configPage.dgSLT.SelectedIndex = -1;
-            DialogResult = false;
+            if (!AllTextBoxesHaveData()) {
+                configPage.dgBLU.SelectedIndex = -1;
+                configPage.dgSLT.SelectedIndex = -1;
+                DialogResult = false;
+                return;
+            }
+            var id = BarcodeTextBox.Text;
+            var name = NameTextBox.Text;
+            var description = DescriptionTextBox.Text;
+            var location = LocationTextBox.Text;
+            bool available = AvailableCheckBox.IsChecked != null && (bool)AvailableCheckBox.IsChecked;
+            bool result = false;
+            if (type == "BLU") {
+                result = DatabaseHandler.UpdateBlu(startId, id, name, description, location, available);
+                configPage.dgBLU.SelectedIndex = -1;
+            }
+            else if (type == "SLT") {
+                result = DatabaseHandler.UpdateSlt(startId, id, name, description, location, available);
+                configPage.dgSLT.SelectedIndex = -1;
+            }
+            DialogResult = result;
         }
 
         private void EditWindow_Closed(object sender, EventArgs e) {
             configPage.dgBLU.SelectedIndex = -1;
             configPage.dgSLT.SelectedIndex = -1;
+        }
+
+        private bool AllTextBoxesHaveData() {
+            return TextBoxHasData(BarcodeTextBox)
+                && TextBoxHasData(NameTextBox)
+                && TextBoxHasData(DescriptionTextBox)
+                && TextBoxHasData(LocationTextBox);
+        }
+
+        private bool TextBoxHasData(TextBox textBox) {
+            return !string.IsNullOrEmpty(textBox.Text) && textBox.Text != textBox.Tag.ToString();
         }
     }
 }
