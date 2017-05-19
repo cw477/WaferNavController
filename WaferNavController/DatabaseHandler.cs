@@ -324,7 +324,7 @@ namespace WaferNavController
             try
             {
                 return GetData("SELECT [id] AS [bluId], " +
-                    "[site_name] AS [BluSiteName], [site_description] as [BluSiteDescription], [site_location] as [BluSiteLocation] " +
+                    "[site_name] AS [bluSiteName], [site_description] as [bluSiteDescription], [site_location] as [bluSiteLocation] " +
                     $"FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
 
             }

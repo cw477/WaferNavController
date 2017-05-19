@@ -20,10 +20,9 @@ namespace WaferNavController
         /// directive
         /// clientId
         /// bluId
-        /// bluInfo
-        /// site_name
-        /// site_description
-        /// site_location
+        /// bluSiteName
+        /// bluSiteDescription
+        /// bluSiteLocation
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
         public static Dictionary<string, string> getNewBlu(Dictionary<string, object> messages)
@@ -104,9 +103,9 @@ namespace WaferNavController
         /// clientId
         /// sltId
         /// sltInfo
-        /// site_name
-        /// site_description
-        /// site_location
+        /// sltSiteName
+        /// sltSiteDescription
+        /// sltSiteLocation
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
         public static Dictionary<string, string> getNewSlt(Dictionary<string, object> messages)
@@ -186,9 +185,9 @@ namespace WaferNavController
         /// directive
         /// clientId
         /// bluId
-        /// site_name
-        /// site_description
-        /// site_location
+        /// bluSiteName
+        /// bluSiteDescription
+        /// bluSiteLocation
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
         public static Dictionary<string, string> getDoneBlu(Dictionary<string, object> messages)
