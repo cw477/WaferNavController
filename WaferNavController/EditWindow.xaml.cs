@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -23,6 +25,7 @@ namespace WaferNavController {
         public EditWindow(Config configPage, string type, string id, string name, string description, string location, bool available) {
             this.configPage = configPage;
             this.KeyDown += Esc_KeyDown;
+            this.KeyDown += EditWindow_KeyDown;
             InitializeComponent();
             this.type = type;
             this.startId = id;
@@ -31,6 +34,15 @@ namespace WaferNavController {
             DescriptionTextBox.Text = description;
             LocationTextBox.Text = location;
             AvailableCheckBox.IsChecked = available;
+        }
+
+        private void EditWindow_KeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter) {
+                SaveButton.Focus();
+                ButtonAutomationPeer peer = new ButtonAutomationPeer(SaveButton);
+                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv.Invoke();
+            }
         }
 
         private void SaveButton_Clicked(object sender, RoutedEventArgs e) {
