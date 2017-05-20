@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow" Closed="LoginWindow_Closed" Closing="LoginWindow_Closing">
+        Title="" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow" Closed="LoginWindow_Closed" Closing="LoginWindow_Closing"
+        FocusManager.FocusedElement="{Binding ElementName=UsernameTextBox}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -18,8 +19,8 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="95,24,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav Controller" VerticalAlignment="Top" Height="31" Width="262" FontSize="20" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Text="Username" FontSize="14" Tag="Username" Grid.Row="2" VerticalContentAlignment="Center" Margin="15,9,10,10"/>
-        <TextBox x:Name="PasswordTextBox" TextWrapping="Wrap" Text="Password" FontSize="14" Tag="Password" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,10,10,9"/>
+        <TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Text="Username" Foreground="Gray" FontSize="14" Tag="Username" Grid.Row="2" VerticalContentAlignment="Center" Margin="15,9,10,10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" />
+        <TextBox x:Name="PasswordTextBox" TextWrapping="Wrap" Text="Password" Foreground="Gray" FontSize="14" Tag="Password" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,10,10,9" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" />
         <Button x:Name="LoginButton" Content="Login" Margin="15,10,10,10" Grid.Row="3" Click="LoginButton_Clicked" Grid.ColumnSpan="2" FontWeight="Bold" />
         <Image Source="Resources/astronics_logo.png" Stretch="Fill" Margin="113,10,111,31" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
     </Grid>
