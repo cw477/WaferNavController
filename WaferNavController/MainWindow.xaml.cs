@@ -48,9 +48,6 @@ namespace WaferNavController {
             var thread = new Thread(ConnectToDatabase);
             thread.Start();
             this.KeyDown += MainWindow_KeyDown;
-            LoginWindow loginWindow = new LoginWindow(this, configPage);
-            loginWindow.Owner = this;
-            loginWindow.ShowDialog();
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {

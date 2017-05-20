@@ -10,15 +10,12 @@ namespace WaferNavController {
     ///     Interaction logic for LoginWindow.xaml
     /// </summary>
     public partial class LoginWindow : BaseWindow {
-        private readonly MainWindow mainWindow;
         private bool clickedLoginButton = false;
 
-        public LoginWindow(MainWindow mainWindow, Config configPage) {
-            this.mainWindow = mainWindow;
-            this.configPage = configPage;
+        public LoginWindow() {
+            InitializeComponent();
             KeyDown += Esc_KeyDown;
             KeyDown += LoginWindow_KeyDown;
-            InitializeComponent();
         }
 
         private void LoginWindow_KeyDown(object sender, KeyEventArgs e) {
@@ -30,13 +27,14 @@ namespace WaferNavController {
         }
 
         private void LoginButton_Clicked(object sender, RoutedEventArgs e) {
-            mainWindow.AppendLine("LoginButton_Clicked", true);
             clickedLoginButton = true;
-            DialogResult = true;
+            Close();
         }
 
         private void LoginWindow_Closing(object sender, CancelEventArgs e) {
-            mainWindow.AppendLine("LoginWindow_Closing", true);
+            if (!clickedLoginButton) { // closing by clicking x or alt f4 or esc, so just exit app
+                Application.Current.Shutdown();
+            }
             if (!string.IsNullOrEmpty(UsernameTextBox.Text) && !string.IsNullOrEmpty(PasswordTextBox.Text) && clickedLoginButton) {
                 e.Cancel = false;
             } else {
@@ -46,7 +44,8 @@ namespace WaferNavController {
         }
 
         private void LoginWindow_Closed(object sender, EventArgs e) {
-            mainWindow.AppendLine("LoginWindow_Closed", true);
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
     }
 }
