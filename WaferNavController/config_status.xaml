@@ -43,7 +43,7 @@
                     </Grid.ColumnDefinitions>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,35,10,42" Grid.ColumnSpan="2">
-                        <TextBox x:Name="logBox" TextWrapping="Wrap" TextChanged="TextBox_TextChanged_2" FontFamily="Consolas" IsReadOnly="True" Width="567" Height="483">
+                        <TextBox x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas" IsReadOnly="True" Width="567" Height="483">
                             <TextBox.ContextMenu>
                                 <ContextMenu x:Name="cmSave">
                                     <MenuItem Header="Save to Text File"
@@ -68,7 +68,7 @@
                     <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
                     <!--Config Section-->
                     <TextBlock HorizontalAlignment="Left" Height="31" Margin="25,47,0,0" TextWrapping="Wrap" Text="Load Configuration File " VerticalAlignment="Top" Width="228" FontSize="16" FontWeight="Bold" Grid.ColumnSpan="3"/>
-                    <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Height="33" Margin="34,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" TextChanged="TextBox_TextChanged" Background="White" BorderBrush="#FFABADB3" Foreground="#FFA2A2A2" FontSize="14" Grid.ColumnSpan="3" Tag="File Name" Text="Properties.Resources.testdata" />
+                    <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Height="33" Margin="34,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Background="White" BorderBrush="#FFABADB3" Foreground="#FFA2A2A2" FontSize="14" Grid.ColumnSpan="3" Tag="File Name" Text="Properties.Resources.testdata" />
                     <!--View, Add, Update Section-->
                     <Button x:Name="SelectFileButton" Content="Select File" HorizontalAlignment="Left" Margin="248,94,0,0" VerticalAlignment="Top" Width="96" Click="SelectFileButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
                     <Button x:Name="ImportButton" Content="Import" HorizontalAlignment="Left" Margin="361,94,0,0" VerticalAlignment="Top" Width="94" Click="ImportButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
