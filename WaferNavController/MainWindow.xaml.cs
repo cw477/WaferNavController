@@ -24,12 +24,12 @@ namespace WaferNavController {
         private readonly Config configPage;
         private readonly BitmapImage editIconBitmapImage;
         private readonly BitmapImage deleteIconBitmapImage;
-        public static MainWindow self;
+        private static MainWindow self;
 
         public MainWindow() {
             InitializeComponent();
             self = this;
-            configPage = new Config(this);
+            configPage = new Config();
             this.Content = configPage;
                 
             var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;
@@ -46,7 +46,7 @@ namespace WaferNavController {
             mqttConnectionHandler = new MqttConnectionHandler(this);
         }
 
-        public static MainWindow GetMainWindow() {
+        public static MainWindow Get() {
             return self;
         }
 

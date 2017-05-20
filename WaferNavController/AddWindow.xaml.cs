@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +22,8 @@ namespace WaferNavController {
     /// </summary>
     public partial class AddWindow : BaseWindow {
 
-        public AddWindow(Config configPage) {
-            this.configPage = configPage;
+        public AddWindow() {
+            this.configPage = Config.Get();
             this.KeyDown += Esc_KeyDown;
             this.KeyDown += AddWindow_KeyDown;
             InitializeComponent();
@@ -63,6 +65,31 @@ namespace WaferNavController {
 
         private bool TextBoxHasData(TextBox textBox) {
             return !string.IsNullOrEmpty(textBox.Text) && textBox.Text != textBox.Tag.ToString();
+        }
+
+        private void AddWindow_Closed(object sender, EventArgs e) {
+            configPage.dgBLU.SelectedIndex = -1;
+            configPage.dgSLT.SelectedIndex = -1;
+            MainWindow.Get().RefreshDataGrids();
+            if (DialogResult != null && (bool) DialogResult) {
+
+                DataGrid dataGrid;
+                if (bluRadioButton.IsChecked != null && (bool) bluRadioButton.IsChecked) {
+                    dataGrid = configPage.dgBLU;
+                } else {
+                    dataGrid = configPage.dgSLT;
+                }
+
+                // Iterate through datagrid
+                foreach (DataRowView row in dataGrid.ItemsSource) {
+                    var barcodeId = row.Row[0].ToString();
+                    if (BarcodeTextBox.Text == barcodeId) {
+                        dataGrid.SelectedItem = row;
+                        dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        return;
+                    }
+                }
+            }
         }
     }
 }

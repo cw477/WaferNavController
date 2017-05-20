@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -12,8 +14,8 @@ namespace WaferNavController {
     /// </summary>
     public partial class FindWindow : BaseWindow {
 
-        public FindWindow(Config configPage) {
-            this.configPage = configPage;
+        public FindWindow() {
+            this.configPage = Config.Get();
             this.KeyDown += Esc_KeyDown;
             this.KeyDown += FindWindow_KeyDown;
             InitializeComponent();
@@ -34,24 +36,17 @@ namespace WaferNavController {
                 return;
             }
             var enteredBarcodeId = BarcodeTextBox.Text;
-            // Iterate through BLU datagrid
-            foreach (DataRowView row in configPage.dgBLU.ItemsSource) {
-                var barcodeId = row.Row[0].ToString();
-                if (enteredBarcodeId == barcodeId) {
-                    configPage.dgBLU.SelectedItem = row;
-                    configPage.dgBLU.ScrollIntoView(configPage.dgBLU.SelectedItem);
-                    DialogResult = true;
-                    return;
-                }
-            }
-            // Iterate through SLT datagrid
-            foreach (DataRowView row in configPage.dgSLT.ItemsSource) {
-                var barcodeId = row.Row[0].ToString();
-                if (enteredBarcodeId == barcodeId) {
-                    configPage.dgSLT.SelectedItem = row;
-                    configPage.dgSLT.ScrollIntoView(configPage.dgSLT.SelectedItem);
-                    DialogResult = true;
-                    return;
+            var dataGrids = new List<DataGrid> {configPage.dgBLU, configPage.dgSLT };
+            // Iterate through both datagrids
+            foreach (var dataGrid in dataGrids) {
+                foreach (DataRowView row in dataGrid.ItemsSource) {
+                    var barcodeId = row.Row[0].ToString();
+                    if (enteredBarcodeId == barcodeId) {
+                        dataGrid.SelectedItem = row;
+                        dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        DialogResult = true;
+                        return;
+                    }
                 }
             }
         }

@@ -22,8 +22,8 @@ namespace WaferNavController {
         private string type;
         private string startId;
 
-        public EditWindow(Config configPage, string type, string id, string name, string description, string location, bool available) {
-            this.configPage = configPage;
+        public EditWindow(string type, string id, string name, string description, string location, bool available) {
+            this.configPage = Config.Get();
             this.KeyDown += Esc_KeyDown;
             this.KeyDown += EditWindow_KeyDown;
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace WaferNavController {
         private void EditWindow_Closed(object sender, EventArgs e) {
             configPage.dgBLU.SelectedIndex = -1;
             configPage.dgSLT.SelectedIndex = -1;
-            MainWindow.GetMainWindow().RefreshDataGrids();
+            MainWindow.Get().RefreshDataGrids();
         }
 
         private bool AllTextBoxesHaveData() {

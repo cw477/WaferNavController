@@ -7,7 +7,7 @@
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
         Title="" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow"
-        FocusManager.FocusedElement="{Binding ElementName=BarcodeTextBox}">
+        FocusManager.FocusedElement="{Binding ElementName=BarcodeTextBox}" Closed="AddWindow_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

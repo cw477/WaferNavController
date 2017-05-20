@@ -14,11 +14,17 @@ namespace WaferNavController
     /// Interaction logic for Config.xaml
     /// </summary>
     public partial class Config : Page {
-        private MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
+        private static Config self;
 
-        public Config(MainWindow mainWindow) {
-            this.mainWindow = mainWindow;
+        public Config() {
+            self = this;
+            this.mainWindow = MainWindow.Get();
             InitializeComponent();
+        }
+
+        public static Config Get() {
+            return self;
         }
 
         //Save File Dialog Method Log Tab 
@@ -63,13 +69,13 @@ namespace WaferNavController
         }
 
         private void FindButton_Click(object sender, RoutedEventArgs e) {
-            FindWindow findWindow = new FindWindow(this);
+            FindWindow findWindow = new FindWindow();
             findWindow.Owner = mainWindow;
             findWindow.ShowDialog();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
-            AddWindow addWindow = new AddWindow(this);
+            AddWindow addWindow = new AddWindow();
             addWindow.Owner = mainWindow;
             addWindow.ShowDialog();
         }
@@ -114,14 +120,14 @@ namespace WaferNavController
                 string description = (string)((DataRowView)dataGrid.SelectedItem).Row[2];
                 string location = (string)((DataRowView)dataGrid.SelectedItem).Row[3];
                 bool available = (bool) ((DataRowView)dataGrid.SelectedItem).Row[4];
-                EditWindow editWindow = new EditWindow(this, type, id, name, description, location, available);
+                EditWindow editWindow = new EditWindow(type, id, name, description, location, available);
                 editWindow.Owner = mainWindow;
                 editWindow.ShowDialog();
             }
             else if (col == 6 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on delete column, and only 1 row selected
                 string type = dataGrid.Tag.ToString();
                 string id = (string) ((DataRowView) dataGrid.SelectedItem).Row[0];
-                DeleteWindow deleteWindow = new DeleteWindow(this, type, id);
+                DeleteWindow deleteWindow = new DeleteWindow(type, id);
                 deleteWindow.Owner = mainWindow;
                 deleteWindow.ShowDialog();
             }
@@ -159,7 +165,7 @@ namespace WaferNavController
                 }
                 mainWindow.AppendLine("Successfully reset database with data from imported config file!", true);
                 TabControl.SelectedIndex = 0;
-                MainWindow.GetMainWindow().RefreshDataGrids();
+                MainWindow.Get().RefreshDataGrids();
             }
             catch (Exception) {
                 mainWindow.AppendLine("Failed to load reset database with config file data!", true);
