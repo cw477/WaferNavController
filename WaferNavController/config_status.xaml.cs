@@ -159,6 +159,7 @@ namespace WaferNavController
                 }
                 mainWindow.AppendLine("Successfully reset database with data from imported config file!", true);
                 TabControl.SelectedIndex = 0;
+                MainWindow.GetMainWindow().RefreshDataGrids();
             }
             catch (Exception) {
                 mainWindow.AppendLine("Failed to load reset database with config file data!", true);

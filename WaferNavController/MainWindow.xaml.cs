@@ -24,9 +24,11 @@ namespace WaferNavController {
         private readonly Config configPage;
         private readonly BitmapImage editIconBitmapImage;
         private readonly BitmapImage deleteIconBitmapImage;
+        public static MainWindow self;
 
         public MainWindow() {
             InitializeComponent();
+            self = this;
             configPage = new Config(this);
             this.Content = configPage;
                 
@@ -42,6 +44,10 @@ namespace WaferNavController {
 
             //TODO: move mqtt logic to app.xaml.cs hopefully possibly. The idea being this main window won't always be active.
             mqttConnectionHandler = new MqttConnectionHandler(this);
+        }
+
+        public static MainWindow GetMainWindow() {
+            return self;
         }
 
         protected override void OnContentRendered(EventArgs e) {
@@ -70,8 +76,7 @@ namespace WaferNavController {
             if (e.Key == Key.D)
             {
                 if (currentTabName == "StatusTabItem") {
-                    fillDataGrids(ref configPage.dgBLU, "BLU");
-                    fillDataGrids(ref configPage.dgSLT, "SLT");
+                    RefreshDataGrids();
                 }
             }
 
@@ -83,13 +88,18 @@ namespace WaferNavController {
         private void CreateFillDataGridsTask() {
             //Task.Run(() => {
             //    while (true) {
-            //        Dispatcher.Invoke(fillDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
+            //        Dispatcher.Invoke(RefreshDataGrids); // Need to use Dispatcher.Invoke() since fillDataGrids() accesses a UI element
             //        Thread.Sleep(3000);
             //    }
             //});
         }
 
-        private void fillDataGrids(ref DataGrid dataGrid, string tableName) {
+        public void RefreshDataGrids() {
+            FillDataGrids(ref configPage.dgBLU, "BLU");
+            FillDataGrids(ref configPage.dgSLT, "SLT");
+        }
+
+        private void FillDataGrids(ref DataGrid dataGrid, string tableName) {
             dataGrid.ItemsSource = null;
             dataGrid.Columns.Clear();
 
@@ -159,7 +169,7 @@ namespace WaferNavController {
 
                 killMakeDotsThread = true;
                 AppendLine(" success!", true);
-                CreateFillDataGridsTask();
+                Dispatcher.Invoke(RefreshDataGrids);
             }
 
             catch (Exception exception) {

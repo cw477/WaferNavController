@@ -60,6 +60,7 @@ namespace WaferNavController {
         private void EditWindow_Closed(object sender, EventArgs e) {
             configPage.dgBLU.SelectedIndex = -1;
             configPage.dgSLT.SelectedIndex = -1;
+            MainWindow.GetMainWindow().RefreshDataGrids();
         }
 
         private bool AllTextBoxesHaveData() {
