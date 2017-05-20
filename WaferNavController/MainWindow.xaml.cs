@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
@@ -76,9 +77,6 @@ namespace WaferNavController {
 
             if (e.Key == Key.F12) {
                 AppendLine("F12 pressed!", true);
-//                LoginWindow loginWindow = new LoginWindow(this, configPage);
-//                loginWindow.Owner = this;
-//                loginWindow.ShowDialog();
             }
         }
 

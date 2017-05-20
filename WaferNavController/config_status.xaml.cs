@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.IO;
+using Path = System.IO.Path;
 
 namespace WaferNavController
 {
@@ -29,24 +30,6 @@ namespace WaferNavController
             InitializeComponent();
         }
 
-     
-        //Open FIle Dialog, Select File Button 
-        private void button_selectFile_Click(object sender, RoutedEventArgs e)
-        {
-            //Create OpenFileDialog
-            OpenFileDialog ofd = new OpenFileDialog();
-
-            //Set default file extension
-            ofd.DefaultExt = ".csv";
-
-           if(ofd.ShowDialog()==true)
-            {
-                string filename = ofd.FileName;
-                FileNameTxtBx.Text = filename;
-                
-            }
-            
-        }
         //Save File Dialog Method Log Tab 
         private void saveFD(object sender, EventArgs e)
         {
@@ -180,6 +163,38 @@ namespace WaferNavController
         private void DataGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e) {
             DataGrid_BeginningEdit_count++;
             mainWindow.AppendLine(DataGrid_BeginningEdit_count + " DataGrid_BeginningEdit called.", true);
+        }
+
+        //Open File Dialog, Select File Button
+        private void SelectFileButton_Click(object sender, RoutedEventArgs e) {
+            //Create OpenFileDialog
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            //Set default file extension
+            ofd.DefaultExt = ".csv";
+
+            if (ofd.ShowDialog() == true) {
+                string filename = ofd.FileName;
+                FileNameTextBox.Text = filename;
+            }
+        }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e) {
+            try {
+                string filepath = FileNameTextBox.Text;
+                if (filepath == "Properties.Resources.testdata") {
+                    string runningPath = AppDomain.CurrentDomain.BaseDirectory;
+                    filepath = string.Format("{0}Resources\\testdata.txt", Path.GetFullPath(Path.Combine(runningPath, @"..\..\")));
+                }
+                if (!string.IsNullOrEmpty(filepath)) {
+                    DatabaseHandler.ResetDatabaseWithConfigFileData(filepath);
+                }
+                mainWindow.AppendLine("Successfully reset database with data from imported config file!", true);
+                TabControl.SelectedIndex = 0;
+            }
+            catch (Exception ex) {
+                mainWindow.AppendLine("Failed to load reset database with config file data!", true);
+            }
         }
     }
 }

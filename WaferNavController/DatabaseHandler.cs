@@ -5,6 +5,8 @@ using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Data;
+using System.IO;
+using System.Linq;
 
 namespace WaferNavController
 {
@@ -62,6 +64,132 @@ namespace WaferNavController
             RemoveAllHistoricWafers();
             PopulateBluTable();
             PopulateSltTable();
+        }
+
+        public static void ResetDatabaseWithConfigFileData(string filePath) {
+            // 1. Get all file lines
+            // 2. Go through line by line, getting the following data
+            //     a. BLU definition
+            //     b. BLU entries
+            //     c. SLT definition
+            //     d. SLT entries
+            // 3. Build queries
+            // 4. Execute queries
+
+            List<string> clearQueries = new List<string>();
+            clearQueries.Add("DELETE FROM [wn].[blu_assignment_load];");
+            clearQueries.Add("DELETE FROM [wn].[blu_assignment_unload];");
+            clearQueries.Add("DELETE FROM [wn].[historic_blu_assignment_load];");
+            clearQueries.Add("DELETE FROM [wn].[historic_blu_assignment_unload];");
+            clearQueries.Add("DELETE FROM [wn].[slt_assignment];");
+            clearQueries.Add("DELETE FROM [wn].[historic_slt_assignment];");
+            clearQueries.Add("DELETE FROM [wn].[BLU];");
+            clearQueries.Add("DELETE FROM [wn].[SLT];");
+            clearQueries.Add("DELETE FROM [wn].[active_bib];");
+            clearQueries.Add("DELETE FROM [wn].[historic_bib];");
+            clearQueries.Add("DELETE FROM [wn].[active_wafer_type];");
+            clearQueries.Add("DELETE FROM [wn].[historic_wafer_type];");
+
+            SqlTransaction tran = null;
+            bool transStarted = false;
+            string[] queries = BuildQueriesFromConfigFileData(filePath);
+
+            try {
+                bool connectionOpenedHere = false;
+                if (connection.State == ConnectionState.Closed) {
+                    connection.Open();
+                    connectionOpenedHere = true;
+                }
+                tran = connection.BeginTransaction();
+                transStarted = true;
+                SqlCommand query = null;
+
+                foreach (var clearQuery in clearQueries) {
+                    query = new SqlCommand(clearQuery, connection, tran);
+                    query.ExecuteNonQuery();
+                }
+
+                if (queries.Length > 0 && queries[0] != null) {
+                    query = new SqlCommand(queries[0], connection, tran);
+                    query.ExecuteNonQuery();
+                }
+
+                if (queries.Length > 1 && queries[1] != null) {
+                    query = new SqlCommand(queries[1], connection, tran);
+                    query.ExecuteNonQuery();
+                }
+
+                // commit all
+                tran.Commit();
+                if (connectionOpenedHere) {
+                    connection.Close();
+                }
+
+            }
+            catch (Exception e) {
+                if (transStarted) {
+                    tran.Rollback();
+                }
+                throw e;
+            }
+        }
+
+        private static string[] BuildQueriesFromConfigFileData(string filePath) {
+
+            string[] lines = File.ReadAllLines(filePath);
+
+            string bluDefinition = null;
+            string sltDefinition = null;
+            List<string> bluEntries = new List<string>();
+            List<string> sltEntries = new List<string>();
+
+            // Parse data from file
+            foreach (var line in lines) {
+                if (line == "") { continue; }  // skip empty lines
+                var splitLine = line.Split(new[] { ", " }, StringSplitOptions.None);
+                if (splitLine[0] == "DEFINITION") {
+                    if (splitLine[1] == "BLU") {
+                        bluDefinition = string.Join(", ", splitLine.Skip(2));
+                    }
+                    else if (splitLine[1] == "SLT") {
+                        sltDefinition = string.Join(", ", splitLine.Skip(2));
+                    }
+                    else {
+                        // UNKNOWN DEFINITION!
+                    }
+                    continue;
+                }
+                else if (splitLine[0] == "BLU") {
+                    bluEntries.Add(string.Join(", ", splitLine.Skip(1)));
+                }
+                else if (splitLine[0] == "SLT") {
+                    sltEntries.Add(string.Join(", ", splitLine.Skip(1)));
+                }
+                else {
+                    // UNKNOWN ENTRY TYPE!
+                }
+            }
+
+            // Build queries using data gathered above
+            string bluQuery = null;
+            if (bluDefinition != null && bluEntries.Count > 0) {
+                bluQuery = $"INSERT INTO [wn].[BLU] ({bluDefinition}) VALUES ";
+                foreach (var bluEntry in bluEntries) {
+                    bluQuery += $"({bluEntry}), ";
+                }
+                bluQuery = bluQuery.Substring(0, bluQuery.Length - 2) + ";";  // replace trailing comma with semicolon
+            }
+
+            string sltQuery = null;
+            if (sltDefinition != null && sltEntries.Count > 0) {
+                sltQuery = $"INSERT INTO [wn].[SLT] ({sltDefinition}) VALUES ";
+                foreach (var sltEntry in sltEntries) {
+                    sltQuery += $"({sltEntry}), ";
+                }
+                sltQuery = sltQuery.Substring(0, sltQuery.Length - 2) + ";";  // replace trailing comma with semicolon
+            }
+
+            return new[] {bluQuery, sltQuery};
         }
 
         public static List<Dictionary<string, string>> GetAllBlus()

@@ -1,0 +1,19 @@
+DEFINITION, BLU, id, site_name, site_description, site_location, available
+BLU, '000000', 'BLU #0', 'Handler 0 from config file!', 'East', 1
+BLU, '123456', 'BLU #1', 'Handler 1 from config file!', 'East', 1
+BLU, '234567', 'BLU #2', 'Handler 2 from config file!', 'West', 1
+BLU, '111111', 'BLU #3', 'Handler 3 from config file!', 'South', 1
+BLU, '222222', 'BLU #4', 'Handler 4 from config file!', 'West', 1
+BLU, '333333', 'BLU #5', 'Handler 5 from config file!', 'North', 1
+BLU, '444444', 'BLU #6', 'Handler 6 from config file!', 'West', 1
+BLU, '555555', 'BLU #7', 'Handler 7 from config file!', 'East', 1
+
+DEFINITION, SLT, id, site_name, site_description, site_location, available
+SLT, '000000', 'SLT #0', 'Test Chamber 1 from config file!', 'East', 1
+SLT, '123456', 'SLT #1', 'Test Chamber 1 from config file!', 'East', 1
+SLT, '234567', 'SLT #2', 'Test Chamber 2 from config file!', 'West', 1
+SLT, '111111', 'SLT #3', 'Test Chamber 3 from config file!', 'South', 1
+SLT, '222222', 'SLT #4', 'Test Chamber 4 from config file!', 'West', 1
+SLT, '333333', 'SLT #5', 'Test Chamber 5 from config file!', 'North', 1
+SLT, '444444', 'SLT #6', 'Test Chamber 6 from config file!', 'West', 1
+SLT, '555555', 'SLT #7', 'Test Chamber 7 from config file!', 'East', 1
