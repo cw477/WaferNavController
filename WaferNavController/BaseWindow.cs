@@ -28,7 +28,7 @@ namespace WaferNavController {
             TextBox textBox = sender as TextBox;
             if (textBox.Text.Trim().Equals(string.Empty)) {
                 textBox.Text = (string) textBox.Tag;
-                textBox.Foreground = Brushes.LightGray;
+                textBox.Foreground = Brushes.Gray;
                 textBox.GotFocus += TextBox_GotFocus;
             }
         }
@@ -44,7 +44,7 @@ namespace WaferNavController {
             PasswordBox passwordBox = sender as PasswordBox;
             if (passwordBox.Password.Trim().Equals(string.Empty)) {
                 passwordBox.Password = (string)passwordBox.Tag;
-                passwordBox.Foreground = Brushes.LightGray;
+                passwordBox.Foreground = Brushes.Gray;
                 passwordBox.GotFocus += PasswordBox_GotFocus;
             }
         }

@@ -6,7 +6,7 @@
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
         Title="" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow" Closed="EditWindow_Closed"
-        FocusManager.FocusedElement="{Binding ElementName=BarcodeTextBox}">
+        FocusManager.FocusedElement="{Binding ElementName=AvailableCheckBox}">
 
     <Grid>
         <Grid.ColumnDefinitions>

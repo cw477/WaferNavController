@@ -21,9 +21,13 @@ namespace WaferNavController {
             this.type = type;
             this.startId = startId;
             BarcodeTextBox.Text = startId;
+            BarcodeTextBox.Tag = startId;
             NameTextBox.Text = name;
+            NameTextBox.Tag = name;
             DescriptionTextBox.Text = description;
+            DescriptionTextBox.Tag = description;
             LocationTextBox.Text = location;
+            LocationTextBox.Tag = location;
             AvailableCheckBox.IsChecked = available;
         }
 
