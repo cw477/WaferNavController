@@ -29,6 +29,7 @@ namespace WaferNavController {
             LocationTextBox.Text = location;
             LocationTextBox.Tag = location;
             AvailableCheckBox.IsChecked = available;
+            AvailableCheckBox.Tag = available;
         }
 
         private void EditWindow_KeyDown(object sender, KeyEventArgs e) {
@@ -41,7 +42,7 @@ namespace WaferNavController {
         }
 
         private void SaveButton_Clicked(object sender, RoutedEventArgs e) {
-            if (!AllTextBoxesHaveData()) {
+            if (!AllTextBoxesHaveData() || !DataHasChanged()) {
                 statusLogConfig.dgBLU.SelectedIndex = -1;
                 statusLogConfig.dgSLT.SelectedIndex = -1;
                 DialogResult = false;
@@ -78,7 +79,19 @@ namespace WaferNavController {
         }
 
         private bool TextBoxHasData(TextBox textBox) {
-            return !string.IsNullOrEmpty(textBox.Text) && textBox.Text != textBox.Tag.ToString();
+            return !string.IsNullOrEmpty(textBox.Text);
+        }
+
+        private bool DataHasChanged() {
+            return TextBoxHasNewData(IdTextBox)
+                || TextBoxHasNewData(NameTextBox)
+                || TextBoxHasNewData(DescriptionTextBox)
+                || TextBoxHasNewData(LocationTextBox)
+                || (AvailableCheckBox.IsChecked != (bool) AvailableCheckBox.Tag);
+        }
+
+        private bool TextBoxHasNewData(TextBox textBox) {
+            return textBox.Text != textBox.Tag.ToString();
         }
     }
 }
