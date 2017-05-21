@@ -55,6 +55,7 @@ namespace WaferNavController {
             isAdmin = username.ToLower().StartsWith("admin");
             if (!isAdmin) {
                 statusLogConfig.AddButton.Visibility = Visibility.Hidden;  // only admin can add new entries
+                statusLogConfig.ResetDatabaseButton.Visibility = Visibility.Hidden;  // only admin can reset database
                 statusLogConfig.ConfigTabItem.Visibility = Visibility.Hidden;  // only admin can reset database with config file
                 Title += "   <NON-ADMIN>";
             } else {
@@ -75,24 +76,9 @@ namespace WaferNavController {
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
             string currentTabName = ((TabItem)statusLogConfig.TabControl.SelectedItem).Name;
-            if (e.Key == Key.A)
-            {
+            if (e.Key == Key.A) {
                 if (currentTabName == "LogTabItem") {
                     AppendCurrentDatabaseData();
-                }
-            }
-            if (e.Key == Key.S)
-            {
-                if (currentTabName == "LogTabItem" || currentTabName == "StatusTabItem") {
-                    AppendLine(DateTime.Now + ": Resetting DB...", true);
-                    DatabaseHandler.ResetDatabase();
-                    AppendLine(DateTime.Now + ": Resetting DB Finished.", true);
-                }
-            }
-            if (e.Key == Key.D)
-            {
-                if (currentTabName == "StatusTabItem") {
-                    RefreshDataGrids();
                 }
             }
 
@@ -120,7 +106,7 @@ namespace WaferNavController {
             dataGrid.Columns.Clear();
 
             DatabaseHandler.fillItems(ref dataGrid, tableName);
-            if (isAdmin) {
+            if (isAdmin) { // only admin can edit or delete an entry
                 AddIconColumnToDataGrid(ref dataGrid, editIconBitmapImage, "");
                 AddIconColumnToDataGrid(ref dataGrid, deleteIconBitmapImage, "");
             }

@@ -140,6 +140,14 @@ namespace WaferNavController
             }
         }
 
+        private void ResetDatabaseButton_Click(object sender, RoutedEventArgs e) {
+            if (!MainWindow.IsAdmin()) { return; } // only admin can reset database
+            mainWindow.AppendLine(DateTime.Now + ": Resetting DB...", true);
+            DatabaseHandler.ResetDatabase();
+            mainWindow.AppendLine(DateTime.Now + ": Resetting DB Finished.", true);
+            mainWindow.RefreshDataGrids();
+        }
+
         private void RefreshButton_Click(object sender, RoutedEventArgs e) {
             mainWindow.RefreshDataGrids();
         }
