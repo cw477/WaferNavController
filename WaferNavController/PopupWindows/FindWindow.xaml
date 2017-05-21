@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="" Height="125" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow"
-        FocusManager.FocusedElement="{Binding ElementName=IdTextBox}">
+        Title="Find" Height="125" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        FocusManager.FocusedElement="{Binding ElementName=IdTextBox}" Icon="/WaferNavController;component/Resources/find_icon_black_small.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>

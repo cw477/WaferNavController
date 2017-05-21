@@ -35,7 +35,7 @@
                             <ControlTemplate TargetType="Button">
                                 <Grid x:Name="bg" Background="#FF428BCA">
                                     <Border BorderBrush="Black" BorderThickness="1" />
-                                    <Image Margin="2" Source="Resources/search_icon_white.png" />
+                                    <Image Margin="2" Source="Resources/find_icon_white.png" />
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">

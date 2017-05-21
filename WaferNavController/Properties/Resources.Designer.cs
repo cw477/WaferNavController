@@ -63,6 +63,16 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_icon_black_small {
+            get {
+                object obj = ResourceManager.GetObject("add_icon_black_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap add_icon_white {
             get {
                 object obj = ResourceManager.GetObject("add_icon_white", resourceCulture);
@@ -123,6 +133,26 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap find_icon_black_small {
+            get {
+                object obj = ResourceManager.GetObject("find_icon_black_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap find_icon_white {
+            get {
+                object obj = ResourceManager.GetObject("find_icon_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap nielsen_ninjas_LogoTranspBack {
             get {
                 object obj = ResourceManager.GetObject("nielsen_ninjas_LogoTranspBack", resourceCulture);
@@ -146,16 +176,6 @@ namespace WaferNavController.Properties {
         internal static System.Drawing.Bitmap refresh_icon_white {
             get {
                 object obj = ResourceManager.GetObject("refresh_icon_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap search_icon_white {
-            get {
-                object obj = ResourceManager.GetObject("search_icon_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

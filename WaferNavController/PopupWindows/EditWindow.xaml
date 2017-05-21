@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow" Closed="EditWindow_Closed"
-        FocusManager.FocusedElement="{Binding ElementName=AvailableCheckBox}">
+        Title="Edit" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closed="EditWindow_Closed"
+        FocusManager.FocusedElement="{Binding ElementName=AvailableCheckBox}" Icon="/WaferNavController;component/Resources/edit_icon_black_small.png">
 
     <Grid>
         <Grid.ColumnDefinitions>

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WaferNavController"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow"
-        FocusManager.FocusedElement="{Binding ElementName=IdTextBox}" Closed="AddWindow_Closed">
+        Title="Add" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        FocusManager.FocusedElement="{Binding ElementName=IdTextBox}" Closed="AddWindow_Closed" Icon="/WaferNavController;component/Resources/add_icon_black_small.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

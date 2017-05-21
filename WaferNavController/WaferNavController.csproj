@@ -251,9 +251,6 @@
     <Resource Include="Resources\add_icon_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\search_icon_white.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\edit_icon_black_small.png" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +258,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\delete_forever_icon_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\find_icon_black_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add_icon_black_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\find_icon_white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

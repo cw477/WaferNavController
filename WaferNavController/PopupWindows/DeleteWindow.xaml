@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="" Height="150" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow" Closed="DeleteWindow_Closed">
+        Title="Delete" Height="150" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closed="DeleteWindow_Closed" Icon="/WaferNavController;component/Resources/delete_icon_black_small.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
