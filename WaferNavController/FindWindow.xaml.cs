@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows;
@@ -6,7 +5,6 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace WaferNavController {
     /// <summary>
@@ -15,9 +13,9 @@ namespace WaferNavController {
     public partial class FindWindow : BaseWindow {
 
         public FindWindow() {
-            this.configPage = Config.Get();
-            this.KeyDown += Esc_KeyDown;
-            this.KeyDown += FindWindow_KeyDown;
+            configPage = Config.Get();
+            KeyDown += Esc_KeyDown;
+            KeyDown += FindWindow_KeyDown;
             InitializeComponent();
         }
 

@@ -1,35 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WaferNavController {
     /// <summary>
     /// Interaction logic for EditWindow.xaml
     /// </summary>
     public partial class EditWindow : BaseWindow {
-        private string type;
-        private string startId;
+        private readonly string type;
+        private readonly string startId;
 
-        public EditWindow(string type, string id, string name, string description, string location, bool available) {
-            this.configPage = Config.Get();
-            this.KeyDown += Esc_KeyDown;
-            this.KeyDown += EditWindow_KeyDown;
+        public EditWindow(string type, string startId, string name, string description, string location, bool available) {
+            configPage = Config.Get();
+            KeyDown += Esc_KeyDown;
+            KeyDown += EditWindow_KeyDown;
             InitializeComponent();
             this.type = type;
-            this.startId = id;
-            BarcodeTextBox.Text = id;
+            this.startId = startId;
+            BarcodeTextBox.Text = startId;
             NameTextBox.Text = name;
             DescriptionTextBox.Text = description;
             LocationTextBox.Text = location;

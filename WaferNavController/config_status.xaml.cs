@@ -19,7 +19,7 @@ namespace WaferNavController
 
         public Config() {
             self = this;
-            this.mainWindow = MainWindow.Get();
+            mainWindow = MainWindow.Get();
             InitializeComponent();
         }
 
@@ -72,26 +72,7 @@ namespace WaferNavController
             addWindow.ShowDialog();
         }
 
-        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e) {
-            mainWindow.AppendLine("DataGrid_CellEditEnding called.", true);
-        }
-
-        private int DataGrid_SelectionChanged_count = 0;
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            DataGrid_SelectionChanged_count++;
-            mainWindow.AppendLine(DataGrid_SelectionChanged_count + " DataGrid_SelectionChanged called.", true);
-        }
-
-        private int DataGrid_SelectedCellsChanged_count = 0;
-        private void DataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e) {
-            DataGrid_SelectedCellsChanged_count++;
-            mainWindow.AppendLine(DataGrid_SelectedCellsChanged_count + " DataGrid_SelectedCellsChanged called.", true);
-        }
-
-        private int DataGrid_MouseUp_count = 0;
         private void DataGrid_MouseUp(object sender, MouseButtonEventArgs e) {
-            DataGrid_MouseUp_count++;
-            mainWindow.AppendLine(DataGrid_MouseUp_count + " DataGrid_MouseUp called.", true);
             DataGrid dataGrid = (DataGrid) sender;
             int row = dataGrid.SelectedIndex;
             if (row == -1) { return; }  // clicked in DataGrid, but not in a cell
@@ -123,12 +104,6 @@ namespace WaferNavController
                 deleteWindow.Owner = mainWindow;
                 deleteWindow.ShowDialog();
             }
-        }
-
-        private int DataGrid_BeginningEdit_count = 0;
-        private void DataGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e) {
-            DataGrid_BeginningEdit_count++;
-            mainWindow.AppendLine(DataGrid_BeginningEdit_count + " DataGrid_BeginningEdit called.", true);
         }
 
         //Open File Dialog, Select File Button
@@ -165,12 +140,10 @@ namespace WaferNavController
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) {
-            mainWindow.AppendLine("Clicked refresh button!", true);
             mainWindow.RefreshDataGrids();
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e) {
-            mainWindow.AppendLine("LogoutButton_Click - currentIndex: " + TabControl.SelectedIndex, true);
             LogoutWindow logoutWindow = new LogoutWindow();
             logoutWindow.Owner = mainWindow;
             logoutWindow.ShowDialog();
