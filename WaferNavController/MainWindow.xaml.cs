@@ -25,6 +25,7 @@ namespace WaferNavController {
         private readonly BitmapImage editIconBitmapImage;
         private readonly BitmapImage deleteIconBitmapImage;
         private static MainWindow self;
+        private bool isAdmin;
 
         public MainWindow() {
             InitializeComponent();
@@ -48,6 +49,21 @@ namespace WaferNavController {
 
         public static MainWindow Get() {
             return self;
+        }
+
+        public void SetUsername(string username) {
+            isAdmin = username.ToLower().StartsWith("admin");
+            if (!isAdmin) {
+                statusLogConfig.AddButton.Visibility = Visibility.Hidden;  // only admin can add new entries
+                statusLogConfig.ConfigTabItem.Visibility = Visibility.Hidden;  // only admin can reset database with config file
+                Title += "   <NON-ADMIN>";
+            } else {
+                Title += "   <ADMIN>";
+            }
+        }
+
+        public static bool IsAdmin() {
+            return self.isAdmin;
         }
 
         protected override void OnContentRendered(EventArgs e) {
@@ -104,8 +120,10 @@ namespace WaferNavController {
             dataGrid.Columns.Clear();
 
             DatabaseHandler.fillItems(ref dataGrid, tableName);
-            AddIconColumnToDataGrid(ref dataGrid, editIconBitmapImage, "");
-            AddIconColumnToDataGrid(ref dataGrid, deleteIconBitmapImage, "");
+            if (isAdmin) {
+                AddIconColumnToDataGrid(ref dataGrid, editIconBitmapImage, "");
+                AddIconColumnToDataGrid(ref dataGrid, deleteIconBitmapImage, "");
+            }
 
             dataGrid.Columns[0].Header = "ID";
             dataGrid.Columns[1].Header = "Name";

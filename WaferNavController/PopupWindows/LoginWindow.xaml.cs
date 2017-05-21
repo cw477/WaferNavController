@@ -47,6 +47,7 @@ namespace WaferNavController {
 
         private void LoginWindow_Closed(object sender, EventArgs e) {
             MainWindow mainWindow = new MainWindow();
+            mainWindow.SetUsername(UsernameTextBox.Text);
             mainWindow.Show();
         }
     }

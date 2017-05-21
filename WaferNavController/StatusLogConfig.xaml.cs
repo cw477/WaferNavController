@@ -73,6 +73,7 @@ namespace WaferNavController
         }
 
         private void DataGrid_MouseUp(object sender, MouseButtonEventArgs e) {
+            if (!MainWindow.IsAdmin()) { return; } // only admin can edit or delete an entry
             DataGrid dataGrid = (DataGrid) sender;
             int row = dataGrid.SelectedIndex;
             if (row == -1) { return; }  // clicked in DataGrid, but not in a cell
