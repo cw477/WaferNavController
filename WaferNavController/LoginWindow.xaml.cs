@@ -14,7 +14,6 @@ namespace WaferNavController {
 
         public LoginWindow() {
             InitializeComponent();
-            KeyDown += Esc_KeyDown;
             KeyDown += LoginWindow_KeyDown;
         }
 
@@ -24,6 +23,8 @@ namespace WaferNavController {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(LoginButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
+            } else if (e.Key == Key.Escape) {
+                Application.Current.Shutdown();
             }
         }
 

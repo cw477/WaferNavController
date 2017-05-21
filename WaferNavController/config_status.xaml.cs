@@ -60,14 +60,6 @@ namespace WaferNavController
             }
         }
 
-        private void LogOutButton_Click(object sender, RoutedEventArgs e) {
-            Application.Current.Shutdown();
-        }
-
-        private void CancelLogOutButton_Click(object sender, RoutedEventArgs e) {
-            TabControl.SelectedIndex = 0;
-        }
-
         private void FindButton_Click(object sender, RoutedEventArgs e) {
             FindWindow findWindow = new FindWindow();
             findWindow.Owner = mainWindow;
@@ -170,6 +162,18 @@ namespace WaferNavController
             catch (Exception) {
                 mainWindow.AppendLine("Failed to load reset database with config file data!", true);
             }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e) {
+            mainWindow.AppendLine("Clicked refresh button!", true);
+            mainWindow.RefreshDataGrids();
+        }
+
+        private void LogoutButton_Click(object sender, RoutedEventArgs e) {
+            mainWindow.AppendLine("LogoutButton_Click - currentIndex: " + TabControl.SelectedIndex, true);
+            LogoutWindow logoutWindow = new LogoutWindow();
+            logoutWindow.Owner = mainWindow;
+            logoutWindow.ShowDialog();
         }
     }
 }

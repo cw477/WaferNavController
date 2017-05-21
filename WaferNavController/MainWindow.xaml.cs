@@ -81,7 +81,7 @@ namespace WaferNavController {
             }
 
             if (e.Key == Key.F12) {
-                AppendLine("F12 pressed!", true);
+                AppendLine("F12 pressed! - selectedIndex: " + configPage.TabControl.SelectedIndex, true);
             }
         }
 
