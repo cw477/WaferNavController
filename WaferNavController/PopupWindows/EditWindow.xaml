@@ -23,19 +23,19 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label x:Name="label" Content="Edit BLU or SLT information" Grid.ColumnSpan="2" FontSize="16" Grid.Column="0" Grid.Row="0" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
-        <CheckBox x:Name="AvailableCheckBox" Content="Available" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" Margin="10"/>
+        <CheckBox x:Name="AvailableCheckBox" Content="Available" Foreground="Gray" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" Margin="10" Checked="Checkbox_Changed" Unchecked="Checkbox_Changed"/>
 
         <Label x:Name="IdLabel" Content="ID" Grid.Row="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="IdTextBox" TextWrapping="Wrap" Text="ID" Foreground="Gray" FontSize="14" Tag="ID" Grid.Row="3" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <TextBox x:Name="IdTextBox" TextWrapping="Wrap" Text="ID" Foreground="Gray" FontSize="14" Tag="ID" Grid.Row="3" VerticalContentAlignment="Center" Margin="10,0,10,10" TextChanged="TextBox_TextChanged"/>
 
         <Label x:Name="LocationLabel" Content="Location" Grid.Row="2" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="LocationTextBox" TextWrapping="Wrap" Text="Location" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Location" LostFocus="TextBox_LostFocus" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <TextBox x:Name="LocationTextBox" TextWrapping="Wrap" Text="Location" Foreground="Gray" FontSize="14" Tag="Location" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10" TextChanged="TextBox_TextChanged"/>
 
         <Label x:Name="NameLabel" Content="Name" Grid.Row="4" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="Name" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Name" LostFocus="TextBox_LostFocus" Grid.Row="5" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="Name" Foreground="Gray" FontSize="14" Tag="Name" Grid.Row="5" VerticalContentAlignment="Center" Margin="10,0,10,10" TextChanged="TextBox_TextChanged"/>
 
         <Label x:Name="DescriptionLabel" Content="Description" Grid.Row="4" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="Description" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Description" LostFocus="TextBox_LostFocus" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="Description" Foreground="Gray" FontSize="14" Tag="Description" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10" TextChanged="TextBox_TextChanged"/>
 
         <Button x:Name="SaveButton" Content="Save" Margin="10,8" Grid.ColumnSpan="2" Grid.Row="6" Click="SaveButton_Clicked" FontWeight="Bold" />
 

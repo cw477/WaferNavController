@@ -4,6 +4,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace WaferNavController {
     /// <summary>
@@ -20,16 +21,16 @@ namespace WaferNavController {
             InitializeComponent();
             this.type = type;
             this.startId = startId;
-            IdTextBox.Text = startId;
             IdTextBox.Tag = startId;
-            NameTextBox.Text = name;
+            IdTextBox.Text = startId;
             NameTextBox.Tag = name;
-            DescriptionTextBox.Text = description;
+            NameTextBox.Text = name;
             DescriptionTextBox.Tag = description;
-            LocationTextBox.Text = location;
+            DescriptionTextBox.Text = description;
             LocationTextBox.Tag = location;
-            AvailableCheckBox.IsChecked = available;
+            LocationTextBox.Text = location;
             AvailableCheckBox.Tag = available;
+            AvailableCheckBox.IsChecked = available;
         }
 
         private void EditWindow_KeyDown(object sender, KeyEventArgs e) {
@@ -92,6 +93,30 @@ namespace WaferNavController {
 
         private bool TextBoxHasNewData(TextBox textBox) {
             return textBox.Text != textBox.Tag.ToString();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
+            TextBox textBox = sender as TextBox;
+            if (textBox == null || textBox.Tag == null) {
+                return;
+            }
+            if (TextBoxHasNewData(textBox)) {
+                textBox.Foreground = Brushes.MediumVioletRed;
+            } else {
+                textBox.Foreground = Brushes.Gray;
+            }
+        }
+
+        private void Checkbox_Changed(object sender, RoutedEventArgs e) {
+            CheckBox checkBox = sender as CheckBox;
+            if (checkBox == null || checkBox.Tag == null) {
+                return;
+            }
+            if (AvailableCheckBox.IsChecked != (bool) AvailableCheckBox.Tag) {
+                checkBox.Foreground = Brushes.MediumVioletRed;
+            } else {
+                checkBox.Foreground = Brushes.Gray;
+            }
         }
     }
 }
