@@ -16,17 +16,28 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.50*"></RowDefinition>
+            <RowDefinition Height="0.75*"></RowDefinition>
+            <RowDefinition Height="0.50*"></RowDefinition>
+            <RowDefinition Height="0.75*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label x:Name="label" Content="Edit BLU or SLT information" Grid.ColumnSpan="2" FontSize="16" Grid.Column="0" Grid.Row="0" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
         <CheckBox x:Name="AvailableCheckBox" Content="Available" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" Margin="10"/>
-        <TextBox x:Name="BarcodeTextBox" TextWrapping="Wrap" Text="Barcode" FontSize="14" Tag="Barcode" Grid.Row="2" VerticalContentAlignment="Center" Margin="10"/>
-        <TextBox x:Name="LocationTextBox" TextWrapping="Wrap" Text="Location" FontSize="14" Tag="Location" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="10"/>
-        <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="Name" FontSize="14" Tag="Name" Grid.Row="3" VerticalContentAlignment="Center" Margin="10"/>
-        <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="Description" FontSize="14" Tag="Description" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10"/>
-        <Button x:Name="SaveButton" Content="Save" Margin="10" Grid.ColumnSpan="2" Grid.Row="4" Click="SaveButton_Clicked" FontWeight="Bold" />
+
+        <Label x:Name="IdLabel" Content="ID" Grid.Row="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="BarcodeTextBox" TextWrapping="Wrap" Text="Barcode" Foreground="Gray" FontSize="14" Tag="Barcode" Grid.Row="3" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+
+        <Label x:Name="LocationLabel" Content="Location" Grid.Row="2" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="LocationTextBox" TextWrapping="Wrap" Text="Location" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Location" LostFocus="TextBox_LostFocus" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+
+        <Label x:Name="NameLabel" Content="Name" Grid.Row="4" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="Name" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Name" LostFocus="TextBox_LostFocus" Grid.Row="5" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+
+        <Label x:Name="DescriptionLabel" Content="Description" Grid.Row="4" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="Description" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Description" LostFocus="TextBox_LostFocus" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+
+        <Button x:Name="SaveButton" Content="Save" Margin="10,8" Grid.ColumnSpan="2" Grid.Row="6" Click="SaveButton_Clicked" FontWeight="Bold" />
         
     </Grid>
 </base:BaseWindow>
