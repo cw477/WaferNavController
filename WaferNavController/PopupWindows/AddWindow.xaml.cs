@@ -13,7 +13,7 @@ namespace WaferNavController {
     public partial class AddWindow : BaseWindow {
 
         public AddWindow() {
-            configPage = Config.Get();
+            statusLogConfig = StatusLogConfig.Get();
             KeyDown += Esc_KeyDown;
             KeyDown += AddWindow_KeyDown;
             InitializeComponent();
@@ -58,16 +58,16 @@ namespace WaferNavController {
         }
 
         private void AddWindow_Closed(object sender, EventArgs e) {
-            configPage.dgBLU.SelectedIndex = -1;
-            configPage.dgSLT.SelectedIndex = -1;
+            statusLogConfig.dgBLU.SelectedIndex = -1;
+            statusLogConfig.dgSLT.SelectedIndex = -1;
             MainWindow.Get().RefreshDataGrids();
             if (DialogResult != null && (bool) DialogResult) {
 
                 DataGrid dataGrid;
                 if (bluRadioButton.IsChecked != null && (bool) bluRadioButton.IsChecked) {
-                    dataGrid = configPage.dgBLU;
+                    dataGrid = statusLogConfig.dgBLU;
                 } else {
-                    dataGrid = configPage.dgSLT;
+                    dataGrid = statusLogConfig.dgSLT;
                 }
 
                 // Iterate through datagrid

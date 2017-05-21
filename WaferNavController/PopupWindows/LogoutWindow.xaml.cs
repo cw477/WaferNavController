@@ -10,7 +10,7 @@ namespace WaferNavController {
     public partial class LogoutWindow : BaseWindow {
 
         public LogoutWindow() {
-            configPage = Config.Get();
+            statusLogConfig = StatusLogConfig.Get();
             KeyDown += Esc_KeyDown;
             KeyDown += LogoutWindow_KeyDown;
             InitializeComponent();

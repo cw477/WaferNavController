@@ -22,6 +22,6 @@
         <TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Text="Username" Foreground="Gray" FontSize="14" Tag="Username" Grid.Row="2" VerticalContentAlignment="Center" Margin="15,9,10,10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" />
         <TextBox x:Name="PasswordTextBox" TextWrapping="Wrap" Text="Password" Foreground="Gray" FontSize="14" Tag="Password" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,10,10,9" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" />
         <Button x:Name="LoginButton" Content="Login" Margin="15,10,10,10" Grid.Row="3" Click="LoginButton_Clicked" Grid.ColumnSpan="2" FontWeight="Bold" />
-        <Image Source="Resources/astronics_logo.png" Stretch="Fill" Margin="112,-9,112,50" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Image Source="../Resources/astronics_logo.png" Stretch="Fill" Margin="112,-9,112,50" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
     </Grid>
 </base:BaseWindow>

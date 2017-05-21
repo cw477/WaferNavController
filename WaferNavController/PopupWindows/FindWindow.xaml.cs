@@ -13,7 +13,7 @@ namespace WaferNavController {
     public partial class FindWindow : BaseWindow {
 
         public FindWindow() {
-            configPage = Config.Get();
+            statusLogConfig = StatusLogConfig.Get();
             KeyDown += Esc_KeyDown;
             KeyDown += FindWindow_KeyDown;
             InitializeComponent();
@@ -29,12 +29,12 @@ namespace WaferNavController {
 
         private void FindButton_Click(object sender, RoutedEventArgs e) {
             // Just return if either data grid is null
-            if (configPage.dgBLU.ItemsSource == null || configPage.dgSLT.ItemsSource == null) {
+            if (statusLogConfig.dgBLU.ItemsSource == null || statusLogConfig.dgSLT.ItemsSource == null) {
                 DialogResult = false;
                 return;
             }
             var enteredBarcodeId = BarcodeTextBox.Text;
-            var dataGrids = new List<DataGrid> {configPage.dgBLU, configPage.dgSLT };
+            var dataGrids = new List<DataGrid> {statusLogConfig.dgBLU, statusLogConfig.dgSLT };
             // Iterate through both datagrids
             foreach (var dataGrid in dataGrids) {
                 foreach (DataRowView row in dataGrid.ItemsSource) {

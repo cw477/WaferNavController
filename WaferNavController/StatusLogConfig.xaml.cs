@@ -11,19 +11,19 @@ using Path = System.IO.Path;
 namespace WaferNavController
 {
     /// <summary>
-    /// Interaction logic for Config.xaml
+    /// Interaction logic for StatusLogConfig.xaml
     /// </summary>
-    public partial class Config : Page {
+    public partial class StatusLogConfig : Page {
         private readonly MainWindow mainWindow;
-        private static Config self;
+        private static StatusLogConfig self;
 
-        public Config() {
+        public StatusLogConfig() {
             self = this;
             mainWindow = MainWindow.Get();
             InitializeComponent();
         }
 
-        public static Config Get() {
+        public static StatusLogConfig Get() {
             return self;
         }
 

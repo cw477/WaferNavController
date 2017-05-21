@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,13 +7,13 @@ namespace WaferNavController {
 
     public abstract class BaseWindow : Window {
 
-        protected Config configPage;
+        protected StatusLogConfig statusLogConfig;
 
         protected void Esc_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Escape) {
                 DialogResult = false;
-                configPage.dgBLU.SelectedIndex = -1;
-                configPage.dgSLT.SelectedIndex = -1;
+                statusLogConfig.dgBLU.SelectedIndex = -1;
+                statusLogConfig.dgSLT.SelectedIndex = -1;
             }
         }
 

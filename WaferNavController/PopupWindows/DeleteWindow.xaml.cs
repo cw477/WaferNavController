@@ -13,7 +13,7 @@ namespace WaferNavController {
         private readonly string id;
 
         public DeleteWindow(string type, string id) {
-            configPage = Config.Get();
+            statusLogConfig = StatusLogConfig.Get();
             KeyDown += Esc_KeyDown;
             KeyDown += DeleteWindow_KeyDown;
             InitializeComponent();
@@ -48,8 +48,8 @@ namespace WaferNavController {
         }
 
         private void DeleteWindow_Closed(object sender, EventArgs e) {
-            configPage.dgBLU.SelectedIndex = -1;
-            configPage.dgSLT.SelectedIndex = -1;
+            statusLogConfig.dgBLU.SelectedIndex = -1;
+            statusLogConfig.dgSLT.SelectedIndex = -1;
             MainWindow.Get().RefreshDataGrids();
         }
     }

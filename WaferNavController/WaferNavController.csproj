@@ -120,32 +120,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DeleteWindow.xaml.cs">
+    <Compile Include="PopupWindows\DeleteWindow.xaml.cs">
       <DependentUpon>DeleteWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="PopupWindows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogoutWindow.xaml.cs">
+    <Compile Include="PopupWindows\LogoutWindow.xaml.cs">
       <DependentUpon>LogoutWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddWindow.xaml">
+    <Page Include="PopupWindows\AddWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="config_status.xaml">
+    <Page Include="StatusLogConfig.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DeleteWindow.xaml">
+    <Page Include="PopupWindows\DeleteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditWindow.xaml">
+    <Page Include="PopupWindows\EditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FindWindow.xaml">
+    <Page Include="PopupWindows\FindWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,7 +153,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddWindow.xaml.cs">
+    <Compile Include="PopupWindows\AddWindow.xaml.cs">
       <DependentUpon>AddWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -161,25 +161,25 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BaseWindow.cs" />
-    <Compile Include="config_status.xaml.cs">
-      <DependentUpon>config_status.xaml</DependentUpon>
+    <Compile Include="StatusLogConfig.xaml.cs">
+      <DependentUpon>StatusLogConfig.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseHandler.cs" />
-    <Compile Include="EditWindow.xaml.cs">
+    <Compile Include="PopupWindows\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FindWindow.xaml.cs">
+    <Compile Include="PopupWindows\FindWindow.xaml.cs">
       <DependentUpon>FindWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="LoginWindow.xaml">
+    <Page Include="PopupWindows\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LogoutWindow.xaml">
+    <Page Include="PopupWindows\LogoutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -14,7 +14,7 @@ namespace WaferNavController {
         private readonly string startId;
 
         public EditWindow(string type, string startId, string name, string description, string location, bool available) {
-            configPage = Config.Get();
+            statusLogConfig = StatusLogConfig.Get();
             KeyDown += Esc_KeyDown;
             KeyDown += EditWindow_KeyDown;
             InitializeComponent();
@@ -38,8 +38,8 @@ namespace WaferNavController {
 
         private void SaveButton_Clicked(object sender, RoutedEventArgs e) {
             if (!AllTextBoxesHaveData()) {
-                configPage.dgBLU.SelectedIndex = -1;
-                configPage.dgSLT.SelectedIndex = -1;
+                statusLogConfig.dgBLU.SelectedIndex = -1;
+                statusLogConfig.dgSLT.SelectedIndex = -1;
                 DialogResult = false;
                 return;
             }
@@ -51,18 +51,18 @@ namespace WaferNavController {
             bool result = false;
             if (type == "BLU") {
                 result = DatabaseHandler.UpdateBlu(startId, id, name, description, location, available);
-                configPage.dgBLU.SelectedIndex = -1;
+                statusLogConfig.dgBLU.SelectedIndex = -1;
             }
             else if (type == "SLT") {
                 result = DatabaseHandler.UpdateSlt(startId, id, name, description, location, available);
-                configPage.dgSLT.SelectedIndex = -1;
+                statusLogConfig.dgSLT.SelectedIndex = -1;
             }
             DialogResult = result;
         }
 
         private void EditWindow_Closed(object sender, EventArgs e) {
-            configPage.dgBLU.SelectedIndex = -1;
-            configPage.dgSLT.SelectedIndex = -1;
+            statusLogConfig.dgBLU.SelectedIndex = -1;
+            statusLogConfig.dgSLT.SelectedIndex = -1;
             MainWindow.Get().RefreshDataGrids();
         }
 

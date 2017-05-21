@@ -21,7 +21,7 @@ namespace WaferNavController {
     public partial class MainWindow : Window {
         private bool killMakeDotsThread = false;
         private readonly MqttConnectionHandler mqttConnectionHandler;
-        private readonly Config configPage;
+        private readonly StatusLogConfig statusLogConfig;
         private readonly BitmapImage editIconBitmapImage;
         private readonly BitmapImage deleteIconBitmapImage;
         private static MainWindow self;
@@ -29,8 +29,8 @@ namespace WaferNavController {
         public MainWindow() {
             InitializeComponent();
             self = this;
-            configPage = new Config();
-            this.Content = configPage;
+            statusLogConfig = new StatusLogConfig();
+            this.Content = statusLogConfig;
                 
             var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;
             var hBitmap = bmp.GetHbitmap();
@@ -58,7 +58,7 @@ namespace WaferNavController {
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
-            string currentTabName = ((TabItem)configPage.TabControl.SelectedItem).Name;
+            string currentTabName = ((TabItem)statusLogConfig.TabControl.SelectedItem).Name;
             if (e.Key == Key.A)
             {
                 if (currentTabName == "LogTabItem") {
@@ -81,7 +81,7 @@ namespace WaferNavController {
             }
 
             if (e.Key == Key.F12) {
-                AppendLine("F12 pressed! - selectedIndex: " + configPage.TabControl.SelectedIndex, true);
+                AppendLine("F12 pressed! - selectedIndex: " + statusLogConfig.TabControl.SelectedIndex, true);
             }
         }
 
@@ -95,8 +95,8 @@ namespace WaferNavController {
         }
 
         public void RefreshDataGrids() {
-            FillDataGrids(ref configPage.dgBLU, "BLU");
-            FillDataGrids(ref configPage.dgSLT, "SLT");
+            FillDataGrids(ref statusLogConfig.dgBLU, "BLU");
+            FillDataGrids(ref statusLogConfig.dgSLT, "SLT");
         }
 
         private void FillDataGrids(ref DataGrid dataGrid, string tableName) {
@@ -113,7 +113,7 @@ namespace WaferNavController {
             dataGrid.Columns[3].Header = "Location";
             dataGrid.Columns[4].Header = "Available";
 
-            configPage.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
+            statusLogConfig.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
         }
 
         public class DataObj {
@@ -267,13 +267,13 @@ namespace WaferNavController {
         }
 
         private void AppendText(string text) {
-            configPage.logBox.Text += text;
-            configPage.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+            statusLogConfig.logBox.Text += text;
+            statusLogConfig.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
         }
 
         private void AppendLine(string text) {
-            configPage.logBox.Text += text + "\n";
-            configPage.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
+            statusLogConfig.logBox.Text += text + "\n";
+            statusLogConfig.scrollViewer.ScrollToVerticalOffset(double.MaxValue);
         }
 
         protected override void OnClosed(EventArgs e) {
