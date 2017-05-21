@@ -218,9 +218,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\nielsen_ninjas_LogoTranspBack.png" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +252,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\refresh_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\refresh_icon_white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -119,5 +119,31 @@ namespace WaferNavController.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap refresh_icon_white {
+            get {
+                object obj = ResourceManager.GetObject("refresh_icon_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DEFINITION, BLU, id, site_name, site_description, site_location, available
+        ///BLU, &apos;000000&apos;, &apos;BLU #0&apos;, &apos;Handler 0 from config file!&apos;, &apos;East&apos;, 1
+        ///BLU, &apos;123456&apos;, &apos;BLU #1&apos;, &apos;Handler 1 from config file!&apos;, &apos;East&apos;, 1
+        ///BLU, &apos;234567&apos;, &apos;BLU #2&apos;, &apos;Handler 2 from config file!&apos;, &apos;West&apos;, 1
+        ///BLU, &apos;111111&apos;, &apos;BLU #3&apos;, &apos;Handler 3 from config file!&apos;, &apos;South&apos;, 1
+        ///BLU, &apos;222222&apos;, &apos;BLU #4&apos;, &apos;Handler 4 from config file!&apos;, &apos;West&apos;, 1
+        ///BLU, &apos;333333&apos;, &apos;BLU #5&apos;, &apos;Handler 5 from config file!&apos;, &apos;North&apos;, 1
+        ///BLU, &apos;444444&apos;, &apos;BLU #6&apos;, &apos;Handler 6 fro [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string testdata {
+            get {
+                return ResourceManager.GetString("testdata", resourceCulture);
+            }
+        }
     }
 }
