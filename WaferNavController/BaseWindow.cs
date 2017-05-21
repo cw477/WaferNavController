@@ -18,7 +18,7 @@ namespace WaferNavController {
         }
 
         protected void TextBox_GotFocus(object sender, RoutedEventArgs e) {
-            TextBox textBox = (TextBox) sender;
+            TextBox textBox = sender as TextBox;
             textBox.Text = string.Empty;
             textBox.Foreground = Brushes.Black;
             textBox.GotFocus -= TextBox_GotFocus;
@@ -30,6 +30,22 @@ namespace WaferNavController {
                 textBox.Text = (string) textBox.Tag;
                 textBox.Foreground = Brushes.LightGray;
                 textBox.GotFocus += TextBox_GotFocus;
+            }
+        }
+
+        protected void PasswordBox_GotFocus(object sender, RoutedEventArgs e) {
+            PasswordBox passwordBox = sender as PasswordBox;
+            passwordBox.Password = string.Empty;
+            passwordBox.Foreground = Brushes.Black;
+            passwordBox.GotFocus -= PasswordBox_GotFocus;
+        }
+
+        protected void PasswordBox_LostFocus(object sender, RoutedEventArgs e) {
+            PasswordBox passwordBox = sender as PasswordBox;
+            if (passwordBox.Password.Trim().Equals(string.Empty)) {
+                passwordBox.Password = (string)passwordBox.Tag;
+                passwordBox.Foreground = Brushes.LightGray;
+                passwordBox.GotFocus += PasswordBox_GotFocus;
             }
         }
     }

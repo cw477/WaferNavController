@@ -37,7 +37,7 @@ namespace WaferNavController {
             if (!clickedLoginButton) { // closing by clicking x or alt f4 or esc, so just exit app
                 Application.Current.Shutdown();
             }
-            if (!string.IsNullOrEmpty(UsernameTextBox.Text) && !string.IsNullOrEmpty(PasswordTextBox.Text) && clickedLoginButton) {
+            if (!string.IsNullOrEmpty(UsernameTextBox.Text) && !string.IsNullOrEmpty(PasswordTextBox.Password) && clickedLoginButton) {
                 e.Cancel = false;
             } else {
                 e.Cancel = true;

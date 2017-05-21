@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="" Height="304" Width="489" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow" Closed="LoginWindow_Closed" Closing="LoginWindow_Closing"
+        Title="ActivATE WaferNav Controller" Height="304" Width="489" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Closed="LoginWindow_Closed" Closing="LoginWindow_Closing"
         FocusManager.FocusedElement="{Binding ElementName=UsernameTextBox}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +26,7 @@
         <TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Text="Username" Foreground="Gray" FontSize="14" Tag="Username" Grid.Row="3" VerticalContentAlignment="Center" Margin="15,0,10,15" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" />
         
         <Label x:Name="PasswordLabel" Content="Password" Grid.Row="2" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="PasswordTextBox" TextWrapping="Wrap" Text="Password" Foreground="Gray" FontSize="14" Tag="Password" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,15,15" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" />
+        <PasswordBox x:Name="PasswordTextBox" Foreground="Gray" FontSize="14" Tag="Password" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,15,15" GotFocus="PasswordBox_GotFocus" LostFocus="PasswordBox_LostFocus" Password="Password" />
         
         <Button x:Name="LoginButton" Content="Login" Margin="15,10,15,15" Grid.Row="4" Click="LoginButton_Clicked" Grid.ColumnSpan="2" FontWeight="Bold" Padding="0" />
     </Grid>
