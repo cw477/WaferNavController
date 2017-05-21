@@ -6,7 +6,7 @@
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
         Title="" Height="125" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="ToolWindow"
-        FocusManager.FocusedElement="{Binding ElementName=BarcodeTextBox}">
+        FocusManager.FocusedElement="{Binding ElementName=IdTextBox}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -17,10 +17,10 @@
             <RowDefinition Height="0.50*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label x:Name="label" Content="Enter BLU or SLT barcode" Margin="5" Grid.ColumnSpan="2" Height="26" VerticalAlignment="Center" HorizontalAlignment="Center" Width="253" FontWeight="Bold" FontSize="14"/>
-        
+        <Label x:Name="label" Content="Enter BLU or SLT id" Margin="5" Grid.ColumnSpan="2" Height="26" VerticalAlignment="Center" HorizontalAlignment="Center" Width="253" FontWeight="Bold" FontSize="14"/>
+
         <Label x:Name="IdLabel" Content="ID" Grid.Row="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="BarcodeTextBox" Margin="10,0,10,10" TextWrapping="Wrap" Text="Barcode" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Tag="Barcode" Grid.Row="2" VerticalContentAlignment="Center" />
+        <TextBox x:Name="IdTextBox" Margin="10,0,10,10" TextWrapping="Wrap" Text="ID" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Tag="ID" Grid.Row="2" VerticalContentAlignment="Center" />
         <Button x:Name="FindButton" Content="Find" Margin="10,0,10,10" Click="FindButton_Click" Grid.Column="1" Grid.Row="2" FontWeight="Bold"/>
     </Grid>
 </base:BaseWindow>

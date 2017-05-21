@@ -20,8 +20,8 @@ namespace WaferNavController {
             InitializeComponent();
             this.type = type;
             this.startId = startId;
-            BarcodeTextBox.Text = startId;
-            BarcodeTextBox.Tag = startId;
+            IdTextBox.Text = startId;
+            IdTextBox.Tag = startId;
             NameTextBox.Text = name;
             NameTextBox.Tag = name;
             DescriptionTextBox.Text = description;
@@ -47,7 +47,7 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
-            var id = BarcodeTextBox.Text;
+            var id = IdTextBox.Text;
             var name = NameTextBox.Text;
             var description = DescriptionTextBox.Text;
             var location = LocationTextBox.Text;
@@ -71,7 +71,7 @@ namespace WaferNavController {
         }
 
         private bool AllTextBoxesHaveData() {
-            return TextBoxHasData(BarcodeTextBox)
+            return TextBoxHasData(IdTextBox)
                 && TextBoxHasData(NameTextBox)
                 && TextBoxHasData(DescriptionTextBox)
                 && TextBoxHasData(LocationTextBox);

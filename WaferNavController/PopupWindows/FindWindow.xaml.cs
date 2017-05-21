@@ -33,13 +33,13 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
-            var enteredBarcodeId = BarcodeTextBox.Text;
+            var enteredId = IdTextBox.Text;
             var dataGrids = new List<DataGrid> {statusLogConfig.dgBLU, statusLogConfig.dgSLT };
             // Iterate through both datagrids
             foreach (var dataGrid in dataGrids) {
                 foreach (DataRowView row in dataGrid.ItemsSource) {
-                    var barcodeId = row.Row[0].ToString();
-                    if (enteredBarcodeId == barcodeId) {
+                    var id = row.Row[0].ToString();
+                    if (enteredId == id) {
                         dataGrid.SelectedItem = row;
                         dataGrid.ScrollIntoView(dataGrid.SelectedItem);
                         DialogResult = true;

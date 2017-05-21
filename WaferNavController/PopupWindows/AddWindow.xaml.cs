@@ -32,7 +32,7 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
-            var id = BarcodeTextBox.Text;
+            var id = IdTextBox.Text;
             var name = NameTextBox.Text;
             var description = DescriptionTextBox.Text;
             var location = LocationTextBox.Text;
@@ -47,7 +47,7 @@ namespace WaferNavController {
         }
 
         private bool AllTextBoxesHaveData() {
-            return TextBoxHasData(BarcodeTextBox)
+            return TextBoxHasData(IdTextBox)
                 && TextBoxHasData(NameTextBox)
                 && TextBoxHasData(DescriptionTextBox)
                 && TextBoxHasData(LocationTextBox);
@@ -72,8 +72,8 @@ namespace WaferNavController {
 
                 // Iterate through datagrid
                 foreach (DataRowView row in dataGrid.ItemsSource) {
-                    var barcodeId = row.Row[0].ToString();
-                    if (BarcodeTextBox.Text == barcodeId) {
+                    var id = row.Row[0].ToString();
+                    if (IdTextBox.Text == id) {
                         dataGrid.SelectedItem = row;
                         dataGrid.ScrollIntoView(dataGrid.SelectedItem);
                         return;
