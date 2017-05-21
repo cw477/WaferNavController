@@ -37,8 +37,8 @@ namespace WaferNavController {
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             Icon = wpfBitmap;
 
-            Bitmap editIconBitmap = ResizeBitmap(Properties.Resources.edit_icon, new Size(25, 25));
-            Bitmap deleteIconBitmap = ResizeBitmap(Properties.Resources.delete_icon, new Size(20, 20));
+            Bitmap editIconBitmap = Properties.Resources.edit_icon_black_small;
+            Bitmap deleteIconBitmap = Properties.Resources.delete_icon_black_small;
             editIconBitmapImage = BitmapToBitmapImage(editIconBitmap);
             deleteIconBitmapImage = BitmapToBitmapImage(deleteIconBitmap);
 

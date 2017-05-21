@@ -202,8 +202,8 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -242,19 +242,22 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\edit_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\delete_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\testdata.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\refresh_icon.png" />
+    <Resource Include="Resources\refresh_icon_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\refresh_icon_white.png" />
+    <Resource Include="Resources\add_icon_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\search_icon_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit_icon_black_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete_icon_black_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

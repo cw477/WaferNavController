@@ -63,6 +63,16 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_icon_white {
+            get {
+                object obj = ResourceManager.GetObject("add_icon_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap astronics_logo {
             get {
                 object obj = ResourceManager.GetObject("astronics_logo", resourceCulture);
@@ -83,9 +93,9 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap delete_icon {
+        internal static System.Drawing.Bitmap delete_icon_black_small {
             get {
-                object obj = ResourceManager.GetObject("delete_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("delete_icon_black_small", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +103,9 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap edit_icon {
+        internal static System.Drawing.Bitmap edit_icon_black_small {
             get {
-                object obj = ResourceManager.GetObject("edit_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("edit_icon_black_small", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +136,16 @@ namespace WaferNavController.Properties {
         internal static System.Drawing.Bitmap refresh_icon_white {
             get {
                 object obj = ResourceManager.GetObject("refresh_icon_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap search_icon_white {
+            get {
+                object obj = ResourceManager.GetObject("search_icon_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

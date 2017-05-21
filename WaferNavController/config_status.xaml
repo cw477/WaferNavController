@@ -29,8 +29,38 @@
                     <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="34" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
                     <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Left" Margin="295,534,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1"/>
-                    <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="10,475,0,0" VerticalAlignment="Top" Width="75" Click="FindButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2" RenderTransformOrigin="0.6,-0.212" />
-                    <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="65,475,0,0" VerticalAlignment="Top" Width="75" Click="AddButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="1" RenderTransformOrigin="0.6,0.515" />
+
+                    <Button x:Name="FindButton" VerticalAlignment="Top" Margin="10,475,0,0" HorizontalAlignment="Left" Width="33" Height="33" Click="FindButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid x:Name="bg" Background="#FF428BCA">
+                                    <Border BorderBrush="Black" BorderThickness="1" />
+                                    <Image Margin="2" Source="Resources/search_icon_white.png" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bg" Property="Background" Value="LightBlue" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button x:Name="AddButton" VerticalAlignment="Top" Margin="10,475,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="AddButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid x:Name="bg" Background="#FF428BCA">
+                                    <Border BorderBrush="Black" BorderThickness="1" />
+                                    <Image Margin="2" Source="Resources/add_icon_white.png" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bg" Property="Background" Value="LightBlue" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
 
                     <Button x:Name="RefreshButton" VerticalAlignment="Top" Margin="474,475,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="RefreshButton_Click">
                         <Button.Template>
