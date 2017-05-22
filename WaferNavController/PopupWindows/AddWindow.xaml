@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WaferNavController"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
         Title="Add" Height="270" Width="458" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
@@ -12,6 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -22,22 +22,22 @@
             <RowDefinition Height="0.75*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label x:Name="label" Content="Enter BLU or SLT information" Grid.ColumnSpan="2" FontSize="16" Grid.Column="0" Grid.Row="0" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
+        <Label x:Name="label" Content="Enter BLU or SLT information" FontSize="16" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
         <RadioButton x:Name="bluRadioButton" Content="BLU" GroupName="RadioGroup" IsChecked="True" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Margin="10"/>
         <RadioButton x:Name="sltRadioButton" Content="SLT" GroupName="RadioGroup" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" Margin="10"/>
 
-        <Label x:Name="IdLabel" Content="ID" Grid.Row="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="IdTextBox" TextWrapping="Wrap" Text="ID" Foreground="Gray" FontSize="14" Tag="ID" Grid.Row="3" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <Label x:Name="IdLabel" Content="ID" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="IdTextBox" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="ID" Foreground="Gray" FontSize="14" Tag="ID" Grid.Row="3" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
 
-        <Label x:Name="LocationLabel" Content="Location" Grid.Row="2" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="LocationTextBox" TextWrapping="Wrap" Text="Location" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Location" LostFocus="TextBox_LostFocus" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <Label x:Name="LocationLabel" Content="Location" Grid.Row="2" Grid.Column="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="LocationTextBox" TextWrapping="Wrap" Text="Location" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Location" LostFocus="TextBox_LostFocus" Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
 
-        <Label x:Name="NameLabel" Content="Name" Grid.Row="4" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="Name" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Name" LostFocus="TextBox_LostFocus" Grid.Row="5" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <Label x:Name="NameLabel" Content="Name" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="Name" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Name" LostFocus="TextBox_LostFocus" Grid.Row="5" VerticalContentAlignment="Center" Margin="10,0,10,10" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <Label x:Name="DescriptionLabel" Content="Description" Grid.Row="4" Grid.Column="1" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
-        <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="Description" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Description" LostFocus="TextBox_LostFocus" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
+        <Label x:Name="DescriptionLabel" Content="Description" Grid.Row="4" Grid.Column="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
+        <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" Text="Description" Foreground="Gray" FontSize="14" GotFocus="TextBox_GotFocus" Tag="Description" LostFocus="TextBox_LostFocus" Grid.Row="5" Grid.Column="2" VerticalContentAlignment="Center" Margin="10,0,10,10"/>
 
-        <Button x:Name="AddButton" Content="Add" Margin="10,8" Grid.ColumnSpan="2" Grid.Row="6" Click="AddButton_Click" FontWeight="Bold" />
+        <Button x:Name="AddButton" Content="Add" Margin="10,8" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="6" Click="AddButton_Click" FontWeight="Bold" />
     </Grid>
 </base:BaseWindow>
