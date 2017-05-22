@@ -9,8 +9,10 @@ namespace WaferNavController {
     /// Interaction logic for ImportWindow.xaml
     /// </summary>
     public partial class ImportWindow : BaseWindow {
+        private string filenameToImport;
 
-        public ImportWindow() {
+        public ImportWindow(string filenameToImport) {
+            this.filenameToImport = filenameToImport;
             statusLogConfig = StatusLogConfig.Get();
             KeyDown += Esc_KeyDown;
             KeyDown += ImportWindow_KeyDown;
@@ -34,7 +36,7 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
-            DialogResult = statusLogConfig.ImportFile();
+            DialogResult = statusLogConfig.ImportFile(filenameToImport);
         }
 
         private void ImportWindow_Closed(object sender, EventArgs e) {

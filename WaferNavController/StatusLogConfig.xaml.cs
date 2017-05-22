@@ -122,33 +122,29 @@ namespace WaferNavController
             }
         }
 
-        //Open File Dialog, Select File Button
-        private void SelectFileButton_Click(object sender, RoutedEventArgs e) {
-            //Create OpenFileDialog
+        private void ImportButton_Click(object sender, RoutedEventArgs e) {
+            if (!MainWindow.IsAdmin()) { return; } // only admin can import from file
+
+            // Create OpenFileDialog
             OpenFileDialog ofd = new OpenFileDialog();
 
-            //Set default file extension
-            ofd.DefaultExt = ".csv";
+            // Set default file extension
+            ofd.DefaultExt = ".txt";
 
             if (ofd.ShowDialog() == true) {
                 string filename = ofd.FileName;
-                FileNameTextBox.Text = filename;
+                ImportWindow importWindow = new ImportWindow(filename);
+                importWindow.Owner = mainWindow;
+                importWindow.ShowDialog();
             }
         }
 
-        private void ImportButton_Click(object sender, RoutedEventArgs e) {
-            if (!MainWindow.IsAdmin()) { return; } // only admin can import from file
-            ImportWindow importWindow = new ImportWindow();
-            importWindow.Owner = mainWindow;
-            importWindow.ShowDialog();
-        }
-
-        public bool ImportFile() {
+        public bool ImportFile(string filepath) {
             try {
-                string filepath = FileNameTextBox.Text;
-                if (filepath == "Properties.Resources.testdata") {
+                // Hold shift when click OK on ImportWindow to import data saved in project Resources
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) {
                     string runningPath = AppDomain.CurrentDomain.BaseDirectory;
-                    filepath = string.Format("{0}Resources\\testdata.txt", Path.GetFullPath(Path.Combine(runningPath, @"..\..\")));
+                    filepath = $"{Path.GetFullPath(Path.Combine(runningPath, @"..\..\"))}Resources\\testdata.txt";
                 }
                 if (!string.IsNullOrEmpty(filepath)) {
                     DatabaseHandler.ResetDatabaseWithConfigFileData(filepath);
