@@ -178,7 +178,7 @@
     <Compile Include="StatusLogConfig.xaml.cs">
       <DependentUpon>StatusLogConfig.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="DatabaseAndMqtt\DatabaseHandler.cs" />
     <Compile Include="PopupWindows\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
     </Compile>
@@ -199,8 +199,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MqttConnectionHandler.cs" />
-    <Compile Include="NavigationHandler.cs" />
+    <Compile Include="DatabaseAndMqtt\MqttConnectionHandler.cs" />
+    <Compile Include="DatabaseAndMqtt\NavigationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
