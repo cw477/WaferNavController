@@ -23,9 +23,9 @@ namespace WaferNavController {
 
         private void DeleteWindow_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(OkButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                var peer = new ButtonAutomationPeer(OkButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
         }
 

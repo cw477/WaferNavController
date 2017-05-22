@@ -20,9 +20,9 @@ namespace WaferNavController {
         private void LoginWindow_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 LoginButton.Focus();
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(LoginButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                var peer = new ButtonAutomationPeer(LoginButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             } else if (e.Key == Key.Escape) {
                 Application.Current.Shutdown();
             }

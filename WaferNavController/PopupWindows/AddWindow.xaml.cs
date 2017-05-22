@@ -21,9 +21,9 @@ namespace WaferNavController {
 
         private void AddWindow_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(AddButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                var peer = new ButtonAutomationPeer(AddButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
         }
 

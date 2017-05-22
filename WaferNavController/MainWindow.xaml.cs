@@ -77,55 +77,61 @@ namespace WaferNavController {
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
-            string currentTabName = ((TabItem)statusLogConfig.TabControl.SelectedItem).Name;
-            if (e.Key == Key.A) {
-                if (currentTabName == "LogTabItem") {
-                    AppendCurrentDatabaseData();
-                }
+            var ctrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            var currentTabName = ((TabItem)statusLogConfig.TabControl.SelectedItem).Name;
+
+            // Append database contents to log when press A on log tab
+            if (e.Key == Key.A && currentTabName == "LogTabItem") {
+                AppendCurrentDatabaseData();
             }
 
             // Click find button when Ctrl + F is pressed
-            if (e.Key == Key.F) {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
-                    ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.FindButton);
-                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                    invokeProv.Invoke();
-                }
+            else if (e.Key == Key.F && ctrlPressed) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.FindButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
 
             // Click refresh button when F5 is pressed
-            if (e.Key == Key.F5) {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.RefreshButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+            else if (e.Key == Key.F5) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.RefreshButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
 
             // Click add button when Ctrl + = pressed
-            if (e.Key == Key.OemPlus) {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
-                    ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.AddButton);
-                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                    invokeProv.Invoke();
-                }
+            else if (e.Key == Key.OemPlus && ctrlPressed) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.AddButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
 
             // Click reset database button when Ctrl + Delete pressed
-            if (e.Key == Key.Delete) {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
-                    ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.ResetDatabaseButton);
-                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                    invokeProv.Invoke();
-                }
+            else if (e.Key == Key.Delete && ctrlPressed) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.ResetDatabaseButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
 
-            // Click logout button when Esc pressed
-            if (e.Key == Key.Escape) {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.LogoutButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+            // Click logout button when Ctrl + 0 pressed
+            else if (e.Key == Key.D0 && ctrlPressed) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.LogoutButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
 
-            if (e.Key == Key.F12) {
+            // Change tab index if Ctrl + 1|2|3 pressed
+            else if (e.Key == Key.D1 && ctrlPressed) {
+                statusLogConfig.TabControl.SelectedIndex = 0;
+            }
+            else if (e.Key == Key.D2 && ctrlPressed) {
+                statusLogConfig.TabControl.SelectedIndex = 1;
+            }
+            else if (e.Key == Key.D3 && ctrlPressed) {
+                statusLogConfig.TabControl.SelectedIndex = 2;
+            }
+
+            else if (e.Key == Key.F12) {
                 AppendLine("F12 pressed! - selectedIndex: " + statusLogConfig.TabControl.SelectedIndex, true);
             }
         }

@@ -36,9 +36,9 @@ namespace WaferNavController {
         private void EditWindow_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 SaveButton.Focus();
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(SaveButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                var peer = new ButtonAutomationPeer(SaveButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
         }
 

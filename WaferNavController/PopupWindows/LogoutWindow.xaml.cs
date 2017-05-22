@@ -18,9 +18,9 @@ namespace WaferNavController {
 
         private void LogoutWindow_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(LogoutButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                var peer = new ButtonAutomationPeer(LogoutButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
             }
         }
 
