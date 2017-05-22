@@ -122,6 +122,13 @@ namespace WaferNavController
         }
 
         private void ImportButton_Click(object sender, RoutedEventArgs e) {
+            if (!MainWindow.IsAdmin()) { return; } // only admin can import from file
+            ImportWindow importWindow = new ImportWindow();
+            importWindow.Owner = mainWindow;
+            importWindow.ShowDialog();
+        }
+
+        public bool ImportFile() {
             try {
                 string filepath = FileNameTextBox.Text;
                 if (filepath == "Properties.Resources.testdata") {
@@ -134,18 +141,26 @@ namespace WaferNavController
                 mainWindow.AppendLine("Successfully reset database with data from imported config file!", true);
                 TabControl.SelectedIndex = 0;
                 MainWindow.Get().RefreshDataGrids();
+                return true;
             }
             catch (Exception) {
                 mainWindow.AppendLine("Failed to load reset database with config file data!", true);
+                return false;
             }
         }
 
         private void ResetDatabaseButton_Click(object sender, RoutedEventArgs e) {
             if (!MainWindow.IsAdmin()) { return; } // only admin can reset database
-            mainWindow.AppendLine(DateTime.Now + ": Resetting DB...", true);
+            ResetWindow resetWindow = new ResetWindow();
+            resetWindow.Owner = mainWindow;
+            resetWindow.ShowDialog();
+        }
+
+        public void ResetDatabase() {
+            MainWindow.Get().AppendLine(DateTime.Now + ": Resetting DB...", true);
             DatabaseHandler.ResetDatabase();
-            mainWindow.AppendLine(DateTime.Now + ": Resetting DB Finished.", true);
-            mainWindow.RefreshDataGrids();
+            MainWindow.Get().AppendLine(DateTime.Now + ": Resetting DB Finished.", true);
+            MainWindow.Get().RefreshDataGrids();
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) {

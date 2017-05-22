@@ -282,6 +282,9 @@
   <ItemGroup>
     <Resource Include="Resources\find_icon_white.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete_forever_icon_black_small.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

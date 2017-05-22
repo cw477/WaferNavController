@@ -103,6 +103,16 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete_forever_icon_black_small {
+            get {
+                object obj = ResourceManager.GetObject("delete_forever_icon_black_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap delete_forever_icon_white {
             get {
                 object obj = ResourceManager.GetObject("delete_forever_icon_white", resourceCulture);

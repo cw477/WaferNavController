@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:WaferNavController"
         mc:Ignorable="d"
-        Title="Reset" Height="150" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Closed="ResetWindow_Closed" Icon="/WaferNavController;component/Resources/delete_icon_black_small.png">
+        Title="Reset Database" Height="150" Width="279" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Icon="/WaferNavController;component/Resources/delete_forever_icon_black_small.png" Closed="ResetWindow_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -16,7 +17,8 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBox x:Name="label" Text="Warning&#xD;&#xA;This will reset the database to &#xD;&#xA;its initial state. Continue?" Margin="10" Grid.ColumnSpan="3" Height="61" VerticalAlignment="Center" Width="253" FontWeight="Bold" FontSize="14" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" TextAlignment="Center"/>
-        <Button x:Name="CancelButton" Content="Cancel" Margin="31,7,33,7" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Width="72" Height="26" VerticalAlignment="Center" FontWeight="Bold"/>
-        <Button x:Name="OkButton" Content="OK" Margin="31,7,35,7" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Width="71" Height="26" VerticalAlignment="Center" FontWeight="Bold"/>
+        <Button x:Name="CancelButton" Content="Cancel" Margin="5" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Width="71" Height="26" VerticalAlignment="Center" FontWeight="Bold" Click="CancelButton_Click"/>
+        <Button x:Name="OkButton" Content="OK" Margin="5" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Width="71" Height="26" VerticalAlignment="Center" FontWeight="Bold" Click="OkButton_Click"/>
     </Grid>
 </base:BaseWindow>
+
