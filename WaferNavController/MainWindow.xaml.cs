@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Image = System.Windows.Controls.Image;
@@ -80,6 +82,47 @@ namespace WaferNavController {
                 if (currentTabName == "LogTabItem") {
                     AppendCurrentDatabaseData();
                 }
+            }
+
+            // Click find button when Ctrl + F is pressed
+            if (e.Key == Key.F) {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
+                    ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.FindButton);
+                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                    invokeProv.Invoke();
+                }
+            }
+
+            // Click refresh button when F5 is pressed
+            if (e.Key == Key.F5) {
+                ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.RefreshButton);
+                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv.Invoke();
+            }
+
+            // Click add button when Ctrl + = pressed
+            if (e.Key == Key.OemPlus) {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
+                    ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.AddButton);
+                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                    invokeProv.Invoke();
+                }
+            }
+
+            // Click reset database button when Ctrl + Delete pressed
+            if (e.Key == Key.Delete) {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) {
+                    ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.ResetDatabaseButton);
+                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                    invokeProv.Invoke();
+                }
+            }
+
+            // Click logout button when Esc pressed
+            if (e.Key == Key.Escape) {
+                ButtonAutomationPeer peer = new ButtonAutomationPeer(statusLogConfig.LogoutButton);
+                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv.Invoke();
             }
 
             if (e.Key == Key.F12) {
