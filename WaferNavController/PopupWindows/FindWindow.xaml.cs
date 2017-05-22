@@ -35,18 +35,13 @@ namespace WaferNavController {
             }
             var enteredId = IdTextBox.Text;
             var dataGrids = new List<DataGrid> {statusLogConfig.dgBLU, statusLogConfig.dgSLT };
+            var result = false;
             // Iterate through both datagrids
             foreach (var dataGrid in dataGrids) {
-                foreach (DataRowView row in dataGrid.ItemsSource) {
-                    var id = row.Row[0].ToString();
-                    if (enteredId == id) {
-                        dataGrid.SelectedItem = row;
-                        dataGrid.ScrollIntoView(dataGrid.SelectedItem);
-                        DialogResult = true;
-                        return;
-                    }
-                }
+                result = statusLogConfig.FindAndSelectRowIfExists(dataGrid, enteredId);
+                if (result) { break; }
             }
+            DialogResult = result;
         }
     }
 }

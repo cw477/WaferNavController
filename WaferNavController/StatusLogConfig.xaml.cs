@@ -66,6 +66,18 @@ namespace WaferNavController
             findWindow.ShowDialog();
         }
 
+        public bool FindAndSelectRowIfExists(DataGrid dataGrid, string idToFind) {
+            foreach (DataRowView row in dataGrid.ItemsSource) {
+                var id = row.Row[0].ToString();
+                if (idToFind == id) {
+                    dataGrid.SelectedItem = row;
+                    dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void AddButton_Click(object sender, RoutedEventArgs e) {
             AddWindow addWindow = new AddWindow();
             addWindow.Owner = mainWindow;

@@ -40,8 +40,14 @@ namespace WaferNavController {
             bool result;
             if (bluRadioButton.IsChecked != null && (bool) bluRadioButton.IsChecked) {
                 result = DatabaseHandler.AddBlu(id, name, description, location);
+                if (result) {
+                    statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgBLU, id);
+                }
             } else {
                 result = DatabaseHandler.AddSlt(id, name, description, location);
+                if (result) {
+                    statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgSLT, id);
+                }
             }
             DialogResult = result;
         }
