@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Path = System.IO.Path;
 
 namespace WaferNavController
@@ -158,6 +161,38 @@ namespace WaferNavController
             catch (Exception) {
                 mainWindow.AppendLine("Failed to load reset database with config file data!", true);
                 return false;
+            }
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e) {
+            ExportFile();
+        }
+
+        public void ExportFile() {
+            try {
+                List<Dictionary<string, string>> bluData = DatabaseHandler.GetAllBlus();
+                List<Dictionary<string, string>> sltData = DatabaseHandler.GetAllSlts();
+
+                Dictionary<string, List<Dictionary<string, string>>> allData = new Dictionary<string, List<Dictionary<string, string>>>();
+                allData.Add("BLU", bluData);
+                allData.Add("SLT", sltData);
+
+                var json = JsonConvert.SerializeObject(allData);
+                string jsonFormatted = JToken.Parse(json).ToString(Formatting.Indented);
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.DefaultExt = ".txt";
+                sfd.AddExtension = true;
+                sfd.Filter = "Text Files (*.txt)|*.txt";
+                sfd.FileName = DateTime.Now.ToString("yyyy-MM-dd--HH-mm-ss") + "-WaferNavController-Exported-Database";
+
+                if (sfd.ShowDialog() == true) {
+                    string filename = sfd.FileName;
+                    File.WriteAllText(filename, jsonFormatted);
+                }
+            }
+            catch (Exception e) {
+                mainWindow.AppendLine("Failed to export database to text file!", true);
             }
         }
 

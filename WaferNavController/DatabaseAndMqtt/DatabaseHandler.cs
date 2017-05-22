@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Data;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace WaferNavController
 {
@@ -92,7 +93,7 @@ namespace WaferNavController
 
             SqlTransaction tran = null;
             bool transStarted = false;
-            string[] queries = BuildQueriesFromConfigFileData(filePath);
+            string[] queries = BuildQueriesFromJsonConfigFileData(filePath);
 
             try {
                 bool connectionOpenedHere = false;
@@ -134,62 +135,51 @@ namespace WaferNavController
             }
         }
 
-        private static string[] BuildQueriesFromConfigFileData(string filePath) {
+        public static string[] BuildQueriesFromJsonConfigFileData(string filePath) {
+            string dataReadFromFile = File.ReadAllText(filePath);
+            Dictionary<string, object> jsonFromFile = JsonConvert.DeserializeObject<Dictionary<string, object>>(dataReadFromFile);
 
-            string[] lines = File.ReadAllLines(filePath);
+            var query1 = BuildQueryFromJsonConfigFileHelper(jsonFromFile, "BLU");
+            var query2 = BuildQueryFromJsonConfigFileHelper(jsonFromFile, "SLT");
 
-            string bluDefinition = null;
-            string sltDefinition = null;
-            List<string> bluEntries = new List<string>();
-            List<string> sltEntries = new List<string>();
+            return new[] { query1, query2 };
+        }
 
-            // Parse data from file
-            foreach (var line in lines) {
-                if (line == "") { continue; }  // skip empty lines
-                var splitLine = line.Split(new[] { ", " }, StringSplitOptions.None);
-                if (splitLine[0] == "DEFINITION") {
-                    if (splitLine[1] == "BLU") {
-                        bluDefinition = string.Join(", ", splitLine.Skip(2));
+        private static string BuildQueryFromJsonConfigFileHelper(Dictionary<string, object> jsonFromFile, string type) {
+            JArray innerDictArr = (JArray)jsonFromFile[type];
+            List<string> keys = null;
+            string query = "";
+
+            foreach (JToken jToken in innerDictArr) {
+                var dict = jToken.ToObject<Dictionary<string, object>>();
+
+                if (keys == null) { // assuming all keys for all BLU/SLT entries are the same
+                    keys = dict.Keys.ToList();
+                    query += $"INSERT INTO [wn].[{type}] (";
+                    foreach (var key in keys) {
+                        query += key + ", ";
                     }
-                    else if (splitLine[1] == "SLT") {
-                        sltDefinition = string.Join(", ", splitLine.Skip(2));
+                    query = query.Substring(0, query.Length - 2) + ") VALUES ";
+                }
+
+                query += "(";
+                foreach (var key in keys) {
+                    if (key == "available") {
+                        if ((string)dict[key] == "True") {
+                            query += "1, ";
+                        }
+                        else {
+                            query += "0, ";
+                        }
                     }
                     else {
-                        // UNKNOWN DEFINITION!
+                        query += $"'{dict[key]}', ";
                     }
-                    continue;
                 }
-                else if (splitLine[0] == "BLU") {
-                    bluEntries.Add(string.Join(", ", splitLine.Skip(1)));
-                }
-                else if (splitLine[0] == "SLT") {
-                    sltEntries.Add(string.Join(", ", splitLine.Skip(1)));
-                }
-                else {
-                    // UNKNOWN ENTRY TYPE!
-                }
+                query = query.Substring(0, query.Length - 2) + "), ";
             }
-
-            // Build queries using data gathered above
-            string bluQuery = null;
-            if (bluDefinition != null && bluEntries.Count > 0) {
-                bluQuery = $"INSERT INTO [wn].[BLU] ({bluDefinition}) VALUES ";
-                foreach (var bluEntry in bluEntries) {
-                    bluQuery += $"({bluEntry}), ";
-                }
-                bluQuery = bluQuery.Substring(0, bluQuery.Length - 2) + ";";  // replace trailing comma with semicolon
-            }
-
-            string sltQuery = null;
-            if (sltDefinition != null && sltEntries.Count > 0) {
-                sltQuery = $"INSERT INTO [wn].[SLT] ({sltDefinition}) VALUES ";
-                foreach (var sltEntry in sltEntries) {
-                    sltQuery += $"({sltEntry}), ";
-                }
-                sltQuery = sltQuery.Substring(0, sltQuery.Length - 2) + ";";  // replace trailing comma with semicolon
-            }
-
-            return new[] {bluQuery, sltQuery};
+            query = query.Substring(0, query.Length - 2) + ";";
+            return query;
         }
 
         public static List<Dictionary<string, string>> GetAllBlus()

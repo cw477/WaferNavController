@@ -256,9 +256,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\testdata.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\refresh_icon_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +281,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\delete_forever_icon_black_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\testdata.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

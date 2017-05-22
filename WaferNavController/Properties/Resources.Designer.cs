@@ -191,14 +191,27 @@ namespace WaferNavController.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DEFINITION, BLU, id, site_name, site_description, site_location, available
-        ///BLU, &apos;000000&apos;, &apos;BLU #0&apos;, &apos;Handler 0 from config file!&apos;, &apos;East&apos;, 1
-        ///BLU, &apos;123456&apos;, &apos;BLU #1&apos;, &apos;Handler 1 from config file!&apos;, &apos;East&apos;, 1
-        ///BLU, &apos;234567&apos;, &apos;BLU #2&apos;, &apos;Handler 2 from config file!&apos;, &apos;West&apos;, 1
-        ///BLU, &apos;111111&apos;, &apos;BLU #3&apos;, &apos;Handler 3 from config file!&apos;, &apos;South&apos;, 1
-        ///BLU, &apos;222222&apos;, &apos;BLU #4&apos;, &apos;Handler 4 from config file!&apos;, &apos;West&apos;, 1
-        ///BLU, &apos;333333&apos;, &apos;BLU #5&apos;, &apos;Handler 5 from config file!&apos;, &apos;North&apos;, 1
-        ///BLU, &apos;444444&apos;, &apos;BLU #6&apos;, &apos;Handler 6 fro [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to {
+        ///  &quot;BLU&quot;: [
+        ///    {
+        ///      &quot;id&quot;: &quot;000000&quot;,
+        ///      &quot;available&quot;: &quot;True&quot;,
+        ///      &quot;site_name&quot;: &quot;BLU #0&quot;,
+        ///      &quot;site_description&quot;: &quot;Handler 0 from config file!&quot;,
+        ///      &quot;site_location&quot;: &quot;East&quot;
+        ///    },
+        ///    {
+        ///      &quot;id&quot;: &quot;111111&quot;,
+        ///      &quot;available&quot;: &quot;True&quot;,
+        ///      &quot;site_name&quot;: &quot;BLU #3&quot;,
+        ///      &quot;site_description&quot;: &quot;Handler 3 from config file!&quot;,
+        ///      &quot;site_location&quot;: &quot;South&quot;
+        ///    },
+        ///    {
+        ///      &quot;id&quot;: &quot;123456&quot;,
+        ///      &quot;available&quot;: &quot;True&quot;,
+        ///      &quot;site_name&quot;: &quot;BLU #1&quot;,
+        ///      &quot;site_description&quot;: &quot;Handler 1 f [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string testdata {
             get {
