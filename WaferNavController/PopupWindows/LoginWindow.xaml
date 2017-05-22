@@ -19,7 +19,7 @@
             <RowDefinition Height="0.75*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image Source="../Resources/astronics_logo.png" Stretch="Fill" Margin="112,-9,112,50" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Image Source="../Resources/astronics_logo.png" Stretch="Fill" Margin="112,0,112,41" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
         <TextBlock HorizontalAlignment="Left" Margin="112,24,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav Controller" VerticalAlignment="Top" Height="31" Width="262" FontSize="20" Grid.ColumnSpan="2" Grid.Row="1"/>
 
         <Label x:Name="UsernameLabel" Content="Username" Grid.Row="2" Foreground="Gray" HorizontalAlignment="Left" Margin="16,0,0,0" VerticalAlignment="Bottom" Padding="0" />
