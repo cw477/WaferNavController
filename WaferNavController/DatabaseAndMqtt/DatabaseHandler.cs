@@ -682,7 +682,7 @@ namespace WaferNavController
             }
         }
 
-        public static void finishBluUnload(string bluId)
+        public static void finishBluUnload(string bluId, Boolean demoMode)
         {
             /*TODO: Model this method like others, so that it can pass any
              * exception to be passed back to the app, but in this case
@@ -696,66 +696,69 @@ namespace WaferNavController
                 connection.Open();
                 connectionOpenedHere = true;
             }
-            tran = connection.BeginTransaction();
-            transStarted = true;
-            //throw exception if the assignment doesn't exist
-            var query = new SqlCommand($"SELECT * FROM [wn].[blu_assignment_unload] WHERE [blu_id] = '{bluId}';", connection, tran);
-            if (query.ExecuteNonQuery() == 0)
+            if (!demoMode)
             {
-                throw new Exception($"There is nothing to pick up at the blu specified: {bluId}");
-            }
-            //assignment data
-            string cmd = "SELECT * " +
-                "FROM [wafer_nav].[wn].[blu_assignment_unload] " +
-                $"WHERE blu_id = '{bluId}';";
-            var assignmentData = GetData(cmd,tran);
-
-            //historic data
-            cmd = "SELECT *" +
-                "FROM [wafer_nav].[wn].[historic_blu_assignment_unload] " +
-                $"WHERE blu_id = '{bluId}';";
-            var historicData = GetData(cmd,tran);
-
-            foreach (Dictionary<string,string> entry in assignmentData)
-            {
-                try
+                tran = connection.BeginTransaction();
+                transStarted = true;
+                //throw exception if the assignment doesn't exist
+                var query = new SqlCommand($"SELECT * FROM [wn].[blu_assignment_unload] WHERE [blu_id] = '{bluId}';", connection, tran);
+                if (query.ExecuteNonQuery() == 0)
                 {
-                    var theBib = entry["bib_id"];
-
-                    //add historic bib
-                    DateTime insertedAt = addBibToHistoric(entry["bib_id"], tran);
-
-                    //add historic row
-                    cmd = "INSERT INTO [wn].[historic_blu_assignment_unload] " +
-                        "(blu_id, bib_id, bib_id_inserted_at) VALUES " +
-                        $"('{bluId}','{theBib}','{insertedAt}');";
-                    new SqlCommand(cmd, connection, tran).ExecuteNonQuery();
-
-                    //remove active row
-                    cmd = "DELETE FROM [wn].[blu_assignment_unload] " +
-                        $"WHERE [bib_id] = '{theBib}'";
-                    if ((new SqlCommand(cmd, connection, tran)).ExecuteNonQuery() == 0)
-                    {
-                        throw new Exception("ERROR: NO ROWS WERE DELETED DURING REMOVAL OF ACTIVE ASSIGNMENT ROW");
-                    }
-
-                    //remove active bib
-                    cmd = $"DELETE FROM [wn].[active_bib] WHERE [id] = {theBib};";
-                    var sqlCommand = new SqlCommand(cmd, connection, tran);
-                    sqlCommand.ExecuteNonQuery();
+                    throw new Exception($"There is nothing to pick up at the blu specified: {bluId}");
                 }
-                catch (Exception e)
+                //assignment data
+                string cmd = "SELECT * " +
+                    "FROM [wafer_nav].[wn].[blu_assignment_unload] " +
+                    $"WHERE blu_id = '{bluId}';";
+                var assignmentData = GetData(cmd, tran);
+
+                //historic data
+                cmd = "SELECT *" +
+                    "FROM [wafer_nav].[wn].[historic_blu_assignment_unload] " +
+                    $"WHERE blu_id = '{bluId}';";
+                var historicData = GetData(cmd, tran);
+
+                foreach (Dictionary<string, string> entry in assignmentData)
                 {
-                    if (transStarted)
+                    try
                     {
-                        tran.Rollback();
-                    }
-                    throw e;
-                }
-            }
+                        var theBib = entry["bib_id"];
 
-            //commit all
-            tran.Commit();
+                        //add historic bib
+                        DateTime insertedAt = addBibToHistoric(entry["bib_id"], tran);
+
+                        //add historic row
+                        cmd = "INSERT INTO [wn].[historic_blu_assignment_unload] " +
+                            "(blu_id, bib_id, bib_id_inserted_at) VALUES " +
+                            $"('{bluId}','{theBib}','{insertedAt}');";
+                        new SqlCommand(cmd, connection, tran).ExecuteNonQuery();
+
+                        //remove active row
+                        cmd = "DELETE FROM [wn].[blu_assignment_unload] " +
+                            $"WHERE [bib_id] = '{theBib}'";
+                        if ((new SqlCommand(cmd, connection, tran)).ExecuteNonQuery() == 0)
+                        {
+                            throw new Exception("ERROR: NO ROWS WERE DELETED DURING REMOVAL OF ACTIVE ASSIGNMENT ROW");
+                        }
+
+                        //remove active bib
+                        cmd = $"DELETE FROM [wn].[active_bib] WHERE [id] = {theBib};";
+                        var sqlCommand = new SqlCommand(cmd, connection, tran);
+                        sqlCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        if (transStarted)
+                        {
+                            tran.Rollback();
+                        }
+                        throw e;
+                    }
+                }
+
+                //commit all
+                tran.Commit(); 
+            }
 
             SetBluToAvailable(bluId);
             if (connectionOpenedHere)

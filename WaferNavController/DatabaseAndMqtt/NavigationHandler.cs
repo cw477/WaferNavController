@@ -7,6 +7,10 @@ namespace WaferNavController
 {
     public static class NavigationHandler
     {
+
+        //please turn below off for actual use
+        private static Boolean demoMode = true;
+
         /// <summary>
         /// Process GET_NEW_BLU message.
         /// </summary>
@@ -31,9 +35,12 @@ namespace WaferNavController
             {
                 // get available blu
                 var bluId = DatabaseHandler.GetFirstAvailableBluId();
+                if (!demoMode)
+                {
 
-                //add new lot id + add assignment + set blu to unavailable
-                DatabaseHandler.setForLoad((string)messages["lotId"], bluId);
+                    //add new lot id + add assignment + set blu to unavailable
+                    DatabaseHandler.setForLoad((string)messages["lotId"], bluId); 
+                }
 
                 // Get BLU info that we were successful
                 var returnJson = DatabaseHandler.GetBlu(bluId);
@@ -115,8 +122,11 @@ namespace WaferNavController
                 // Get first available SLT id
                 var sltId = DatabaseHandler.GetFirstAvailableSltId();
 
-                //remove previous data+assignments, add new assignments+data
-                DatabaseHandler.setForTest((string)messages["bluId"], (JArray)messages["bibIds"], sltId);
+                if (!demoMode)
+                {
+                    //remove previous data+assignments, add new assignments+data
+                    DatabaseHandler.setForTest((string)messages["bluId"], (JArray)messages["bibIds"], sltId); 
+                }
 
                 // Get slt info since we were successful
                 var returnJson = DatabaseHandler.GetSlt(sltId);
@@ -197,8 +207,11 @@ namespace WaferNavController
                 //get available blu
                 var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
-                //remove previous data+assignments, add new assignments+data
-                DatabaseHandler.setForUnload((string)messages["sltId"], (JArray)messages["bibIds"], bluId);
+                if (!demoMode)
+                {
+                    //remove previous data+assignments, add new assignments+data
+                    DatabaseHandler.setForUnload((string)messages["sltId"], (JArray)messages["bibIds"], bluId); 
+                }
 
                 //get blu info
                 var returnJson = DatabaseHandler.GetBlu(bluId);
@@ -247,7 +260,7 @@ namespace WaferNavController
                 Task finish = Task.Run(() =>
                 {
                     System.Threading.Thread.Sleep(10000);
-                    DatabaseHandler.finishBluUnload((string)messages["bluId"]);
+                    DatabaseHandler.finishBluUnload((string)messages["bluId"], demoMode);
                 });
                 return returnJson;
             }
