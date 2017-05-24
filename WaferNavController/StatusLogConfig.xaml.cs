@@ -88,6 +88,12 @@ namespace WaferNavController
         }
 
         private void DataGrid_MouseUp(object sender, MouseButtonEventArgs e) {
+            if (((DataGrid)sender).Name == "dgBLU") {
+                dgSLT.SelectedIndex = -1;
+            } else if (((DataGrid) sender).Name == "dgSLT") {
+                dgBLU.SelectedIndex = -1;
+            }
+
             if (!MainWindow.IsAdmin()) { return; } // only admin can edit or delete an entry
             DataGrid dataGrid = (DataGrid) sender;
             int row = dataGrid.SelectedIndex;

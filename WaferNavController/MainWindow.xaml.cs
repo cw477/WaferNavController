@@ -166,6 +166,10 @@ namespace WaferNavController {
             dataGrid.Columns[3].Header = "Location";
             dataGrid.Columns[4].Header = "Available";
 
+            dataGrid.Columns[0].MinWidth= 75;
+            dataGrid.Columns[1].MinWidth = 100;
+            dataGrid.Columns[2].MinWidth = 205;
+
             statusLogConfig.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
         }
 

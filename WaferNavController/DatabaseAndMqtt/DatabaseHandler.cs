@@ -1091,13 +1091,13 @@ namespace WaferNavController
             }
             try {
                 var query = "INSERT INTO[wn].[SLT] (id, available, site_name, site_description, site_location) VALUES " +
-                            "('123456', 1,'BLU#1', 'Test Chamber 1', 'East')," +
-                            "('234567', 1,'BLU#2', 'Test Chamber 2', 'West')," +
-                            "('111111', 1,'BLU#3', 'Test Chamber 3', 'South')," +
-                            "('222222', 1,'BLU#4', 'Test Chamber 4', 'West')," +
-                            "('333333', 1,'BLU#5', 'Test Chamber 5', 'North')," +
-                            "('444444', 1,'BLU#6', 'Test Chamber 6', 'West')," +
-                            "('555555', 1,'BLU#7', 'Test Chamber 7', 'East');";
+                            "('123456', 1,'SLT#1', 'Test Chamber 1', 'East')," +
+                            "('234567', 1,'SLT#2', 'Test Chamber 2', 'West')," +
+                            "('111111', 1,'SLT#3', 'Test Chamber 3', 'South')," +
+                            "('222222', 1,'SLT#4', 'Test Chamber 4', 'West')," +
+                            "('333333', 1,'SLT#5', 'Test Chamber 5', 'North')," +
+                            "('444444', 1,'SLT#6', 'Test Chamber 6', 'West')," +
+                            "('555555', 1,'SLT#7', 'Test Chamber 7', 'East');";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
