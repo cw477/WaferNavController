@@ -55,7 +55,7 @@
     <StartupObject>WaferNavController.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\nielsen_ninjas_logotranspback_hmP_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\WN_app_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>D03F6385ADA7248EB28486BF8C9600169AD1DA90</ManifestCertificateThumbprint>
@@ -69,11 +69,12 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -232,12 +233,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\nielsen_ninjas_LogoTranspBack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\nielsen_ninjas_logotranspback_hmP_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
@@ -284,6 +279,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\testdata.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WN_app_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nielsen_ninjas_logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

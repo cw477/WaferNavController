@@ -35,11 +35,6 @@ namespace WaferNavController {
             statusLogConfig = new StatusLogConfig();
             this.Content = statusLogConfig;
                 
-            var bmp = Properties.Resources.nielsen_ninjas_LogoTranspBack;
-            var hBitmap = bmp.GetHbitmap();
-            ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            Icon = wpfBitmap;
-
             Bitmap editIconBitmap = Properties.Resources.edit_icon_black_small;
             Bitmap deleteIconBitmap = Properties.Resources.delete_icon_black_small;
             editIconBitmapImage = BitmapToBitmapImage(editIconBitmap);

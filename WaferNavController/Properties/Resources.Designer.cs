@@ -161,21 +161,11 @@ namespace WaferNavController.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap nielsen_ninjas_LogoTranspBack {
-            get {
-                object obj = ResourceManager.GetObject("nielsen_ninjas_LogoTranspBack", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon nielsen_ninjas_logotranspback_hmP_icon {
+        internal static System.Drawing.Icon nielsen_ninjas_logo {
             get {
-                object obj = ResourceManager.GetObject("nielsen_ninjas_logotranspback_hmP_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("nielsen_ninjas_logo", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -211,11 +201,22 @@ namespace WaferNavController.Properties {
         ///      &quot;id&quot;: &quot;123456&quot;,
         ///      &quot;available&quot;: &quot;True&quot;,
         ///      &quot;site_name&quot;: &quot;BLU #1&quot;,
-        ///      &quot;site_description&quot;: &quot;Handler 1 f [rest of string was truncated]&quot;;.
+        ///      &quot;site_description&quot;: &quot;Handler 1 from config file!&quot;,
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string testdata {
             get {
                 return ResourceManager.GetString("testdata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon WN_app_icon {
+            get {
+                object obj = ResourceManager.GetObject("WN_app_icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }
