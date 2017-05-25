@@ -56,11 +56,11 @@ namespace WaferNavController {
             bool available = AvailableCheckBox.IsChecked != null && (bool)AvailableCheckBox.IsChecked;
             bool result = false;
             if (type == "BLU") {
-                result = DatabaseHandler.UpdateBlu(startId, id, name, description, location, available);
+                result = DatabaseHandler.UpdateBluOrSlt("BLU", startId, id, name, description, location, available);
                 statusLogConfig.dgBLU.SelectedIndex = -1;
             }
             else if (type == "SLT") {
-                result = DatabaseHandler.UpdateSlt(startId, id, name, description, location, available);
+                result = DatabaseHandler.UpdateBluOrSlt("SLT", startId, id, name, description, location, available);
                 statusLogConfig.dgSLT.SelectedIndex = -1;
             }
             DialogResult = result;

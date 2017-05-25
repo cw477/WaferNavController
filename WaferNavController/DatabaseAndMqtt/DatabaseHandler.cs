@@ -192,11 +192,13 @@ namespace WaferNavController
             return GetData($"SELECT * FROM [wn].[SLT];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllActiveWafers()
         {
             return GetData($"SELECT * FROM [wn].[active_wafer_type];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllHistoricWafers()
         {
             return GetData($"SELECT * FROM [wn].[historic_wafer_type];");
@@ -211,31 +213,37 @@ namespace WaferNavController
             dg.ItemsSource = dt.DefaultView;
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllBluLoadAssignments()
         {
             return GetData($"SELECT * FROM [wn].[blu_assignment_load];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllHistoricBluLoadAssignments()
         {
             return GetData($"SELECT * FROM [wn].[historic_blu_assignment_load];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllBluUnloadAssignments()
         {
             return GetData($"SELECT * FROM [wn].[blu_assignment_unload];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllHistoricBluUnloadAssignments()
         {
             return GetData($"SELECT * FROM [wn].[historic_blu_assignment_unload];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllSltAssignments()
         {
             return GetData($"SELECT * FROM [wn].[slt_assignment];");
         }
 
+        // Only called by AppendCurrentDatabaseData in MainWindow
         public static List<Dictionary<string, string>> GetAllHistoricSltAssignments()
         {
             return GetData($"SELECT * FROM [wn].[historic_slt_assignment];");
@@ -1138,7 +1146,7 @@ namespace WaferNavController
             }
         }
 
-        public static bool AddBlu(string bluId, string name, string description, string location) {
+        public static bool AddBluOrSlt(string type, string id, string name, string description, string location) {
             bool success = true;
             bool connectionOpenedHere = false;
             if (connection.State == ConnectionState.Closed) {
@@ -1146,31 +1154,8 @@ namespace WaferNavController
                 connectionOpenedHere = true;
             }
             try {
-                var query = "INSERT INTO[wn].[BLU] (id, site_name, site_description, site_location, available) VALUES " +
-                            $"('{bluId}', '{name}', '{description}', '{location}', 1);";
-                var insertCommand = new SqlCommand(query, connection);
-                insertCommand.ExecuteNonQuery();
-            }
-            catch (Exception e) {
-                Console.Error.WriteLine(e.Message);
-                success = false;
-            }
-            if (connectionOpenedHere) {
-                connection.Close();
-            }
-            return success;
-        }
-        
-        public static bool AddSlt(string sltId, string name, string description, string location) {
-            bool success = true;
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed) {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            try {
-                var query = "INSERT INTO[wn].[SLT] (id, site_name, site_description, site_location, available) VALUES " +
-                            $"('{sltId}', '{name}', '{description}', '{location}', 1);";
+                var query = $"INSERT INTO[wn].[{type.ToUpper()}] (id, site_name, site_description, site_location, available) VALUES " +
+                            $"('{id}', '{name}', '{description}', '{location}', 1);";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
@@ -1184,7 +1169,7 @@ namespace WaferNavController
             return success;
         }
 
-        public static bool RemoveBlu(string bluId) {
+        public static bool RemoveBluOrSlt(string type, string id) {
             bool success = true;
             bool connectionOpenedHere = false;
             SqlTransaction tran = null;
@@ -1196,15 +1181,19 @@ namespace WaferNavController
             try {
                 tran = connection.BeginTransaction();
                 tranStarted = true;
-                var query = $"DELETE FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}'";
+
+                var extra = type == "BLU" ? "_load" : "";
+                var query = $"DELETE FROM [wn].[{type.ToLower()}_assignment{extra}] WHERE [{type.ToLower()}_id] = '{id}'";
                 var deleteCommand = new SqlCommand(query, connection, tran);
                 deleteCommand.ExecuteNonQuery();
 
-                query = $"DELETE FROM [wn].[blu_assignment_unload] WHERE [blu_id] = '{bluId}'";
-                deleteCommand = new SqlCommand(query, connection, tran);
-                deleteCommand.ExecuteNonQuery();
+                if (type == "BLU") {
+                    query = $"DELETE FROM [wn].[{type.ToLower()}_assignment_unload] WHERE [{type.ToLower()}_id] = '{id}'";
+                    deleteCommand = new SqlCommand(query, connection, tran);
+                    deleteCommand.ExecuteNonQuery();
+                }
 
-                query = $"DELETE FROM [wn].[BLU] WHERE [id] = '{bluId}';";
+                query = $"DELETE FROM [wn].[{type.ToUpper()}] WHERE [id] = '{id}';";
                 deleteCommand = new SqlCommand(query, connection, tran);
                 deleteCommand.ExecuteNonQuery();
                 tran.Commit();
@@ -1212,8 +1201,7 @@ namespace WaferNavController
             catch (Exception e) {
                 Console.Error.WriteLine(e.Message);
                 success = false;
-                if (tranStarted)
-                {
+                if (tranStarted) {
                     tran.Rollback();
                 }
             }
@@ -1223,41 +1211,7 @@ namespace WaferNavController
             return success;
         }
 
-        public static bool RemoveSlt(string sltId) {
-            bool success = true;
-            bool connectionOpenedHere = false;
-            SqlTransaction tran = null;
-            bool tranStarted = false;
-            if (connection.State == ConnectionState.Closed) {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            try {
-                tran = connection.BeginTransaction();
-                tranStarted = true;
-                var query = $"DELETE FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}'";
-                var deleteCommand = new SqlCommand(query, connection, tran);
-                deleteCommand.ExecuteNonQuery();
-                query = $"DELETE FROM [wn].[SLT] WHERE [id] = '{sltId}';";
-                deleteCommand = new SqlCommand(query, connection, tran);
-                deleteCommand.ExecuteNonQuery();
-                tran.Commit();
-            }
-            catch (Exception e) {
-                Console.Error.WriteLine(e.Message);
-                success = false;
-                if (tranStarted)
-                {
-                    tran.Rollback();
-                }
-            }
-            if (connectionOpenedHere) {
-                connection.Close();
-            }
-            return success;
-        }
-
-        public static bool UpdateBlu(string startId, string newId, string name, string description, string location, bool available) {
+        public static bool UpdateBluOrSlt(string type, string startId, string newId, string name, string description, string location, bool available) {
             bool success = true;
             bool connectionOpenedHere = false;
             if (connection.State == ConnectionState.Closed) {
@@ -1265,33 +1219,7 @@ namespace WaferNavController
                 connectionOpenedHere = true;
             }
             try {
-                //TODO also set idss
-                string query = "UPDATE[wafer_nav].[wn].[BLU] " +
-                               $"SET id = '{newId}', site_name = '{name}', site_description = '{description}', site_location = '{location}', available = '{Convert.ToInt32(available)}' " +
-                               $"WHERE id = '{startId}';";
-                var updateCommand = new SqlCommand(query, connection);
-                updateCommand.ExecuteNonQuery();
-            }
-            catch (Exception e) {
-                Console.Error.WriteLine(e.Message);
-                success = false;
-            }
-            if (connectionOpenedHere) {
-                connection.Close();
-            }
-            return success;
-        }
-
-        public static bool UpdateSlt(string startId, string newId, string name, string description, string location, bool available) {
-            bool success = true;
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed) {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            try {
-                //TODO also set id
-                string query = "UPDATE[wafer_nav].[wn].[SLT] " +
+                string query = $"UPDATE[wafer_nav].[wn].[{type.ToUpper()}] " +
                                $"SET id = '{newId}', site_name = '{name}', site_description = '{description}', site_location = '{location}', available = '{Convert.ToInt32(available)}' " +
                                $"WHERE id = '{startId}';";
                 var updateCommand = new SqlCommand(query, connection);
