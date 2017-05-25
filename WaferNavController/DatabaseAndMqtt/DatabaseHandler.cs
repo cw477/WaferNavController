@@ -202,23 +202,13 @@ namespace WaferNavController
             return GetData($"SELECT * FROM [wn].[historic_wafer_type];");
         }
 
-        public static void fillItems(ref DataGrid dg, string tableName)
-        {
-            try
-            {
-                string cmdString = string.Empty;
-                cmdString = $"SELECT [id], [site_name], [site_description], [site_location], [available] FROM [wn].[{tableName}]";
-                SqlCommand cmd = new SqlCommand(cmdString, connection);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("BLU");
-                sda.Fill(dt);
-                dg.ItemsSource = dt.DefaultView;
-            }
-            catch (InvalidOperationException e)
-            {
-
-                Console.Error.WriteLine(e.Message);
-            }
+        public static void FillDataGridWithItems(ref DataGrid dg, string tableName) {
+            string cmdString = $"SELECT [id], [site_name], [site_description], [site_location], [available] FROM [wn].[{tableName}]";
+            SqlCommand cmd = new SqlCommand(cmdString, connection);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("BLU");
+            sda.Fill(dt);
+            dg.ItemsSource = dt.DefaultView;
         }
 
         public static List<Dictionary<string, string>> GetAllBluLoadAssignments()
@@ -625,7 +615,8 @@ namespace WaferNavController
                 var reader = sqlCommand.ExecuteReader();
                 if (!(reader.HasRows))
                 {
-                    throw new Exception("No available SLT.");
+                    reader.Close();
+                    throw new Exception("No available SLTs!");
                 }
                 string sltId = null;
                 while (reader.Read())
@@ -661,7 +652,8 @@ namespace WaferNavController
                 var reader = sqlCommand.ExecuteReader();
                 if (!(reader.HasRows))
                 {
-                    throw new Exception("No available BLU.");
+                    reader.Close();
+                    throw new Exception("No available BLUs!");
                 }
                 string bluId = null;
                 while (reader.Read())

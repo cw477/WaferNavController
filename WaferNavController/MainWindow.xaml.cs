@@ -141,15 +141,20 @@ namespace WaferNavController {
         }
 
         public void RefreshDataGrids() {
-            FillDataGrids(ref statusLogConfig.dgBLU, "BLU");
-            FillDataGrids(ref statusLogConfig.dgSLT, "SLT");
+            try {
+                FillDataGrids(ref statusLogConfig.dgBLU, "BLU");
+                FillDataGrids(ref statusLogConfig.dgSLT, "SLT");
+            }
+            catch (Exception e) {
+                AppendLine("Failed to refresh data grids: " + e.Message, true);
+            }
         }
 
         private void FillDataGrids(ref DataGrid dataGrid, string tableName) {
             dataGrid.ItemsSource = null;
             dataGrid.Columns.Clear();
 
-            DatabaseHandler.fillItems(ref dataGrid, tableName);
+            DatabaseHandler.FillDataGridWithItems(ref dataGrid, tableName);
             if (isAdmin) { // only admin can edit or delete an entry
                 AddIconColumnToDataGrid(ref dataGrid, editIconBitmapImage, "");
                 AddIconColumnToDataGrid(ref dataGrid, deleteIconBitmapImage, "");
