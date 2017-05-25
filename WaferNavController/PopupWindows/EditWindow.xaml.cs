@@ -57,19 +57,22 @@ namespace WaferNavController {
             bool result = false;
             if (type == "BLU") {
                 result = DatabaseHandler.UpdateBluOrSlt("BLU", startId, id, name, description, location, available);
-                statusLogConfig.dgBLU.SelectedIndex = -1;
+                Application.Current.Dispatcher.Invoke(() => {
+                    MainWindow.Get().RefreshDataGrids();
+                    statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgBLU, id);
+                });
             }
             else if (type == "SLT") {
                 result = DatabaseHandler.UpdateBluOrSlt("SLT", startId, id, name, description, location, available);
-                statusLogConfig.dgSLT.SelectedIndex = -1;
+                Application.Current.Dispatcher.Invoke(() => {
+                    MainWindow.Get().RefreshDataGrids();
+                    statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgSLT, id);
+                });
             }
             DialogResult = result;
         }
 
         private void EditWindow_Closed(object sender, EventArgs e) {
-            statusLogConfig.dgBLU.SelectedIndex = -1;
-            statusLogConfig.dgSLT.SelectedIndex = -1;
-            MainWindow.Get().RefreshDataGrids();
         }
 
         private bool AllTextBoxesHaveData() {
@@ -101,7 +104,7 @@ namespace WaferNavController {
                 return;
             }
             if (TextBoxHasNewData(textBox)) {
-                textBox.Foreground = Brushes.MediumVioletRed;
+                textBox.Foreground = Brushes.Red;
             } else {
                 textBox.Foreground = Brushes.Gray;
             }
@@ -113,7 +116,7 @@ namespace WaferNavController {
                 return;
             }
             if (AvailableCheckBox.IsChecked != (bool) AvailableCheckBox.Tag) {
-                checkBox.Foreground = Brushes.MediumVioletRed;
+                checkBox.Foreground = Brushes.Red;
             } else {
                 checkBox.Foreground = Brushes.Gray;
             }
