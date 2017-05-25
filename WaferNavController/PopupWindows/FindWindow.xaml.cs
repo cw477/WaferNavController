@@ -33,13 +33,26 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
+
             var enteredId = IdTextBox.Text;
-            var dataGrids = new List<DataGrid> {statusLogConfig.dgBLU, statusLogConfig.dgSLT };
-            var result = false;
-            // Iterate through both datagrids
-            foreach (var dataGrid in dataGrids) {
-                result = statusLogConfig.FindAndSelectRowIfExists(dataGrid, enteredId);
-                if (result) { break; }
+            if (string.IsNullOrEmpty(enteredId)) {
+                ErrorLabel.Content = "Please enter an ID to search for";
+                ErrorLabel.Visibility = Visibility.Visible;
+                return;
+            }
+
+            var dataGrid = bluRadioButton.IsChecked != null && (bool) bluRadioButton.IsChecked ? statusLogConfig.dgBLU : statusLogConfig.dgSLT;
+            var result = statusLogConfig.FindAndSelectRowIfExists(dataGrid, enteredId);
+            if (!result) {
+                ErrorLabel.Content = "ID not found; please try again";
+                ErrorLabel.Visibility = Visibility.Visible;
+                return;
+            }
+
+            if (dataGrid.Name == "dgBLU") {
+                statusLogConfig.dgSLT.SelectedIndex = -1;
+            } else {
+                statusLogConfig.dgBLU.SelectedIndex = -1;
             }
             DialogResult = result;
         }

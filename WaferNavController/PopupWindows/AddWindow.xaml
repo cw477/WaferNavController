@@ -23,7 +23,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label x:Name="label" Content="Enter BLU or SLT information" FontSize="16" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Height="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
-        <RadioButton x:Name="bluRadioButton" Content="BLU" GroupName="RadioGroup" IsChecked="True" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Margin="10"/>
+        <RadioButton x:Name="bluRadioButton" Content="BLU" GroupName="RadioGroup" IsChecked="True" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Margin="10,11,10,9"/>
         <RadioButton x:Name="sltRadioButton" Content="SLT" GroupName="RadioGroup" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" Margin="10"/>
 
         <Label x:Name="IdLabel" Content="ID" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Foreground="Gray" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Bottom" Padding="0" />
