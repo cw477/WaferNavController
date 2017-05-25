@@ -9,7 +9,7 @@ namespace WaferNavController
     {
 
         //please turn below off for actual use
-        private static Boolean demoMode = true;
+        private const bool demoMode = true;
 
         /// <summary>
         /// Process GET_NEW_BLU message.
@@ -29,31 +29,20 @@ namespace WaferNavController
         /// bluSiteLocation
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
-        public static Dictionary<string, string> getNewBlu(Dictionary<string, object> messages)
-        {
-            try
-            {
-                // get available blu
-                var bluId = DatabaseHandler.GetFirstAvailableBluId();
-                if (!demoMode)
-                {
-
-                    //add new lot id + add assignment + set blu to unavailable
-                    DatabaseHandler.setForLoad((string)messages["lotId"], bluId); 
-                }
-
-                // Get BLU info that we were successful
-                var returnJson = DatabaseHandler.GetBlu(bluId);
-
-                returnJson.Add("directive", "GET_NEW_BLU_RETURN");
-                returnJson.Add("clientId", (string)messages["clientId"]);
-                return returnJson;
+        public static Dictionary<string, string> GetNewBlu(Dictionary<string, object> messages) {
+            // get available blu
+            var bluId = DatabaseHandler.GetFirstAvailableBluId();
+            if (!demoMode) {
+                //add new lot id + add assignment + set blu to unavailable
+                DatabaseHandler.setForLoad((string) messages["lotId"], bluId);
             }
-            catch (Exception e)
-            {
 
-                throw e;
-            }
+            // Get BLU info that we were successful
+            var returnJson = DatabaseHandler.GetBlu(bluId);
+
+            returnJson.Add("directive", "GET_NEW_BLU_RETURN");
+            returnJson.Add("clientId", (string) messages["clientId"]);
+            return returnJson;
         }
 
         /// <summary>
@@ -71,28 +60,16 @@ namespace WaferNavController
         /// confirm
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
-        public static Dictionary<string, string> completeNewBlu(Dictionary<string, object> messages)
-        {
-            try
-            {
-                var returnJson = new Dictionary<string, string>();
-                returnJson.Add("directive", "COMPLETE_NEW_BLU_RETURN");
-                returnJson.Add("clientId", (string)messages["clientId"]);
-                if (DatabaseHandler.confirmNewBlu((string)messages["bluId"]))
-                {
-                    returnJson.Add("confirm", "true");
-                }
-                else
-                {
-                    returnJson.Add("confirm", "false");
-                }
-                return returnJson;
+        public static Dictionary<string, string> CompleteNewBlu(Dictionary<string, object> messages) {
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "COMPLETE_NEW_BLU_RETURN");
+            returnJson.Add("clientId", (string) messages["clientId"]);
+            if (DatabaseHandler.confirmNewBlu((string) messages["bluId"])) {
+                returnJson.Add("confirm", "true");
+            } else {
+                returnJson.Add("confirm", "false");
             }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+            return returnJson;
         }
 
         /// <summary>
@@ -115,31 +92,21 @@ namespace WaferNavController
         /// sltSiteLocation
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
-        public static Dictionary<string, string> getNewSlt(Dictionary<string, object> messages)
-        {
-            try
-            {
-                // Get first available SLT id
-                var sltId = DatabaseHandler.GetFirstAvailableSltId();
+        public static Dictionary<string, string> GetNewSlt(Dictionary<string, object> messages) {
+            // Get first available SLT id
+            var sltId = DatabaseHandler.GetFirstAvailableSltId();
 
-                if (!demoMode)
-                {
-                    //remove previous data+assignments, add new assignments+data
-                    DatabaseHandler.setForTest((string)messages["bluId"], (JArray)messages["bibIds"], sltId); 
-                }
-
-                // Get slt info since we were successful
-                var returnJson = DatabaseHandler.GetSlt(sltId);
-
-                returnJson.Add("directive", "GET_NEW_SLT_RETURN");
-                returnJson.Add("clientId", (string)messages["clientId"]);
-                return returnJson;
+            if (!demoMode) {
+                //remove previous data+assignments, add new assignments+data
+                DatabaseHandler.setForTest((string) messages["bluId"], (JArray) messages["bibIds"], sltId);
             }
-            catch (Exception e)
-            {
 
-                throw e;
-            }
+            // Get slt info since we were successful
+            var returnJson = DatabaseHandler.GetSlt(sltId);
+
+            returnJson.Add("directive", "GET_NEW_SLT_RETURN");
+            returnJson.Add("clientId", (string) messages["clientId"]);
+            return returnJson;
         }
 
         /// <summary>
@@ -157,28 +124,16 @@ namespace WaferNavController
         /// confirm
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
-        public static Dictionary<string, string> completeNewSlt(Dictionary<string, object> messages)
-        {
-            try
-            {
-                var returnJson = new Dictionary<string, string>();
-                returnJson.Add("directive", "COMPLETE_NEW_SLT_RETURN");
-                returnJson.Add("clientId", (string)messages["clientId"]);
-                if (DatabaseHandler.confirmNewSlt((string)messages["sltId"]))
-                {
-                    returnJson.Add("confirm", "true");
-                }
-                else
-                {
-                    returnJson.Add("confirm", "false");
-                }
-                return returnJson;
+        public static Dictionary<string, string> CompleteNewSlt(Dictionary<string, object> messages) {
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "COMPLETE_NEW_SLT_RETURN");
+            returnJson.Add("clientId", (string) messages["clientId"]);
+            if (DatabaseHandler.confirmNewSlt((string) messages["sltId"])) {
+                returnJson.Add("confirm", "true");
+            } else {
+                returnJson.Add("confirm", "false");
             }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+            return returnJson;
         }
 
         /// <summary>
@@ -200,30 +155,20 @@ namespace WaferNavController
         /// bluSiteLocation
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
-        public static Dictionary<string, string> getDoneBlu(Dictionary<string, object> messages)
-        {
-            try
-            {
-                //get available blu
-                var bluId = DatabaseHandler.GetFirstAvailableBluId();
+        public static Dictionary<string, string> GetDoneBlu(Dictionary<string, object> messages) {
+            //get available blu
+            var bluId = DatabaseHandler.GetFirstAvailableBluId();
 
-                if (!demoMode)
-                {
-                    //remove previous data+assignments, add new assignments+data
-                    DatabaseHandler.setForUnload((string)messages["sltId"], (JArray)messages["bibIds"], bluId); 
-                }
-
-                //get blu info
-                var returnJson = DatabaseHandler.GetBlu(bluId);
-                returnJson.Add("directive", "GET_DONE_BLU_RETURN");
-                returnJson.Add("clientId", (string)messages["clientId"]);
-                return returnJson;
+            if (!demoMode) {
+                //remove previous data+assignments, add new assignments+data
+                DatabaseHandler.setForUnload((string) messages["sltId"], (JArray) messages["bibIds"], bluId);
             }
-            catch (Exception e)
-            {
 
-                throw e;
-            }
+            //get blu info
+            var returnJson = DatabaseHandler.GetBlu(bluId);
+            returnJson.Add("directive", "GET_DONE_BLU_RETURN");
+            returnJson.Add("clientId", (string) messages["clientId"]);
+            return returnJson;
         }
 
         /// <summary>
@@ -241,34 +186,21 @@ namespace WaferNavController
         /// confirm
         /// </returns>
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
-        public static Dictionary<string, string> completeDoneBlu(Dictionary<string, object> messages)
-        {
-            try
-            {
-                var returnJson = new Dictionary<string, string>();
-                returnJson.Add("directive", "COMPLETE_DONE_BLU_RETURN");
-                returnJson.Add("clientId", (string)messages["clientId"]);
-                if (DatabaseHandler.confirmDoneBlu((string)messages["bluId"]))
-                {
-                    returnJson.Add("confirm", "true");
-                }
-                else
-                {
-                    returnJson.Add("confirm", "false");
-                }
-
-                Task finish = Task.Run(() =>
-                {
-                    System.Threading.Thread.Sleep(10000);
-                    DatabaseHandler.finishBluUnload((string)messages["bluId"], demoMode);
-                });
-                return returnJson;
+        public static Dictionary<string, string> CompleteDoneBlu(Dictionary<string, object> messages) {
+            var returnJson = new Dictionary<string, string>();
+            returnJson.Add("directive", "COMPLETE_DONE_BLU_RETURN");
+            returnJson.Add("clientId", (string) messages["clientId"]);
+            if (DatabaseHandler.confirmDoneBlu((string) messages["bluId"])) {
+                returnJson.Add("confirm", "true");
+            } else {
+                returnJson.Add("confirm", "false");
             }
-            catch (Exception e)
-            {
 
-                throw e;
-            }
+            Task.Run(() => {
+                System.Threading.Thread.Sleep(10000);
+                DatabaseHandler.finishBluUnload((string) messages["bluId"], demoMode);
+            });
+            return returnJson;
         }
     }
 }

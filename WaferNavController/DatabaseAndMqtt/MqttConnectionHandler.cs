@@ -57,22 +57,22 @@ namespace WaferNavController {
             try {
                 switch ((string)messages["directive"]) {
                     case "GET_NEW_BLU":
-                        returnMessage = NavigationHandler.getNewBlu(messages);
+                        returnMessage = NavigationHandler.GetNewBlu(messages);
                         break;
                     case "COMPLETE_NEW_BLU":
-                        returnMessage = NavigationHandler.completeNewBlu(messages);
+                        returnMessage = NavigationHandler.CompleteNewBlu(messages);
                         break;
                     case "GET_NEW_SLT":
-                        returnMessage = NavigationHandler.getNewSlt(messages);
+                        returnMessage = NavigationHandler.GetNewSlt(messages);
                         break;
                     case "COMPLETE_NEW_SLT":
-                        returnMessage = NavigationHandler.completeNewSlt(messages);
+                        returnMessage = NavigationHandler.CompleteNewSlt(messages);
                         break;
                     case "GET_DONE_BLU":
-                        returnMessage = NavigationHandler.getDoneBlu(messages);
+                        returnMessage = NavigationHandler.GetDoneBlu(messages);
                         break;
                     case "COMPLETE_DONE_BLU":
-                        returnMessage = NavigationHandler.completeDoneBlu(messages);
+                        returnMessage = NavigationHandler.CompleteDoneBlu(messages);
                         break;
                     default:
                         Console.Error.WriteLine("incomingMessageProcessor: Directive unrecognized.");

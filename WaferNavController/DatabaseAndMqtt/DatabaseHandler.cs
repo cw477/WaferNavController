@@ -325,18 +325,9 @@ namespace WaferNavController
             return msg;
         }
 
-        public static bool confirmNewBlu(string bluId)
-        {
-            try
-            {
-                //TODO: Add some checking logic?
-                return true;
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+        public static bool confirmNewBlu(string bluId) {
+            //TODO: Add some checking logic?
+            return true;
         }
 
         public static void setForTest(string bluId, JArray bibIds, string sltId)
@@ -429,141 +420,80 @@ namespace WaferNavController
 
         public static Dictionary<string, string> GetBlu(string bluId) {
             //TODO: handle the case where there are no available BLUs
-            try
-            {
-                return GetData("SELECT [id] AS [bluId], " +
-                    "[site_name] AS [bluSiteName], [site_description] as [bluSiteDescription], [site_location] as [bluSiteLocation] " +
-                    $"FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
-
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+            return GetData("SELECT [id] AS [bluId], " +
+                           "[site_name] AS [bluSiteName], [site_description] as [bluSiteDescription], [site_location] as [bluSiteLocation] " +
+                           $"FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
         }
 
         public static List<Dictionary<string, string>> GetAllActiveBibs() {
-            try
-            {
-                return GetData($"SELECT * FROM [wn].[active_bib];");
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+            return GetData($"SELECT * FROM [wn].[active_bib];");
         }
 
         public static List<Dictionary<string, string>> GetAllHistoricBibs() {
-            try
-            {
-                return GetData($"SELECT * FROM [wn].[historic_bib];");
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+            return GetData($"SELECT * FROM [wn].[historic_bib];");
         }
 
-        private static List<Dictionary<string, string>> GetData(string query)
-        {
-            try
-            {
-                bool connectionOpenedHere = false;
-                if (connection.State == ConnectionState.Closed)
-                {
-                    connection.Open();
-                    connectionOpenedHere = true;
-                }
-                SqlDataReader reader = null;
-                var sqlCommand = new SqlCommand(query, connection);
-                reader = sqlCommand.ExecuteReader();
-                var data = new List<Dictionary<string, string>>();
-                // Iterate through rows
-                while (reader.Read())
-                {
-                    var row = new Dictionary<string, string>();
-
-                    // Iterate through columns
-                    for (var i = 0; i < reader.FieldCount; i++)
-                    {
-                        var colName = reader.GetName(i);
-                        row.Add(colName, reader[colName].ToString());
-                    }
-                    data.Add(row);
-                }
-                reader.Close();
-                if (connectionOpenedHere)
-                {
-                    connection.Close();
-                }
-                return data;
+        private static List<Dictionary<string, string>> GetData(string query) {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
             }
-            catch (Exception e)
-            {
+            SqlDataReader reader = null;
+            var sqlCommand = new SqlCommand(query, connection);
+            reader = sqlCommand.ExecuteReader();
+            var data = new List<Dictionary<string, string>>();
+            // Iterate through rows
+            while (reader.Read()) {
+                var row = new Dictionary<string, string>();
 
-                throw e;
+                // Iterate through columns
+                for (var i = 0; i < reader.FieldCount; i++) {
+                    var colName = reader.GetName(i);
+                    row.Add(colName, reader[colName].ToString());
+                }
+                data.Add(row);
             }
+            reader.Close();
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return data;
         }
 
-        private static List<Dictionary<string, string>> GetData(string query, SqlTransaction tran)
-        {
-            try
-            {
-                bool connectionOpenedHere = false;
-                if (connection.State == ConnectionState.Closed)
-                {
-                    connection.Open();
-                    connectionOpenedHere = true;
-                }
-                SqlDataReader reader = null;
-                var sqlCommand = new SqlCommand(query, connection, tran);
-                reader = sqlCommand.ExecuteReader();
-                var data = new List<Dictionary<string, string>>();
-                // Iterate through rows
-                while (reader.Read())
-                {
-                    var row = new Dictionary<string, string>();
-
-                    // Iterate through columns
-                    for (var i = 0; i < reader.FieldCount; i++)
-                    {
-                        var colName = reader.GetName(i);
-                        row.Add(colName, reader[colName].ToString());
-                    }
-                    data.Add(row);
-                }
-                reader.Close();
-                if (connectionOpenedHere)
-                {
-                    connection.Close();
-                }
-                return data;
+        private static List<Dictionary<string, string>> GetData(string query, SqlTransaction tran) {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
             }
-            catch (Exception e)
-            {
+            SqlDataReader reader = null;
+            var sqlCommand = new SqlCommand(query, connection, tran);
+            reader = sqlCommand.ExecuteReader();
+            var data = new List<Dictionary<string, string>>();
+            // Iterate through rows
+            while (reader.Read()) {
+                var row = new Dictionary<string, string>();
 
-                throw e;
+                // Iterate through columns
+                for (var i = 0; i < reader.FieldCount; i++) {
+                    var colName = reader.GetName(i);
+                    row.Add(colName, reader[colName].ToString());
+                }
+                data.Add(row);
             }
+            reader.Close();
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return data;
         }
 
-        public static Dictionary<string, string> GetSlt(object sltId)
-        {
-            try
-            {
-                //TODO: handle the case where there are no available SLTs
-                return GetData("SELECT [id] AS [sltId], " +
-                    "[site_name] AS [sltSiteName], [site_description] as [sltSiteDescription], [site_location] as [sltSiteLocation] " +
-                    $"FROM [wn].[BLU] WHERE id = '{sltId}';")[0];
-
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+        public static Dictionary<string, string> GetSlt(object sltId) {
+            //TODO: handle the case where there are no available SLTs
+            return GetData("SELECT [id] AS [sltId], " +
+                           "[site_name] AS [sltSiteName], [site_description] as [sltSiteDescription], [site_location] as [sltSiteLocation] " +
+                           $"FROM [wn].[BLU] WHERE id = '{sltId}';")[0];
         }
 
         public static void batchAddHistoricBibs(List<string> bibIds, DateTime nowDateTime, SqlTransaction tran)
@@ -600,78 +530,54 @@ namespace WaferNavController
             }
         }
 
-        public static string GetFirstAvailableSltId()
-        {
-            try
-            {
-                bool connectionOpenedHere = false;
-                if (connection.State == ConnectionState.Closed)
-                {
-                    connection.Open();
-                    connectionOpenedHere = true;
-                }
-                var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
-                var sqlCommand = new SqlCommand(query, connection);
-                var reader = sqlCommand.ExecuteReader();
-                if (!(reader.HasRows))
-                {
-                    reader.Close();
-                    throw new Exception("No available SLTs!");
-                }
-                string sltId = null;
-                while (reader.Read())
-                {
-                    sltId = reader["id"].ToString();
-                    break;
-                }
+        public static string GetFirstAvailableSltId() {
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            var query = "SELECT * FROM [wn].[SLT] WHERE available = 1;";
+            var sqlCommand = new SqlCommand(query, connection);
+            var reader = sqlCommand.ExecuteReader();
+            if (!(reader.HasRows)) {
                 reader.Close();
-                if (connectionOpenedHere)
-                {
-                    connection.Close();
-                }
-                return sltId;
+                throw new Exception("No available SLTs!");
             }
-            catch (Exception e)
-            {
-
-                throw e;
+            string sltId = null;
+            while (reader.Read()) {
+                sltId = reader["id"].ToString();
+                break;
             }
+            reader.Close();
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return sltId;
         }
 
         public static string GetFirstAvailableBluId() {
-            try
-            {
-                bool connectionOpenedHere = false;
-                if (connection.State == ConnectionState.Closed)
-                {
-                    connection.Open();
-                    connectionOpenedHere = true;
-                }
-                var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
-                var sqlCommand = new SqlCommand(query, connection);
-                var reader = sqlCommand.ExecuteReader();
-                if (!(reader.HasRows))
-                {
-                    reader.Close();
-                    throw new Exception("No available BLUs!");
-                }
-                string bluId = null;
-                while (reader.Read())
-                {
-                    bluId = reader["id"].ToString();
-                    break;
-                }
+            bool connectionOpenedHere = false;
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+                connectionOpenedHere = true;
+            }
+            var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
+            var sqlCommand = new SqlCommand(query, connection);
+            var reader = sqlCommand.ExecuteReader();
+            if (!(reader.HasRows)) {
                 reader.Close();
-                if (connectionOpenedHere)
-                {
-                    connection.Close();
-                }
-                return bluId;
+                throw new Exception("No available BLUs!");
             }
-            catch (Exception e)
-            {
-                throw e;
+            string bluId = null;
+            while (reader.Read()) {
+                bluId = reader["id"].ToString();
+                break;
             }
+            reader.Close();
+            if (connectionOpenedHere) {
+                connection.Close();
+            }
+            return bluId;
         }
 
         public static void finishBluUnload(string bluId, Boolean demoMode)
@@ -807,17 +713,9 @@ namespace WaferNavController
             }
         }
 
-        public static bool confirmNewSlt(string sltId)
-        {
-            try
-            {
-                return true;
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+        public static bool confirmNewSlt(string sltId) {
+            //TODO: Add some checking logic?
+            return true;
         }
 
         public static void SetBluToAvailable(string bluId)
@@ -1103,17 +1001,9 @@ namespace WaferNavController
             }
         }
 
-        public static bool confirmDoneBlu(string bluId)
-        {
-            try
-            {
-                return true;
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
+        public static bool confirmDoneBlu(string bluId) {
+            //TODO: Add some checking logic?
+            return true;
         }
 
         public static void RemoveAllActiveBibs() {
