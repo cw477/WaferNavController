@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.IO;
+using System.Windows;
 
 namespace WaferNavController {
     class MqttConnectionHandler {
@@ -41,6 +42,9 @@ namespace WaferNavController {
 
             // Publish return message
             mqttClient.Publish(PubTopic, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(returnJson)));
+
+            // Refresh data grids
+            Application.Current.Dispatcher.Invoke(() => mainWindow.RefreshDataGrids());
         }
 
         /// <summary>
