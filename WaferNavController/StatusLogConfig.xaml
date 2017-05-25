@@ -21,15 +21,16 @@
             <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="60" Margin="0" FontWeight="Bold" FontSize="16">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="193*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="574*"/>
+                        <ColumnDefinition Width="11*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="0,494,10,23" Grid.Column="1"/>
+                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="0,488,10,29" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-                    <Label Content="Status.." HorizontalAlignment="Left" Margin="7,497,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.362,0.577" Height="30" Width="546" Grid.Column="1" FontWeight="Normal" FontSize="14"/>
+                    <Label Content="Status.." HorizontalAlignment="Left" Margin="7,491,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.362,0.577" Height="30" Width="546" Grid.Column="1" FontWeight="Normal" FontSize="12"/>
 
-                    <DataGrid x:Name="dgBLU" Margin="0,0,10,277" Height="174" VerticalAlignment="Bottom" MouseUp="DataGrid_MouseUp" Tag="BLU" IsReadOnly="True" Grid.Column="1">
+                    <DataGrid x:Name="dgBLU" Margin="0,0,10,277" Height="174" VerticalAlignment="Bottom" MouseUp="DataGrid_MouseUp" Tag="BLU" IsReadOnly="True" Grid.Column="1" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
@@ -41,7 +42,7 @@
                         </DataGrid.Resources>
                     </DataGrid>
 
-                    <DataGrid x:Name="dgSLT" Margin="0,314,10,72" MouseUp="DataGrid_MouseUp" Tag="SLT" IsReadOnly="True" Grid.Column="1">
+                    <DataGrid x:Name="dgSLT" Margin="0,314,10,72" MouseUp="DataGrid_MouseUp" Tag="SLT" IsReadOnly="True" Grid.Column="1" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
@@ -53,10 +54,10 @@
                         </DataGrid.Resources>
                     </DataGrid>
 
-                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" FontWeight="Bold" FontSize="14" Height="29" Grid.ColumnSpan="2"/>
-                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="29" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="2"/>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2" Margin="-2,-2,0,0"/>
-                    <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Left" Margin="295,534,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1" Height="26"/>
+                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="0,280,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" FontWeight="Bold" FontSize="14" Height="29" Grid.Column="1"/>
+                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="29" FontWeight="Bold" FontSize="14" Grid.Column="1"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="3" Margin="-2,-2,0,0"/>
+                    <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Right" Margin="347,523,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1" Height="26" FontSize="12" FontWeight="Normal"/>
 
                     <Button x:Name="FindButton" VerticalAlignment="Top" Margin="0,30,0,0" HorizontalAlignment="Left" Width="33" Height="33" Click="FindButton_Click" Grid.Column="1">
                         <Button.Template>
@@ -90,7 +91,7 @@
                         </Button.Template>
                     </Button>
 
-                    <Button x:Name="ImportFileButton" VerticalAlignment="Top" Margin="476,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
+                    <Button x:Name="ImportFileButton" VerticalAlignment="Top" Margin="481,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
@@ -106,7 +107,7 @@
                         </Button.Template>
                     </Button>
 
-                    <Button x:Name="ExportFileButton" VerticalAlignment="Top" Margin="536,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
+                    <Button x:Name="ExportFileButton" VerticalAlignment="Top" Margin="541,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
@@ -138,7 +139,7 @@
                         </Button.Template>
                     </Button>
 
-                    <Button x:Name="RefreshButton" VerticalAlignment="Top" Margin="416,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="RefreshButton_Click" RenderTransformOrigin="0.758,0.545">
+                    <Button x:Name="RefreshButton" VerticalAlignment="Top" Margin="421,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="RefreshButton_Click" RenderTransformOrigin="0.758,0.545">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
@@ -164,9 +165,9 @@
                         <ColumnDefinition Width="131*"/>
                         <ColumnDefinition Width="463*"/>
                     </Grid.ColumnDefinitions>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2" Margin="0,-2,0,0"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2" Margin="-2,-2,0,0"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,35,10,42" Grid.ColumnSpan="2">
-                        <TextBlock x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas">
+                        <TextBlock x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" FontWeight="Normal">
                             <TextBlock.ContextMenu>
                                 <ContextMenu x:Name="cmSave">
                                     <MenuItem Header="Save to Text File"
