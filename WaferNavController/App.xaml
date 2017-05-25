@@ -4,9 +4,6 @@
              xmlns:local="clr-namespace:WaferNavController"
              StartupUri="PopupWindows/LoginWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
-    <Application.MainWindow>
-        <local:MainWindow/>
-    </Application.MainWindow>
 </Application>
