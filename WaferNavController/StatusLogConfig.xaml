@@ -73,6 +73,14 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Find</TextBlock>
+                                    <TextBlock>Search an ID and view its information</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                     <Button x:Name="AddButton" VerticalAlignment="Top" Margin="60,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="AddButton_Click">
@@ -89,6 +97,14 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Add</TextBlock>
+                                    <TextBlock>Add new BLU/SLT information</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                     <Button x:Name="ImportFileButton" VerticalAlignment="Top" Margin="481,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
@@ -105,6 +121,14 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Import</TextBlock>
+                                    <TextBlock>Import new database file</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                     <Button x:Name="ExportFileButton" VerticalAlignment="Top" Margin="541,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
@@ -121,6 +145,14 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Export</TextBlock>
+                                    <TextBlock>Export database to file</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                     <Button x:Name="ResetDatabaseButton" VerticalAlignment="Top" Margin="120,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ResetDatabaseButton_Click">
@@ -137,6 +169,14 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Reset Database</TextBlock>
+                                    <TextBlock>Reset the entire database</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                     <Button x:Name="RefreshButton" VerticalAlignment="Top" Margin="421,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="RefreshButton_Click" RenderTransformOrigin="0.758,0.545">
@@ -153,6 +193,14 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Refresh</TextBlock>
+                                    <TextBlock>Refresh database to reflect new changes</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                 </Grid>
