@@ -53,6 +53,7 @@ namespace WaferNavController {
             if (!isAdmin) {
                 statusLogConfig.AddButton.Visibility = Visibility.Hidden;  // only admin can add new entries
                 statusLogConfig.ResetDatabaseButton.Visibility = Visibility.Hidden;  // only admin can reset database
+                statusLogConfig.ImportFileButton.Visibility = Visibility.Hidden;  // only admin can import database from file
                 Title += "   <NON-ADMIN>";
             } else {
                 Title += "   <ADMIN>";
@@ -125,8 +126,22 @@ namespace WaferNavController {
                 statusLogConfig.TabControl.SelectedIndex = 2;
             }
 
+            // Click import file button when Ctrl + O pressed
+            else if (e.Key == Key.O && ctrlPressed) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.ImportFileButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
+            }
+
+            // Click export file button when Ctrl + S pressed
+            else if (e.Key == Key.S && ctrlPressed) {
+                var peer = new ButtonAutomationPeer(statusLogConfig.ExportFileButton);
+                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv?.Invoke();
+            }
+
             else if (e.Key == Key.F12) {
-                AppendLine("F12 pressed! - selectedIndex: " + statusLogConfig.TabControl.SelectedIndex, true);
+                AppendLine("F12 pressed!", true);
             }
         }
 
