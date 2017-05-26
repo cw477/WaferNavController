@@ -43,7 +43,7 @@ namespace WaferNavController
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
         public static Dictionary<string, string> GetNewBlu(Dictionary<string, object> messages) {
             // get available blu
-            var bluId = DatabaseHandler.GetFirstAvailableBluId();
+            var bluId = DatabaseHandler.GetRandomAvailableBluId();
             if (!demoMode) {
                 //add new lot id + add assignment + set blu to unavailable
                 DatabaseHandler.setForLoad((string) messages["lotId"], bluId);
@@ -106,7 +106,7 @@ namespace WaferNavController
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
         public static Dictionary<string, string> GetNewSlt(Dictionary<string, object> messages) {
             // Get first available SLT id
-            var sltId = DatabaseHandler.GetFirstAvailableSltId();
+            var sltId = DatabaseHandler.GetRandomAvailableSltId();
 
             if (!demoMode) {
                 //remove previous data+assignments, add new assignments+data
@@ -169,7 +169,7 @@ namespace WaferNavController
         /// <exception cref="Exception">Exception thrown to "bubble up" to send via MQTT</exception>
         public static Dictionary<string, string> GetDoneBlu(Dictionary<string, object> messages) {
             //get available blu
-            var bluId = DatabaseHandler.GetFirstAvailableBluId();
+            var bluId = DatabaseHandler.GetRandomAvailableBluId();
 
             if (!demoMode) {
                 //remove previous data+assignments, add new assignments+data

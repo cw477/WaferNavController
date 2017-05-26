@@ -54,17 +54,18 @@ namespace WaferNavController {
         }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
-            var incommingJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
+            var incomingJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));
 
             // Print received message to window
-            mainWindow.AppendLine(DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "  Message: "
-                    + DatabaseHandler.jsonToStr(incommingJson) + "\n", true);
+            mainWindow.AppendLine("\n" + DateTime.Now + "  Message arrived.  Topic: " + e.Topic + "\nMessage: "
+                    + DatabaseHandler.jsonToStr(incomingJson), true);
 
-            var returnJson = incomingMessageProcessor(incommingJson);
+            var returnJson = incomingMessageProcessor(incomingJson);
             returnJson["computerName"] = Environment.MachineName;
 
             // Print outgoing message to window
-            mainWindow.AppendLine(DateTime.Now + "  Message outgoing:" + DatabaseHandler.jsonToStr(returnJson) + "\n", true);
+            mainWindow.AppendLine("\n" + DateTime.Now + "  Message outgoing.  Topic: " + PubTopic + "\nMessage: "
+                + DatabaseHandler.jsonToStr(returnJson), true);
 
             // Publish return message
             mqttClient.Publish(PubTopic, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(returnJson)));

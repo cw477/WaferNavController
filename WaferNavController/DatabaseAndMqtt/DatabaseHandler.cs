@@ -17,6 +17,7 @@ namespace WaferNavController
     public class DatabaseHandler {
 
         private static SqlConnection connection;
+        private static Random random = new Random();
 
         public static void TestConnectToDatabase()
         {
@@ -306,42 +307,16 @@ namespace WaferNavController
             }
         }
 
-        public static string jsonToStr(Dictionary<string, string> jsonMessage)
-        {
-            var msg = "";
-            msg += "\nJson:";
-            var keys = jsonMessage.Keys;
-            foreach (string key in keys)
-            {
-                msg += "\n" + key + ": " + jsonMessage[key];
-            }
-            msg += "\n:End Json\n";
-            return msg;
+        public static string jsonToStr(Dictionary<string, string> jsonMessage) {
+            var json = JsonConvert.SerializeObject(jsonMessage);
+            var jsonFormatted = JToken.Parse(json).ToString(Formatting.Indented);
+            return jsonFormatted;
         }
 
-        public static string jsonToStr(Dictionary<string, object> jsonMessage)
-        {
-            var msg = "";
-            msg += "\nJson:";
-            var keys = jsonMessage.Keys;
-            foreach (string key in keys)
-            {
-                if (key != "bibIds")
-                {
-                    msg += "\n" + key + ": " + (string)jsonMessage[key];
-                }
-                else
-                {
-                    msg += "\n" + key + ": [";
-                    foreach (string s in (JArray)jsonMessage[key])
-                    {
-                        msg += "\n\t" + s;
-                    }
-                    msg += "\n]";
-                }
-            }
-            msg += ":End Json";
-            return msg;
+        public static string jsonToStr(Dictionary<string, object> jsonMessage) {
+            var json = JsonConvert.SerializeObject(jsonMessage);
+            var jsonFormatted = JToken.Parse(json).ToString(Formatting.Indented);
+            return jsonFormatted;
         }
 
         public static bool confirmNewBlu(string bluId) {
@@ -365,8 +340,14 @@ namespace WaferNavController
                 transStarted = true;
 
                 //get waftertype associated
-                var wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';", tran)[0];
-                
+                Dictionary<string, string> wafertype;
+                try {
+                    wafertype = GetData($"SELECT [wafer_type_id] FROM [wn].[blu_assignment_load] WHERE [blu_id] = '{bluId}';", tran)[0];
+                }
+                catch (ArgumentOutOfRangeException) {
+                    throw new Exception($"Could not find wafer_type_id for blu_id {bluId}!");
+                }
+
                 //create historic wafertype
                 var cmd = new SqlCommand($"INSERT INTO [wn].[historic_wafer_type] (id) Values ('{wafertype["wafer_type_id"]}');", connection, tran);
                 cmd.ExecuteNonQuery();
@@ -585,6 +566,38 @@ namespace WaferNavController
                 return blu.id;
             }
             throw new Exception("No available BLUs!");
+        }
+
+        public static string GetRandomAvailableBluId() {
+            var db = new DataContext(generateConnectionString());
+            var BLUs = db.GetTable<Tables.BLU>();
+            var query =
+                from b in BLUs
+                where b.available
+                select b;
+            var count = query.Count(); // 1st round-trip
+            var index = random.Next(count);
+            var blu = query.Skip(index).FirstOrDefault(); // 2nd round-trip
+            if (blu == null) {
+                throw new Exception("No available BLUs!");
+            }
+            return blu.id;
+        }
+
+        public static string GetRandomAvailableSltId() {
+            var db = new DataContext(generateConnectionString());
+            var SLTs = db.GetTable<Tables.SLT>();
+            var query =
+                from s in SLTs
+                where s.available
+                select s;
+            var count = query.Count(); // 1st round-trip
+            var index = random.Next(count);
+            var slt = query.Skip(index).FirstOrDefault(); // 2nd round-trip
+            if (slt == null) {
+                throw new Exception("No available SLTs!");
+            }
+            return slt.id;
         }
 
         public static void finishBluUnload(string bluId, Boolean demoMode)
@@ -958,13 +971,13 @@ namespace WaferNavController
             }
             try {
                 var query = "INSERT INTO[wn].[BLU] (id, available, site_name, site_description, site_location) VALUES " +
-                            "('123456', 1,'BLU#1', 'Handler 1', 'East')," +
-                            "('234567', 1,'BLU#2', 'Handler 2', 'West')," +
-                            "('111111', 1,'BLU#3', 'Handler 3', 'South')," +
-                            "('222222', 1,'BLU#4', 'Handler 4', 'West')," +
-                            "('333333', 1,'BLU#5', 'Handler 5', 'North')," +
-                            "('444444', 1,'BLU#6', 'Handler 6', 'West')," +
-                            "('555555', 1,'BLU#7', 'Handler 7', 'East');";
+                            "('079303', 1,'BLU #1', 'Handler 1', 'North')," +
+                            "('087268', 1,'BLU #2', 'Handler 2', 'East')," +
+                            "('105453', 1,'BLU #3', 'Handler 3', 'West')," +
+                            "('111690', 1,'BLU #4', 'Handler 4', 'West')," +
+                            "('123826', 1,'BLU #5', 'Handler 5', 'West')," +
+                            "('233575', 1,'BLU #6', 'Handler 6', 'South')," +
+                            "('341512', 1,'BLU #7', 'Handler 7', 'East');";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }
@@ -988,13 +1001,13 @@ namespace WaferNavController
             }
             try {
                 var query = "INSERT INTO[wn].[SLT] (id, available, site_name, site_description, site_location) VALUES " +
-                            "('123456', 1,'SLT#1', 'Test Chamber 1', 'East')," +
-                            "('234567', 1,'SLT#2', 'Test Chamber 2', 'West')," +
-                            "('111111', 1,'SLT#3', 'Test Chamber 3', 'South')," +
-                            "('222222', 1,'SLT#4', 'Test Chamber 4', 'West')," +
-                            "('333333', 1,'SLT#5', 'Test Chamber 5', 'North')," +
-                            "('444444', 1,'SLT#6', 'Test Chamber 6', 'West')," +
-                            "('555555', 1,'SLT#7', 'Test Chamber 7', 'East');";
+                            "('598514', 1,'SLT #1', 'Test Chamber 1', 'West')," +
+                            "('614412', 1,'SLT #2', 'Test Chamber 2', 'East')," +
+                            "('631746', 1,'SLT #3', 'Test Chamber 3', 'West')," +
+                            "('762573', 1,'SLT #4', 'Test Chamber 4', 'East')," +
+                            "('796568', 1,'SLT #5', 'Test Chamber 5', 'West')," +
+                            "('862986', 1,'SLT #6', 'Test Chamber 6', 'North')," +
+                            "('967224', 1,'SLT #7', 'Test Chamber 7', 'South');";
                 var insertCommand = new SqlCommand(query, connection);
                 insertCommand.ExecuteNonQuery();
             }

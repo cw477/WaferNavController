@@ -206,7 +206,7 @@ namespace WaferNavController
         }
 
         public void ResetDatabase() {
-            MainWindow.Get().AppendLine(DateTime.Now + ": Resetting DB...", true);
+            MainWindow.Get().AppendLine("\n" + DateTime.Now + ": Resetting DB...", true);
             DatabaseHandler.ResetDatabase();
             MainWindow.Get().AppendLine(DateTime.Now + ": Resetting DB Finished.", true);
             MainWindow.Get().RefreshDataGrids();
