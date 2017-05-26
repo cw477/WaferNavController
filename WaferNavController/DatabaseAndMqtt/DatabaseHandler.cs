@@ -17,10 +17,11 @@ namespace WaferNavController
 
         public static void TestConnectToDatabase()
         {
-            string connectionString = generateConnectionString();
-            connection = new SqlConnection(connectionString);
             try
             {
+                string connectionString = generateConnectionString();
+                connection = new SqlConnection(connectionString);
+
                 bool connectionOpenedHere = false;
                 if (connection.State == ConnectionState.Closed)
                 {
@@ -42,15 +43,22 @@ namespace WaferNavController
             }            
         }
 
-        private static string generateConnectionString()
-        {
-            byte[] jsonByteArr = Properties.Resources.aws;
-            string jsonStr = System.Text.Encoding.UTF8.GetString(jsonByteArr);
-            JObject jsonObject = JObject.Parse(jsonStr);
-            string connectionString = "";
-            foreach (var kp in jsonObject)
-            {
-                connectionString += $"{kp.Key}={kp.Value};";
+        private static string generateConnectionString() {
+            string connectionString = null;
+            try {
+                var jsonStr = File.Exists("config.json")
+                    ? File.ReadAllText("config.json")
+                    : Properties.Resources.config;
+                JObject jsonObject = JObject.Parse(jsonStr);
+                JObject innerJsonObject = JObject.Parse(jsonObject["database"].ToString());
+
+                connectionString = "";
+                foreach (var kp in innerJsonObject) {
+                    connectionString += $"{kp.Key}={kp.Value};";
+                }
+            }
+            catch (Exception e) {
+                MainWindow.Get().AppendLine("Malformed JSON file! " + e.Message, true);
             }
             return connectionString;
         }

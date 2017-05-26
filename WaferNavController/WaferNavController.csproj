@@ -227,7 +227,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\aws.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -281,6 +280,7 @@
     <Resource Include="Resources\testdata.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\config.json" />
     <None Include="Resources\WN_app_icon.ico" />
   </ItemGroup>
   <ItemGroup>

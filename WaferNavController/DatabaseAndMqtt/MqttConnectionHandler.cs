@@ -6,26 +6,52 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.IO;
 using System.Windows;
+using Newtonsoft.Json.Linq;
 
 namespace WaferNavController {
     class MqttConnectionHandler {
-        private readonly string BROKER_URL = "iot.eclipse.org"; // Defaults to port 1883
-        public string ClientId { get; } = Guid.NewGuid().ToString();
-        public string PubTopic { get; } = "wafernav/location_data";
-        public string SubTopic { get; } = "wafernav/location_requests";
+        private string ClientId { get; } = Guid.NewGuid().ToString();
+        private string BrokerUrl { get; set; } // Defaults to port 1883
+        private string SubTopic { get; set; }
+        private string PubTopic { get; set; }
         private readonly MqttClient mqttClient;
         private readonly MainWindow mainWindow;
 
         public MqttConnectionHandler(MainWindow mainWindow) {
-            this.mainWindow = mainWindow;
-            mqttClient = new MqttClient(BROKER_URL);
-            mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
-            mqttClient.Connect(ClientId);
-            mqttClient.Subscribe(new[] { SubTopic }, new[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-            mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
-            mainWindow.AppendLine("Subscribed to " + SubTopic, true);
+            try {
+                this.mainWindow = mainWindow;
+                SetMqttConnectionInfoFromJsonFile();
+                mqttClient = new MqttClient(BrokerUrl);
+                mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+                mqttClient.Connect(ClientId);
+                mqttClient.Subscribe(new[] {SubTopic}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
+                mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
+                mainWindow.AppendLine("Subscribed to " + SubTopic, true);
+                mainWindow.AppendLine("Publishing to " + PubTopic, true);
+                if (NavigationHandler.demoMode) {
+                    mainWindow.AppendLine("Demo mode is on!", true);
+                }
+            }
+            catch (Exception e) {
+                MainWindow.Get().AppendLine("Exception thrown in MqttConnectionHandler constructor: " + e.Message, true);
+            }
         }
 
+        private void SetMqttConnectionInfoFromJsonFile() {
+            try {
+                var jsonStr = File.Exists("config.json")
+                    ? File.ReadAllText("config.json")
+                    : Properties.Resources.config;
+                JObject jsonObject = JObject.Parse(jsonStr);
+                JObject innerJsonObject = JObject.Parse(jsonObject["mqtt"].ToString());
+                SubTopic = innerJsonObject["sub_topic"].ToString();
+                PubTopic = innerJsonObject["pub_topic"].ToString();
+                BrokerUrl = innerJsonObject["broker_url"].ToString();
+            }
+            catch (Exception e) {
+                MainWindow.Get().AppendLine("Malformed JSON file! " + e.Message, true);
+            }
+        }
 
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
             var incommingJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(Encoding.UTF8.GetString(e.Message, 0, e.Message.Length));

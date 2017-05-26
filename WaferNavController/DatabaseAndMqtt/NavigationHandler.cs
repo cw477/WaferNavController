@@ -1,15 +1,27 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace WaferNavController
 {
-    public static class NavigationHandler
-    {
+    public static class NavigationHandler {
 
-        //please turn below off for actual use
-        private const bool demoMode = true;
+        public static readonly bool demoMode;
+
+        static NavigationHandler() {
+            try {
+                var jsonStr = File.Exists("config.json")
+                    ? File.ReadAllText("config.json")
+                    : Properties.Resources.config;
+                JObject jsonObject = JObject.Parse(jsonStr);
+                demoMode = (bool) jsonObject["demo_mode"];
+            }
+            catch (Exception e) {
+                MainWindow.Get().AppendLine("Malformed JSON file! " + e.Message, true);
+            }
+        }
 
         /// <summary>
         /// Process GET_NEW_BLU message.
