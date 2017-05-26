@@ -107,7 +107,7 @@
                         </Button.ToolTip>
                     </Button>
 
-                    <Button x:Name="ImportFileButton" VerticalAlignment="Top" Margin="481,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
+                    <Button x:Name="ImportFileButton" VerticalAlignment="Top" Margin="481,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ImportButton_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
@@ -131,7 +131,7 @@
                         </Button.ToolTip>
                     </Button>
 
-                    <Button x:Name="ExportFileButton" VerticalAlignment="Top" Margin="541,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
+                    <Button x:Name="ExportFileButton" VerticalAlignment="Top" Margin="541,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ExportButton_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
@@ -154,7 +154,7 @@
                             </ToolTip>
                         </Button.ToolTip>
                     </Button>
-
+                    
                     <Button x:Name="ResetDatabaseButton" VerticalAlignment="Top" Margin="120,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ResetDatabaseButton_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -228,25 +228,6 @@
                 </Grid>
             </TabItem>
 
-            <!--Config-->
-            <TabItem x:Name="ConfigTabItem" Header="BLU/SLT Config" Margin="4,0,-21,0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="74*"/>
-                        <ColumnDefinition Width="13*"/>
-                        <ColumnDefinition Width="507*"/>
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,294,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
-                    <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
-                    <!--Config Section-->
-                    <TextBlock HorizontalAlignment="Left" Height="31" Margin="25,47,0,0" TextWrapping="Wrap" Text="Import Database from File" VerticalAlignment="Top" Width="228" FontSize="16" FontWeight="Bold" Grid.ColumnSpan="3"/>
-                    <!--View, Add, Update Section-->
-                    <Button x:Name="ImportButton" Content="Import File" HorizontalAlignment="Left" Margin="361,94,0,0" VerticalAlignment="Top" Width="94" Click="ImportButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
-                    <Button x:Name="ExportButton" Content="Export File" HorizontalAlignment="Left" Margin="145,335,0,0" VerticalAlignment="Top" Width="94" Click="ExportButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="3"/>
-                    <TextBlock HorizontalAlignment="Left" Height="31" Margin="25,263,0,0" TextWrapping="Wrap" Text="Export Database to File" VerticalAlignment="Top" Width="228" FontSize="16" FontWeight="Bold" Grid.ColumnSpan="3"/>
-                </Grid>
-            </TabItem>
         </TabControl>
         <Button x:Name="LogoutButton" Content="Log Out" Grid.Column="1" Margin="222,12,4,558" Click="LogoutButton_Click" Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold"/>
     </Grid>

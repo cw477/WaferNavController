@@ -53,7 +53,6 @@ namespace WaferNavController {
             if (!isAdmin) {
                 statusLogConfig.AddButton.Visibility = Visibility.Hidden;  // only admin can add new entries
                 statusLogConfig.ResetDatabaseButton.Visibility = Visibility.Hidden;  // only admin can reset database
-                statusLogConfig.ConfigTabItem.Visibility = Visibility.Hidden;  // only admin can reset database with config file
                 Title += "   <NON-ADMIN>";
             } else {
                 Title += "   <ADMIN>";
