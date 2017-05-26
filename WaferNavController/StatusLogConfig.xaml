@@ -10,25 +10,31 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="38*"/>
-            <ColumnDefinition Width="37*"/>
+            <ColumnDefinition Width="152*"/>
+            <ColumnDefinition Width="141*"/>
+            <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFFFFF" HorizontalAlignment="Left" Height="600" Stroke="Black" VerticalAlignment="Top" Width="600"/>
-        <TabControl x:Name="TabControl" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="590" Margin="0,10,0,0" VerticalAlignment="Top" Width="600">
+        <Rectangle Grid.ColumnSpan="3" Fill="#FFFFFF" HorizontalAlignment="Left" Height="600" Stroke="Black" VerticalAlignment="Top" Width="600"/>
+        <TabControl x:Name="TabControl" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="590" Margin="0,10,0,0" VerticalAlignment="Top" Width="600">
 
             <!-- Status -->
-            <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="54" Margin="0">
+            <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="60" Margin="0" FontWeight="Bold" FontSize="16">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="47*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="574*"/>
+                        <ColumnDefinition Width="11*"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="dgBLU" Margin="10,0,10,322" Height="174" VerticalAlignment="Bottom" Grid.ColumnSpan="2" MouseUp="DataGrid_MouseUp" Tag="BLU" IsReadOnly="True">
+                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="0,488,10,29" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                    <Label Content="Status.." HorizontalAlignment="Left" Margin="7,491,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.362,0.577" Height="30" Width="546" Grid.Column="1" FontWeight="Normal" FontSize="12"/>
+
+                    <DataGrid x:Name="dgBLU" Margin="0,0,10,277" Height="174" VerticalAlignment="Bottom" MouseUp="DataGrid_MouseUp" Tag="BLU" IsReadOnly="True" Grid.Column="1" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
-                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background" Value="#FF428BCA" />
                                     </Trigger>
                                 </Style.Triggers>
@@ -36,11 +42,11 @@
                         </DataGrid.Resources>
                     </DataGrid>
 
-                    <DataGrid x:Name="dgSLT" Margin="10,277,10,109" Grid.ColumnSpan="2" MouseUp="DataGrid_MouseUp" Tag="SLT" IsReadOnly="True">
+                    <DataGrid x:Name="dgSLT" Margin="0,314,10,72" MouseUp="DataGrid_MouseUp" Tag="SLT" IsReadOnly="True" Grid.Column="1" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
-                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background" Value="#FF428BCA" />
                                     </Trigger>
                                 </Style.Triggers>
@@ -48,14 +54,14 @@
                         </DataGrid.Resources>
                     </DataGrid>
 
-                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="10,243,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16" Height="34"/>
-                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="34" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
-                    <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Left" Margin="295,534,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1"/>
+                    <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="0,280,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" FontWeight="Bold" FontSize="14" Height="29" Grid.Column="1"/>
+                    <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="29" FontWeight="Bold" FontSize="14" Grid.Column="1"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="3" Margin="-2,-2,0,0"/>
+                    <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Right" Margin="347,523,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1" Height="26" FontSize="12" FontWeight="Normal"/>
 
-                    <Button x:Name="FindButton" VerticalAlignment="Top" Margin="10,475,0,0" HorizontalAlignment="Left" Width="33" Height="33" Click="FindButton_Click">
+                    <Button x:Name="FindButton" VerticalAlignment="Top" Margin="0,30,0,0" HorizontalAlignment="Left" Width="33" Height="33" Click="FindButton_Click" Grid.Column="1">
                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
+                            <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
                                     <Border BorderBrush="Black" BorderThickness="1" />
                                     <Image Margin="2" Source="Resources/find_icon_white.png" />
@@ -67,11 +73,19 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Find</TextBlock>
+                                    <TextBlock>Search an ID and view its information</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
-                    <Button x:Name="AddButton" VerticalAlignment="Top" Margin="10,475,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="AddButton_Click">
+                    <Button x:Name="AddButton" VerticalAlignment="Top" Margin="60,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="AddButton_Click">
                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
+                            <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
                                     <Border BorderBrush="Black" BorderThickness="1" />
                                     <Image Margin="2" Source="Resources/add_icon_white.png" />
@@ -83,11 +97,67 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Add</TextBlock>
+                                    <TextBlock>Add new BLU/SLT information</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
-                    <Button x:Name="ResetDatabaseButton" VerticalAlignment="Top" Margin="417,475,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ResetDatabaseButton_Click">
+                    <Button x:Name="ImportFileButton" VerticalAlignment="Top" Margin="481,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid x:Name="bg" Background="#FF428BCA">
+                                    <Border BorderBrush="Black" BorderThickness="1" />
+                                    <Image Margin="2" Source="Resources/import_icon_white.png" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bg" Property="Background" Value="LightBlue" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Import</TextBlock>
+                                    <TextBlock>Import new database file</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
+
+                    <Button x:Name="ExportFileButton" VerticalAlignment="Top" Margin="541,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid x:Name="bg" Background="#FF428BCA">
+                                    <Border BorderBrush="Black" BorderThickness="1" />
+                                    <Image Margin="2" Source="Resources/export_icon_white.png" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bg" Property="Background" Value="LightBlue" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Export</TextBlock>
+                                    <TextBlock>Export database to file</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
+
+                    <Button x:Name="ResetDatabaseButton" VerticalAlignment="Top" Margin="120,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ResetDatabaseButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
                                     <Border BorderBrush="Black" BorderThickness="1" />
                                     <Image Margin="2" Source="Resources/delete_forever_icon_white.png" />
@@ -99,11 +169,19 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Reset Database</TextBlock>
+                                    <TextBlock>Reset the entire database</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
-                    <Button x:Name="RefreshButton" VerticalAlignment="Top" Margin="474,475,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="RefreshButton_Click">
+                    <Button x:Name="RefreshButton" VerticalAlignment="Top" Margin="421,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="RefreshButton_Click" RenderTransformOrigin="0.758,0.545">
                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
+                            <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid x:Name="bg" Background="#FF428BCA">
                                     <Border BorderBrush="Black" BorderThickness="1" />
                                     <Image Margin="2" Source="Resources/refresh_icon_white.png" />
@@ -115,21 +193,29 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Button.Template>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold">Refresh</TextBlock>
+                                    <TextBlock>Refresh database to reflect new changes</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
                     </Button>
 
                 </Grid>
             </TabItem>
 
             <!--Log-->
-            <TabItem x:Name="LogTabItem" Header="Log" Height="22" VerticalAlignment="Bottom" Margin="0,0,-4,0">
+            <TabItem x:Name="LogTabItem" Header="Log" Height="30" VerticalAlignment="Bottom" Margin="0,0,-4,0" FontWeight="Bold" FontSize="16">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="131*"/>
                         <ColumnDefinition Width="463*"/>
                     </Grid.ColumnDefinitions>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="2"/>
+                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2" Margin="-2,-2,0,0"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,35,10,42" Grid.ColumnSpan="2">
-                        <TextBlock x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas">
+                        <TextBlock x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" FontWeight="Normal">
                             <TextBlock.ContextMenu>
                                 <ContextMenu x:Name="cmSave">
                                     <MenuItem Header="Save to Text File"
@@ -151,7 +237,6 @@
                         <ColumnDefinition Width="507*"/>
                     </Grid.ColumnDefinitions>
                     <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,294,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
-                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="25,524,33,10" Grid.ColumnSpan="3"/>
                     <Rectangle Fill="#FFFFFF" HorizontalAlignment="Left" Height="111" Margin="25,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="536" Grid.ColumnSpan="3"/>
                     <!--Config Section-->
                     <TextBlock HorizontalAlignment="Left" Height="31" Margin="25,47,0,0" TextWrapping="Wrap" Text="Import Database from File" VerticalAlignment="Top" Width="228" FontSize="16" FontWeight="Bold" Grid.ColumnSpan="3"/>
@@ -159,11 +244,10 @@
                     <Button x:Name="ImportButton" Content="Import File" HorizontalAlignment="Left" Margin="361,94,0,0" VerticalAlignment="Top" Width="94" Click="ImportButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
                     <Button x:Name="ExportButton" Content="Export File" HorizontalAlignment="Left" Margin="145,335,0,0" VerticalAlignment="Top" Width="94" Click="ExportButton_Click" Foreground="White" Background="#FF428BCA" Height="33" FontWeight="Bold" FontSize="14" Grid.Column="2" />
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="594" Grid.ColumnSpan="3"/>
-                    <Label Content="Status.." HorizontalAlignment="Left" Margin="30,524,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" RenderTransformOrigin="0.362,0.577"/>
                     <TextBlock HorizontalAlignment="Left" Height="31" Margin="25,263,0,0" TextWrapping="Wrap" Text="Export Database to File" VerticalAlignment="Top" Width="228" FontSize="16" FontWeight="Bold" Grid.ColumnSpan="3"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="LogoutButton" Content="Log Out" Grid.Column="1" Margin="231,12,5,566" Click="LogoutButton_Click" Height="22"/>
+        <Button x:Name="LogoutButton" Content="Log Out" Grid.Column="1" Margin="222,12,4,558" Click="LogoutButton_Click" Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold"/>
     </Grid>
 </Page>
