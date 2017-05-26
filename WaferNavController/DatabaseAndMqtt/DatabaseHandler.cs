@@ -5,9 +5,12 @@ using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Data;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using WaferNavController.DatabaseAndMqtt;
 
 namespace WaferNavController
 {
@@ -40,7 +43,7 @@ namespace WaferNavController
                 Console.Error.WriteLine("\n**Exception was thrown in method ");
                 Console.Error.Write(MethodBase.GetCurrentMethod().Name + "**");
                 Console.Error.WriteLine(e.Message);
-            }            
+            }
         }
 
         private static string generateConnectionString() {
@@ -572,28 +575,16 @@ namespace WaferNavController
         }
 
         public static string GetFirstAvailableBluId() {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed) {
-                connection.Open();
-                connectionOpenedHere = true;
+            var db = new DataContext(generateConnectionString());
+            var BLUs = db.GetTable<Tables.BLU>();
+            var query =
+                from b in BLUs
+                where b.available
+                select b;
+            foreach (var blu in query) {
+                return blu.id;
             }
-            var query = "SELECT * FROM [wn].[BLU] WHERE available = 1;";
-            var sqlCommand = new SqlCommand(query, connection);
-            var reader = sqlCommand.ExecuteReader();
-            if (!(reader.HasRows)) {
-                reader.Close();
-                throw new Exception("No available BLUs!");
-            }
-            string bluId = null;
-            while (reader.Read()) {
-                bluId = reader["id"].ToString();
-                break;
-            }
-            reader.Close();
-            if (connectionOpenedHere) {
-                connection.Close();
-            }
-            return bluId;
+            throw new Exception("No available BLUs!");
         }
 
         public static void finishBluUnload(string bluId, Boolean demoMode)

@@ -121,6 +121,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DatabaseAndMqtt\Tables.cs" />
     <Compile Include="PopupWindows\ResetWindow.xaml.cs">
       <DependentUpon>ResetWindow.xaml</DependentUpon>
     </Compile>
