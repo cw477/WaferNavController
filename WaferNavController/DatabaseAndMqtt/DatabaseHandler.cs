@@ -493,7 +493,7 @@ namespace WaferNavController
             //TODO: handle the case where there are no available SLTs
             return GetData("SELECT [id] AS [sltId], " +
                            "[site_name] AS [sltSiteName], [site_description] as [sltSiteDescription], [site_location] as [sltSiteLocation] " +
-                           $"FROM [wn].[BLU] WHERE id = '{sltId}';")[0];
+                           $"FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
         }
 
         public static void batchAddHistoricBibs(List<string> bibIds, DateTime nowDateTime, SqlTransaction tran)
