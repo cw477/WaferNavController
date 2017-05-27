@@ -215,15 +215,15 @@
                     </Grid.ColumnDefinitions>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2" Margin="-2,-2,0,0"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,35,10,42" Grid.ColumnSpan="2">
-                        <TextBlock x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" FontWeight="Normal">
-                            <TextBlock.ContextMenu>
+                        <TextBox x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" FontWeight="Normal">
+                            <TextBox.ContextMenu>
                                 <ContextMenu x:Name="cmSave">
                                     <MenuItem Header="Save to Text File"
                                           Click="saveFD">
                                     </MenuItem>
                                 </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
+                            </TextBox.ContextMenu>
+                        </TextBox>
                     </ScrollViewer>
                 </Grid>
             </TabItem>
