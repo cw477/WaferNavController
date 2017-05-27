@@ -220,7 +220,7 @@ namespace WaferNavController
             string cmdString = $"SELECT [id], [site_name], [site_description], [site_location], [available] FROM [wn].[{tableName}]";
             SqlCommand cmd = new SqlCommand(cmdString, connection);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable("BLU");
+            DataTable dt = new DataTable(tableName);
             sda.Fill(dt);
             dg.ItemsSource = dt.DefaultView;
         }
@@ -339,6 +339,11 @@ namespace WaferNavController
                 tran = connection.BeginTransaction();
                 transStarted = true;
 
+                // Verify BLU exists
+                if (GetBlu(bluId, tran) == null) {
+                    throw new Exception($"BLU {bluId} does not exist!");
+                }
+
                 //get waftertype associated
                 Dictionary<string, string> wafertype;
                 try {
@@ -418,30 +423,38 @@ namespace WaferNavController
             }
         }
 
-        public static Dictionary<string, string> GetBlu(string bluId) {
-            //TODO: handle the case where there are no available BLUs
-            return GetData("SELECT [id] AS [bluId], " +
+        public static Dictionary<string, string> GetBlu(string bluId, SqlTransaction tran = null) {
+            var data = GetData("SELECT [id] AS [bluId], " +
                            "[site_name] AS [bluSiteName], [site_description] as [bluSiteDescription], [site_location] as [bluSiteLocation] " +
-                           $"FROM [wn].[BLU] WHERE id = '{bluId}';")[0];
+                           $"FROM [wn].[BLU] WHERE id = '{bluId}';", tran);
+            return data.Count == 0 ? null : data[0];
         }
 
         public static List<Dictionary<string, string>> GetAllActiveBibs() {
             return GetData($"SELECT * FROM [wn].[active_bib];");
         }
 
+        public static List<string> GetAllActiveBibIds(SqlTransaction tran = null) {
+            var data = GetData($"SELECT * FROM [wn].[active_bib];", tran);
+            return data.Select(dict => dict["id"]).ToList();
+        }
+
         public static List<Dictionary<string, string>> GetAllHistoricBibs() {
             return GetData($"SELECT * FROM [wn].[historic_bib];");
         }
 
-        private static List<Dictionary<string, string>> GetData(string query) {
-            bool connectionOpenedHere = false;
+        private static List<Dictionary<string, string>> GetData(string query, SqlTransaction tran = null) {
+            var connectionOpenedHere = false;
             if (connection.State == ConnectionState.Closed) {
                 connection.Open();
                 connectionOpenedHere = true;
             }
-            SqlDataReader reader = null;
-            var sqlCommand = new SqlCommand(query, connection);
-            reader = sqlCommand.ExecuteReader();
+
+            var sqlCommand = tran == null
+                ? new SqlCommand(query, connection)
+                : new SqlCommand(query, connection, tran);
+
+            var reader = sqlCommand.ExecuteReader();
             var data = new List<Dictionary<string, string>>();
             // Iterate through rows
             while (reader.Read()) {
@@ -461,39 +474,11 @@ namespace WaferNavController
             return data;
         }
 
-        private static List<Dictionary<string, string>> GetData(string query, SqlTransaction tran) {
-            bool connectionOpenedHere = false;
-            if (connection.State == ConnectionState.Closed) {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
-            SqlDataReader reader = null;
-            var sqlCommand = new SqlCommand(query, connection, tran);
-            reader = sqlCommand.ExecuteReader();
-            var data = new List<Dictionary<string, string>>();
-            // Iterate through rows
-            while (reader.Read()) {
-                var row = new Dictionary<string, string>();
-
-                // Iterate through columns
-                for (var i = 0; i < reader.FieldCount; i++) {
-                    var colName = reader.GetName(i);
-                    row.Add(colName, reader[colName].ToString());
-                }
-                data.Add(row);
-            }
-            reader.Close();
-            if (connectionOpenedHere) {
-                connection.Close();
-            }
-            return data;
-        }
-
-        public static Dictionary<string, string> GetSlt(object sltId) {
-            //TODO: handle the case where there are no available SLTs
-            return GetData("SELECT [id] AS [sltId], " +
+        public static Dictionary<string, string> GetSlt(object sltId, SqlTransaction tran = null) {
+            var data = GetData("SELECT [id] AS [sltId], " +
                            "[site_name] AS [sltSiteName], [site_description] as [sltSiteDescription], [site_location] as [sltSiteLocation] " +
-                           $"FROM [wn].[SLT] WHERE id = '{sltId}';")[0];
+                           $"FROM [wn].[SLT] WHERE id = '{sltId}';", tran);
+            return data.Count == 0 ? null : data[0];
         }
 
         public static void batchAddHistoricBibs(List<string> bibIds, DateTime nowDateTime, SqlTransaction tran)
@@ -790,15 +775,12 @@ namespace WaferNavController
             }
         }
 
-        public static void setForUnload(string sltId, JArray bibIds, string bluId)
-        {
+        public static void setForUnload(string sltId, JArray bibIds, string bluId) {
             SqlTransaction tran = null;
             bool transStarted = false;
-            try
-            {
+            try {
                 bool connectionOpenedHere = false;
-                if (connection.State == ConnectionState.Closed)
-                {
+                if (connection.State == ConnectionState.Closed) {
                     connection.Open();
                     connectionOpenedHere = true;
                 }
@@ -806,16 +788,40 @@ namespace WaferNavController
                 transStarted = true;
                 var nowDateTime = DateTime.Now;
 
-                //TODO: HIGH PRIORITY FIX-This is wrong, using the bibs that were put in, because some fail and are taken out
-                //get bibs assigned to the slt
-                List<Dictionary<string, string>> oldBibIds = GetData($"SELECT [bib_id] FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}';", tran);
 
-                List<string> oldBibList = new List<string>();
-                foreach (Dictionary<string, string> oldBibId in oldBibIds)
-                {
-                    oldBibList.Add(oldBibId["bib_id"]);
+                // Verify SLT exists
+                if (GetSlt(sltId, tran) == null) {
+                    throw new Exception($"SLT {sltId} does not exist!");
                 }
 
+                //get bibs assigned to the slt
+                var oldBibs = GetData($"SELECT [bib_id] FROM [wn].[slt_assignment] WHERE [slt_id] = '{sltId}';", tran);
+
+
+                // Verify there are BIBs associated with the SLT
+                if (oldBibs.Count == 0) {
+                    throw new Exception($"No BIBs associated with SLT {sltId}!");
+                }
+
+
+                // Verify that BIBs received are all currently active (otherwise will get a foreign key constraint error later when trying to insert into blu_assignment_unload)
+                var inactiveBibs = new List<string>();
+                var activeBibs = GetAllActiveBibIds(tran);
+                foreach (var bibId in bibIds) {
+                    if (!activeBibs.Contains(bibId.ToString())) {
+                        inactiveBibs.Add(bibId.ToString());
+                    }
+                }
+                if (inactiveBibs.Count > 0) {
+                    throw new Exception($"BIB(s) {string.Join(", ", inactiveBibs.OrderBy(x => x).ToList())} not currently active!");
+                }
+
+
+                //TODO: HIGH PRIORITY FIX-This is wrong, using the bibs that were put in, because some fail and are taken out
+                var oldBibList = new List<string>();
+                foreach (Dictionary<string, string> oldBibId in oldBibs) {
+                    oldBibList.Add(oldBibId["bib_id"]);
+                }
                 //create historic bibs
                 batchAddHistoricBibs(oldBibList, nowDateTime, tran);
 
@@ -824,42 +830,36 @@ namespace WaferNavController
                 cmd.ExecuteNonQuery();
 
                 //add entries to historic
-                foreach (string oldBibId in oldBibList)
-                {
-
+                foreach (string oldBibId in oldBibList) {
                     cmd = new SqlCommand($"INSERT INTO [wn].[historic_slt_assignment] (slt_id, bib_id, bib_id_inserted_at) Values ('{sltId}','{oldBibId}','{nowDateTime}');", connection, tran);
                     cmd.ExecuteNonQuery();
-
                 }
+
                 //make the slt available
                 cmd = new SqlCommand($"UPDATE[wafer_nav].[wn].[SLT] SET available = 1 WHERE id = '{sltId}';", connection, tran);
                 cmd.ExecuteNonQuery();
 
+
                 //add assignment - this works without inserting bibs into active because they are still "live" at this point.
-                foreach (string bibId in bibIds)
-                {
+                foreach (string bibId in bibIds) {
                     cmd = new SqlCommand($"INSERT INTO [wn].[blu_assignment_unload] (blu_id, bib_id) Values ('{bluId}','{bibId}');", connection, tran);
                     cmd.ExecuteNonQuery();
                 }
 
                 //set the blu to unavailable
                 cmd = new SqlCommand("UPDATE[wafer_nav].[wn].[BLU] " +
-                    "SET available = 0 " +
-                    $"WHERE id = '{bluId}';", connection, tran);
+                                     "SET available = 0 " +
+                                     $"WHERE id = '{bluId}';", connection, tran);
                 cmd.ExecuteNonQuery();
 
                 //commit all
                 tran.Commit();
-                if (connectionOpenedHere)
-                {
+                if (connectionOpenedHere) {
                     connection.Close();
                 }
-
             }
-            catch (Exception e)
-            {
-                if (transStarted)
-                {
+            catch (Exception e) {
+                if (transStarted) {
                     tran.Rollback();
                 }
                 throw e;
