@@ -21,6 +21,7 @@ namespace WaferNavController
     public partial class StatusLogConfig : Page {
         private readonly MainWindow mainWindow;
         private static StatusLogConfig self;
+        private readonly int statusLabelClearDelay = 7500;
 
         public StatusLogConfig() {
             self = this;
@@ -110,7 +111,8 @@ namespace WaferNavController
                 return;
             }
 
-            if (col == 5 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on edit column, and only 1 row selected
+            int totalNumCols = dataGrid.Columns.Count;
+            if (col == totalNumCols - 2 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on edit column, and only 1 row selected
                 string type = dataGrid.Tag.ToString();
                 string id = (string) ((DataRowView) dataGrid.SelectedItem).Row[0];
                 string name = (string)((DataRowView)dataGrid.SelectedItem).Row[1];
@@ -121,7 +123,7 @@ namespace WaferNavController
                 editWindow.Owner = mainWindow;
                 editWindow.ShowDialog();
             }
-            else if (col == 6 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on delete column, and only 1 row selected
+            else if (col == totalNumCols - 1 && dataGrid.SelectedItems.Count == 1) {  // only fire if clicked on delete column, and only 1 row selected
                 string type = dataGrid.Tag.ToString();
                 string id = (string) ((DataRowView) dataGrid.SelectedItem).Row[0];
                 DeleteWindow deleteWindow = new DeleteWindow(type, id);
@@ -237,7 +239,7 @@ namespace WaferNavController
 
         private async void ClearStatusLabelTextAsync(CancellationToken token) {
             try {
-                await Task.Delay(10000, token);
+                await Task.Delay(statusLabelClearDelay, token);
                 StatusLabel.Content = "";
             }
             catch (TaskCanceledException) {

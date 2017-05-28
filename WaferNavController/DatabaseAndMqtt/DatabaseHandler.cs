@@ -217,10 +217,30 @@ namespace WaferNavController
         }
 
         public static void FillDataGridWithItems(ref DataGrid dg, string tableName) {
-            string cmdString = $"SELECT [id], [site_name], [site_description], [site_location], [available] FROM [wn].[{tableName}]";
+            DataTable dt = new DataTable(tableName);
+            string cmdString;
+            if (tableName == "BLU") {
+                cmdString = "SELECT id ID, site_name Name, site_description Description, site_location Location, available Available, "
+                            + "NULLIF(COUNT(blu_id), 0) '# BIBs' "
+                            + "FROM wn.BLU "
+                            + "LEFT JOIN wn.blu_assignment_unload "
+                            + "ON id = blu_id "
+                            + "GROUP BY id, site_name, site_description, site_location, available;";
+
+//                cmdString = "SELECT id ID, site_name Name, site_description Description, site_location Location, available Available, wafer_type_id 'Lot ID' "
+//                            + "FROM wn.BLU "
+//                            + "LEFT JOIN wn.blu_assignment_load "
+//                            + "ON id = blu_id;";
+            } else {
+                cmdString = "SELECT id ID, site_name Name, site_description Description, site_location Location, available Available, "
+                            + "NULLIF(COUNT(slt_id), 0) '# BIBs' "
+                            + "FROM wn.SLT "
+                            + "LEFT JOIN wn.slt_assignment "
+                            + "ON id = slt_id "
+                            + "GROUP BY id, site_name, site_description, site_location, available;";
+            }
             SqlCommand cmd = new SqlCommand(cmdString, connection);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable(tableName);
             sda.Fill(dt);
             dg.ItemsSource = dt.DefaultView;
         }
@@ -372,6 +392,7 @@ namespace WaferNavController
                 //free blu
                 SetBluToAvailable(bluId, tran);
 
+                // TODO - add check here to throw specific error if bib already in active_bib table
                 //add bibs
                 var sqlText = $"INSERT INTO [wn].[active_bib] (id) Values ";
                 foreach (string s in bibIds)

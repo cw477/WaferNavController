@@ -16,6 +16,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Size = System.Drawing.Size;
 
@@ -175,15 +176,21 @@ namespace WaferNavController {
                 AddIconColumnToDataGrid(ref dataGrid, deleteIconBitmapImage, "");
             }
 
-            dataGrid.Columns[0].Header = "ID";
-            dataGrid.Columns[1].Header = "Name";
-            dataGrid.Columns[2].Header = "Description";
-            dataGrid.Columns[3].Header = "Location";
-            dataGrid.Columns[4].Header = "Available";
-
-            dataGrid.Columns[0].MinWidth= 75;
+            dataGrid.Columns[0].MinWidth = 60;
             dataGrid.Columns[1].MinWidth = 100;
-            dataGrid.Columns[2].MinWidth = 205;
+            dataGrid.Columns[2].MinWidth = 165;
+
+            // Create and apply cellstyle for column 5
+            var cellStyle = new Style(typeof(DataGridCell));
+            cellStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));
+            cellStyle.Setters.Add(new Setter(MinWidthProperty, 55.0));
+            var isSelectedTrigger = new Trigger {
+                Property = DataGridCell.IsSelectedProperty,
+                Value = true
+            };
+            isSelectedTrigger.Setters.Add(new Setter(BackgroundProperty, new BrushConverter().ConvertFrom("#FF428BCA")));
+            cellStyle.Triggers.Add(isSelectedTrigger);
+            dataGrid.Columns[5].CellStyle = cellStyle;
 
             statusLogConfig.lastRefreshedLabel.Content = " Last refreshed: " + DateTime.Now;
         }

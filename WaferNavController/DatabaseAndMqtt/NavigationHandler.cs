@@ -9,6 +9,7 @@ namespace WaferNavController
     public static class NavigationHandler {
 
         public static readonly bool demoMode;
+        private static readonly int finishBluUnloadDelay = 7500;
 
         static NavigationHandler() {
             try {
@@ -209,8 +210,9 @@ namespace WaferNavController
             }
 
             Task.Run(() => {
-                System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(finishBluUnloadDelay);
                 DatabaseHandler.finishBluUnload((string) messages["bluId"], demoMode);
+                MainWindow.Get().RefreshDataGrids();
             });
             return returnJson;
         }
