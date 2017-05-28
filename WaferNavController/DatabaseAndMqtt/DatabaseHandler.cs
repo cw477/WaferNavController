@@ -562,10 +562,9 @@ namespace WaferNavController
         }
 
         public static string GetFirstAvailableBluId() {
-            var db = new DataContext(generateConnectionString());
-            var BLUs = db.GetTable<Tables.BLU>();
+            var db = new WaferNavDatabase(generateConnectionString());
             var query =
-                from b in BLUs
+                from b in db.BLUs
                 where b.available
                 select b;
             foreach (var blu in query) {
@@ -575,10 +574,9 @@ namespace WaferNavController
         }
 
         public static string GetRandomAvailableBluId() {
-            var db = new DataContext(generateConnectionString());
-            var BLUs = db.GetTable<Tables.BLU>();
+            var db = new WaferNavDatabase(generateConnectionString());
             var query =
-                from b in BLUs
+                from b in db.BLUs
                 where b.available
                 select b;
             var count = query.Count(); // 1st round-trip
@@ -591,10 +589,9 @@ namespace WaferNavController
         }
 
         public static string GetRandomAvailableSltId() {
-            var db = new DataContext(generateConnectionString());
-            var SLTs = db.GetTable<Tables.SLT>();
+            var db = new WaferNavDatabase(generateConnectionString());
             var query =
-                from s in SLTs
+                from s in db.SLTs
                 where s.available
                 select s;
             var count = query.Count(); // 1st round-trip
@@ -1202,46 +1199,43 @@ namespace WaferNavController
             return success;
         }
 
-        public static bool RemoveBluOrSlt(string type, string id) {
-            bool success = true;
-            bool connectionOpenedHere = false;
-            SqlTransaction tran = null;
-            bool tranStarted = false;
-            if (connection.State == ConnectionState.Closed) {
-                connection.Open();
-                connectionOpenedHere = true;
-            }
+        public static bool RemoveBlu(string id) {
             try {
-                tran = connection.BeginTransaction();
-                tranStarted = true;
-
-                var extra = type == "BLU" ? "_load" : "";
-                var query = $"DELETE FROM [wn].[{type.ToLower()}_assignment{extra}] WHERE [{type.ToLower()}_id] = '{id}'";
-                var deleteCommand = new SqlCommand(query, connection, tran);
-                deleteCommand.ExecuteNonQuery();
-
-                if (type == "BLU") {
-                    query = $"DELETE FROM [wn].[{type.ToLower()}_assignment_unload] WHERE [{type.ToLower()}_id] = '{id}'";
-                    deleteCommand = new SqlCommand(query, connection, tran);
-                    deleteCommand.ExecuteNonQuery();
-                }
-
-                query = $"DELETE FROM [wn].[{type.ToUpper()}] WHERE [id] = '{id}';";
-                deleteCommand = new SqlCommand(query, connection, tran);
-                deleteCommand.ExecuteNonQuery();
-                tran.Commit();
-            }
-            catch (Exception e) {
-                Console.Error.WriteLine(e.Message);
-                success = false;
-                if (tranStarted) {
-                    tran.Rollback();
+                using (var db = new WaferNavDatabase(generateConnectionString())) {
+                    db.bluLoadAssignments.DeleteAllOnSubmit(
+                        db.bluLoadAssignments.Where(x => x.blu_id == id)
+                    );
+                    db.bluUnloadAssignments.DeleteAllOnSubmit(
+                        db.bluUnloadAssignments.Where(x => x.blu_id == id)
+                    );
+                    db.BLUs.DeleteAllOnSubmit(
+                        db.BLUs.Where(x => x.id == id)
+                    );
+                    db.SubmitChanges();
+                    return true;
                 }
             }
-            if (connectionOpenedHere) {
-                connection.Close();
+            catch (Exception) {
+                return false;
             }
-            return success;
+        }
+
+        public static bool RemoveSlt(string id) {
+            try {
+                using (var db = new WaferNavDatabase(generateConnectionString())) {
+                    db.sltAssignments.DeleteAllOnSubmit(
+                        db.sltAssignments.Where(x => x.slt_id == id)
+                    );
+                    db.SLTs.DeleteAllOnSubmit(
+                        db.SLTs.Where(x => x.id == id)
+                    );
+                    db.SubmitChanges();
+                    return true;
+                }
+            }
+            catch (Exception) {
+                return false;
+            }
         }
 
         public static bool UpdateBluOrSlt(string type, string startId, string newId, string name, string description, string location, bool available) {
@@ -1267,5 +1261,25 @@ namespace WaferNavController
             }
             return success;
         }
+
+        // Not working 100% yet
+        public static bool UpdateBlu(string startId, string newId, string name, string description, string location, bool available) {
+            try {
+                using (var db = new WaferNavDatabase(generateConnectionString())) {
+                    var query = db.BLUs.Where(x => x.id == startId);
+                    query.First().id = newId;
+                    query.First().site_name = name;
+                    query.First().site_description = description;
+                    query.First().site_location = location;
+                    query.First().available = available;
+                    db.SubmitChanges();
+                    return true;
+                }
+            }
+            catch (Exception) {
+                return false;
+            }
+        }
+
     }
 }

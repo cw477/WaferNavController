@@ -35,12 +35,12 @@ namespace WaferNavController {
 
         private void OkButton_Click(object sender, RoutedEventArgs e) {
             if (type == "BLU" && !string.IsNullOrEmpty(id)) {
-                DatabaseHandler.RemoveBluOrSlt("BLU", id);
+                DatabaseHandler.RemoveBlu(id);
                 statusLogConfig.SetStatusLabelTextWithClearTimer($"Deleted BLU {id}.");
                 DialogResult = true;
             }
             else if (type == "SLT" && !string.IsNullOrEmpty(id)) {
-                DatabaseHandler.RemoveBluOrSlt("SLT", id);
+                DatabaseHandler.RemoveSlt(id);
                 statusLogConfig.SetStatusLabelTextWithClearTimer($"Deleted SLT {id}.");
                 DialogResult = true;
             }
