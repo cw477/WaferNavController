@@ -34,6 +34,7 @@ namespace WaferNavController {
                 return;
             }
 
+            IdTextBox.Text = IdTextBox.Text.Trim();
             var enteredId = IdTextBox.Text;
             if (string.IsNullOrEmpty(enteredId)) {
                 ErrorLabel.Content = "Please enter an ID to search for";
@@ -51,8 +52,10 @@ namespace WaferNavController {
 
             if (dataGrid.Name == "dgBLU") {
                 statusLogConfig.dgSLT.SelectedIndex = -1;
+                statusLogConfig.SetStatusLabelTextWithClearTimer($"Found BLU {enteredId}.");
             } else {
                 statusLogConfig.dgBLU.SelectedIndex = -1;
+                statusLogConfig.SetStatusLabelTextWithClearTimer($"Found SLT {enteredId}.");
             }
             DialogResult = result;
         }

@@ -36,7 +36,15 @@ namespace WaferNavController {
                 DialogResult = false;
                 return;
             }
-            DialogResult = statusLogConfig.ImportFile(filenameToImport);
+            var result = statusLogConfig.ImportFile(filenameToImport);
+            if (result) {
+                MainWindow.Get().AppendLine("Successfully reset database with data from imported config file!", true);
+                statusLogConfig.SetStatusLabelTextWithClearTimer("Successfully imported database from file.");
+            } else {
+                MainWindow.Get().AppendLine("Failed to reset database with config file data!", true);
+                statusLogConfig.SetStatusLabelTextWithClearTimer("Failed to import database from file!");
+            }
+            DialogResult = result;
         }
 
         private void ImportWindow_Closed(object sender, EventArgs e) {

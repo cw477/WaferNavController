@@ -43,6 +43,7 @@ namespace WaferNavController {
         }
 
         private void SaveButton_Clicked(object sender, RoutedEventArgs e) {
+            TrimAllTextBoxes();
             if (!AllTextBoxesHaveData() || !DataHasChanged()) {
                 statusLogConfig.dgBLU.SelectedIndex = -1;
                 statusLogConfig.dgSLT.SelectedIndex = -1;
@@ -60,6 +61,7 @@ namespace WaferNavController {
                 Application.Current.Dispatcher.Invoke(() => {
                     MainWindow.Get().RefreshDataGrids();
                     statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgBLU, id);
+                    statusLogConfig.SetStatusLabelTextWithClearTimer($"Edited BLU {startId}.");
                 });
             }
             else if (type == "SLT") {
@@ -67,12 +69,20 @@ namespace WaferNavController {
                 Application.Current.Dispatcher.Invoke(() => {
                     MainWindow.Get().RefreshDataGrids();
                     statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgSLT, id);
+                    statusLogConfig.SetStatusLabelTextWithClearTimer($"Edited SLT {startId}.");
                 });
             }
             DialogResult = result;
         }
 
         private void EditWindow_Closed(object sender, EventArgs e) {
+        }
+
+        private void TrimAllTextBoxes() {
+            IdTextBox.Text = IdTextBox.Text.Trim();
+            NameTextBox.Text = NameTextBox.Text.Trim();
+            DescriptionTextBox.Text = DescriptionTextBox.Text.Trim();
+            LocationTextBox.Text = LocationTextBox.Text.Trim();
         }
 
         private bool AllTextBoxesHaveData() {

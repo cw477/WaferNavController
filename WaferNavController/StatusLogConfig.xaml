@@ -26,9 +26,9 @@
                         <ColumnDefinition Width="11*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="0,488,10,29" Grid.Column="1" Grid.ColumnSpan="2"/>
-
-                    <Label Content="Status.." HorizontalAlignment="Left" Margin="7,491,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.362,0.577" Height="30" Width="546" Grid.Column="1" FontWeight="Normal" FontSize="12"/>
+                    <Rectangle Fill="#FFD6D6FF" Stroke="#FF9FB0FF" Margin="1,512,9,10" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Label x:Name="StatusLabel" HorizontalAlignment="Left" Margin="1,512,0,10" VerticalAlignment="Top" RenderTransformOrigin="0.362,0.577" Height="30" Width="297" Grid.Column="1" FontWeight="Normal" FontSize="12" Padding="5,0,0,0" VerticalContentAlignment="Center"/>
+                    <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Right" Margin="0,512,0,-2" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1" Height="30" FontSize="12" FontWeight="Normal" Padding="0,0,5,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
 
                     <DataGrid x:Name="dgBLU" Margin="0,0,10,277" Height="174" VerticalAlignment="Bottom" MouseUp="DataGrid_MouseUp" Tag="BLU" IsReadOnly="True" Grid.Column="1" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2">
                         <DataGrid.Resources>
@@ -57,7 +57,6 @@
                     <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="0,280,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" FontWeight="Bold" FontSize="14" Height="29" Grid.Column="1"/>
                     <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="29" FontWeight="Bold" FontSize="14" Grid.Column="1"/>
                     <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="3" Margin="-2,-2,0,0"/>
-                    <Label x:Name="lastRefreshedLabel" Content="" HorizontalAlignment="Right" Margin="347,523,0,0" VerticalAlignment="Top" Width="222" Tag="Last refreshed: " Grid.Column="1" Height="26" FontSize="12" FontWeight="Normal"/>
 
                     <Button x:Name="FindButton" VerticalAlignment="Top" Margin="0,30,0,0" HorizontalAlignment="Left" Width="33" Height="33" Click="FindButton_Click" Grid.Column="1">
                         <Button.Template>

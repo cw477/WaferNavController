@@ -35,6 +35,7 @@ namespace WaferNavController {
                 return;  
             }
             statusLogConfig.ResetDatabase();
+            statusLogConfig.SetStatusLabelTextWithClearTimer("Database reset to its initial state.");
             DialogResult = true;
         }
 

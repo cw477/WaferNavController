@@ -28,6 +28,7 @@ namespace WaferNavController {
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
+            TrimAllTextBoxes();
             if (!AllTextBoxesHaveData()) {
                 DialogResult = false;
                 return;
@@ -42,14 +43,23 @@ namespace WaferNavController {
                 result = DatabaseHandler.AddBluOrSlt("BLU", id, name, description, location);
                 if (result) {
                     statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgBLU, id);
+                    statusLogConfig.SetStatusLabelTextWithClearTimer($"Added BLU {id}.");
                 }
             } else {
                 result = DatabaseHandler.AddBluOrSlt("SLT", id, name, description, location);
                 if (result) {
                     statusLogConfig.FindAndSelectRowIfExists(statusLogConfig.dgSLT, id);
+                    statusLogConfig.SetStatusLabelTextWithClearTimer($"Added SLT {id}.");
                 }
             }
             DialogResult = result;
+        }
+
+        private void TrimAllTextBoxes() {
+            IdTextBox.Text = IdTextBox.Text.Trim();
+            NameTextBox.Text = NameTextBox.Text.Trim();
+            DescriptionTextBox.Text = DescriptionTextBox.Text.Trim();
+            LocationTextBox.Text = LocationTextBox.Text.Trim();
         }
 
         private bool AllTextBoxesHaveData() {

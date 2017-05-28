@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Path = System.IO.Path;
@@ -155,13 +157,11 @@ namespace WaferNavController
                 if (!string.IsNullOrEmpty(filepath)) {
                     DatabaseHandler.ResetDatabaseWithConfigFileData(filepath);
                 }
-                mainWindow.AppendLine("Successfully reset database with data from imported config file!", true);
                 TabControl.SelectedIndex = 0;
                 MainWindow.Get().RefreshDataGrids();
                 return true;
             }
             catch (Exception) {
-                mainWindow.AppendLine("Failed to load reset database with config file data!", true);
                 return false;
             }
         }
@@ -191,10 +191,13 @@ namespace WaferNavController
                 if (sfd.ShowDialog() == true) {
                     string filename = sfd.FileName;
                     File.WriteAllText(filename, jsonFormatted);
+                    mainWindow.AppendLine("Successfully exported database to file.", true);
+                    SetStatusLabelTextWithClearTimer("Successfully exported database to file.");
                 }
             }
             catch (Exception e) {
                 mainWindow.AppendLine("Failed to export database to text file!", true);
+                SetStatusLabelTextWithClearTimer("Failed to export database to file.");
             }
         }
 
@@ -214,12 +217,32 @@ namespace WaferNavController
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) {
             mainWindow.RefreshDataGrids();
+            SetStatusLabelTextWithClearTimer("Manually refreshed database.");
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e) {
             LogoutWindow logoutWindow = new LogoutWindow();
             logoutWindow.Owner = mainWindow;
             logoutWindow.ShowDialog();
+        }
+
+        private CancellationTokenSource cancelTokenSource;
+
+        public void SetStatusLabelTextWithClearTimer(string newText) {
+            StatusLabel.Content = newText;
+            cancelTokenSource?.Cancel();
+            cancelTokenSource = new CancellationTokenSource();
+            ClearStatusLabelTextAsync(cancelTokenSource.Token);
+        }
+
+        private async void ClearStatusLabelTextAsync(CancellationToken token) {
+            try {
+                await Task.Delay(10000, token);
+                StatusLabel.Content = "";
+            }
+            catch (TaskCanceledException) {
+                // Swallow task canceled exception
+            }
         }
     }
 }

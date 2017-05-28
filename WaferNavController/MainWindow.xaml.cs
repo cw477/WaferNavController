@@ -58,6 +58,7 @@ namespace WaferNavController {
             } else {
                 Title += "   <ADMIN>";
             }
+            statusLogConfig.SetStatusLabelTextWithClearTimer("Welcome to ActivATE WaferNav Controller!");
         }
 
         public static bool IsAdmin() {
