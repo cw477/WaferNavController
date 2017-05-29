@@ -19,8 +19,8 @@
         </Grid.RowDefinitions>
         <Button x:Name="LogoutButton" Content="Yes, log out" Margin="10.5,10,10,10" Grid.Row="3" Click="LogoutButton_Clicked" FontWeight="Bold" Grid.Column="1" />
         <Button x:Name="CancelButton" Content="Cancel" Margin="10,10,9.5,10" Grid.Row="3" Click="CancelButton_Clicked" FontWeight="Bold" />
-        <Image Source="/WaferNavController;component/Resources/astronics_logo.png" Stretch="Fill" Margin="112,0,112,49" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-        <TextBlock HorizontalAlignment="Left" Margin="112,20,0,0" TextWrapping="Wrap" Text="ActivATE WaferNav Controller" VerticalAlignment="Top" Height="31" Width="262" FontSize="20" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/WaferNavController;component/Resources/astronics2_logo.png" Stretch="Fill" Margin="112,15,112,54" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/WaferNavController;component/Resources/activateWN_logo.png" Stretch="Fill" Margin="112,0,102,53" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2"/>
         <TextBox TextWrapping="Wrap" Text="Would you like to log out?" FontSize="24" Margin="10,15" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Center" Width="463" HorizontalContentAlignment="Center" BorderThickness="0"/>
     </Grid>
 </base:BaseWindow>
