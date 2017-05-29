@@ -28,8 +28,13 @@ namespace WaferNavController {
                 mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
                 mainWindow.AppendLine("Subscribed to " + SubTopic, true);
                 mainWindow.AppendLine("Publishing to " + PubTopic, true);
-                if (NavigationHandler.demoMode) {
-                    mainWindow.AppendLine("Demo mode is on!", true);
+                int constraintLvl = NavigationHandler.constraintCheckLevel;
+                if (constraintLvl == 2) {
+                    mainWindow.AppendLine($"Constraint check level: {constraintLvl} (medium constraints)", true);
+                } else if (constraintLvl == 3) {
+                    mainWindow.AppendLine($"Constraint check level: {constraintLvl} (medium constraints)", true);
+                } else {
+                    mainWindow.AppendLine($"Constraint check level: {constraintLvl} (no constraints)", true);
                 }
             }
             catch (Exception e) {

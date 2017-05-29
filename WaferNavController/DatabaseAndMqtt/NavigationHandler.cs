@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WaferNavController
 {
     public static class NavigationHandler {
 
-        public static readonly bool demoMode;
+        public static readonly int constraintCheckLevel;
         private static readonly int finishBluUnloadDelay = 7500;
 
         static NavigationHandler() {
@@ -17,10 +18,11 @@ namespace WaferNavController
                     ? File.ReadAllText("config.json")
                     : Properties.Resources.config;
                 JObject jsonObject = JObject.Parse(jsonStr);
-                demoMode = (bool) jsonObject["demo_mode"];
+                constraintCheckLevel = (int) jsonObject["constraint_check_level"];
             }
             catch (Exception e) {
                 MainWindow.Get().AppendLine("Malformed JSON file! " + e.Message, true);
+                constraintCheckLevel = 1; // default to no constraints
             }
         }
 
@@ -45,9 +47,12 @@ namespace WaferNavController
         public static Dictionary<string, string> GetNewBlu(Dictionary<string, object> messages) {
             // get available blu
             var bluId = DatabaseHandler.GetRandomAvailableBluId();
-            if (!demoMode) {
+            if (constraintCheckLevel == 3) {
                 //add new lot id + add assignment + set blu to unavailable
                 DatabaseHandler.setForLoad((string) messages["lotId"], bluId);
+            }
+            else if (constraintCheckLevel == 2) {
+                DatabaseHandler.setForLoadSimple(bluId);
             }
 
             // Get BLU info that we were successful
@@ -109,9 +114,12 @@ namespace WaferNavController
             // Get first available SLT id
             var sltId = DatabaseHandler.GetRandomAvailableSltId();
 
-            if (!demoMode) {
+            if (constraintCheckLevel == 3) {
                 //remove previous data+assignments, add new assignments+data
                 DatabaseHandler.setForTest((string) messages["bluId"], (JArray) messages["bibIds"], sltId);
+            }
+            else if (constraintCheckLevel == 2) {
+                DatabaseHandler.setForTestSimple((string)messages["bluId"], (JArray)messages["bibIds"], sltId);
             }
 
             // Get slt info since we were successful
@@ -172,9 +180,12 @@ namespace WaferNavController
             //get available blu
             var bluId = DatabaseHandler.GetRandomAvailableBluId();
 
-            if (!demoMode) {
+            if (constraintCheckLevel == 3) {
                 //remove previous data+assignments, add new assignments+data
                 DatabaseHandler.setForUnload((string) messages["sltId"], (JArray) messages["bibIds"], bluId);
+            }
+            else if (constraintCheckLevel == 2) {
+                DatabaseHandler.setForUnloadSimple((string)messages["sltId"], (JArray)messages["bibIds"], bluId);
             }
 
             //get blu info
@@ -203,6 +214,7 @@ namespace WaferNavController
             var returnJson = new Dictionary<string, string>();
             returnJson.Add("directive", "COMPLETE_DONE_BLU_RETURN");
             returnJson.Add("clientId", (string) messages["clientId"]);
+
             if (DatabaseHandler.confirmDoneBlu((string) messages["bluId"])) {
                 returnJson.Add("confirm", "true");
             } else {
@@ -211,8 +223,15 @@ namespace WaferNavController
 
             Task.Run(() => {
                 System.Threading.Thread.Sleep(finishBluUnloadDelay);
-                DatabaseHandler.finishBluUnload((string) messages["bluId"], demoMode);
-                MainWindow.Get().RefreshDataGrids();
+                if (constraintCheckLevel == 3) {
+                    DatabaseHandler.finishBluUnload((string) messages["bluId"]);
+                }
+                else if (constraintCheckLevel == 2) {
+                    DatabaseHandler.finishBluUnloadSimple((string) messages["bluId"]);
+                }
+                Application.Current.Dispatcher.Invoke(() => {
+                    MainWindow.Get().RefreshDataGrids();
+                });
             });
             return returnJson;
         }
