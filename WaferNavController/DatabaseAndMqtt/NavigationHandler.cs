@@ -16,7 +16,7 @@ namespace WaferNavController
             try {
                 var jsonStr = File.Exists("config.json")
                     ? File.ReadAllText("config.json")
-                    : Properties.Resources.config;
+                    : System.Text.Encoding.UTF8.GetString(Properties.Resources.config);
                 JObject jsonObject = JObject.Parse(jsonStr);
                 constraintCheckLevel = (int) jsonObject["constraint_check_level"];
             }

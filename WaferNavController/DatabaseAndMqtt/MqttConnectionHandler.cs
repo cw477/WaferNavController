@@ -46,7 +46,7 @@ namespace WaferNavController {
             try {
                 var jsonStr = File.Exists("config.json")
                     ? File.ReadAllText("config.json")
-                    : Properties.Resources.config;
+                    : System.Text.Encoding.UTF8.GetString(Properties.Resources.config);
                 JObject jsonObject = JObject.Parse(jsonStr);
                 JObject innerJsonObject = JObject.Parse(jsonObject["mqtt"].ToString());
                 SubTopic = innerJsonObject["sub_topic"].ToString();

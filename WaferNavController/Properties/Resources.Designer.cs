@@ -91,27 +91,12 @@ namespace WaferNavController.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {
-        ///  &quot;database&quot;: {
-        ///    //&quot;server&quot;:               &quot;ec2-52-53-247-222.us-west-1.compute.amazonaws.com,14330&quot;,
-        ///    &quot;server&quot;: &quot;localhost,1433&quot;,
-        ///    &quot;database&quot;: &quot;wafer_nav&quot;,
-        ///    &quot;user id&quot;: &quot;appuser&quot;,
-        ///    &quot;password&quot;: &quot;appuser&quot;,
-        ///    &quot;connection timeout&quot;: &quot;60&quot;
-        ///  },
-        ///  &quot;mqtt&quot;: {
-        ///    &quot;pub_topic&quot;: &quot;wafernav/location_data&quot;,
-        ///    &quot;sub_topic&quot;: &quot;wafernav/location_requests&quot;,
-        ///    &quot;broker_url&quot;: &quot;iot.eclipse.org&quot;
-        ///  },
-        ///  &quot;demo_mode&quot;: true
-        ///}
-        ///.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string config {
+        internal static byte[] config {
             get {
-                return ResourceManager.GetString("config", resourceCulture);
+                object obj = ResourceManager.GetObject("config", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
