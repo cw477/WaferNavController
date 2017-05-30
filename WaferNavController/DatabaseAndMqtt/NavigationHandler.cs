@@ -221,6 +221,9 @@ namespace WaferNavController
                 returnJson.Add("confirm", "false");
             }
 
+            // Echo back BLU ID
+            returnJson.Add("bluId", (string) messages["bluId"]);
+
             Task.Run(() => {
                 System.Threading.Thread.Sleep(finishBluUnloadDelay);
                 if (constraintCheckLevel == 3) {

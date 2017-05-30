@@ -75,8 +75,42 @@ namespace WaferNavController {
             // Publish return message
             mqttClient.Publish(PubTopic, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(returnJson)));
 
-            // Refresh data grids
-            Application.Current.Dispatcher.Invoke(() => mainWindow.RefreshDataGrids());
+            // Highlight changed row
+            try {
+                switch (returnJson["directive"]) {
+                    case "GET_NEW_BLU_RETURN":
+                    case "GET_DONE_BLU_RETURN":
+                    case "COMPLETE_DONE_BLU_RETURN":
+                        Application.Current.Dispatcher.Invoke(() => {
+                            // Refresh data grids
+                            mainWindow.RefreshDataGrids();
+                            // Highlight changed BLU row
+                            StatusLogConfig.Get().FindAndSelectRowIfExists(StatusLogConfig.Get().dgBLU, returnJson["bluId"]);
+                        });
+                        break;
+                    case "GET_NEW_SLT_RETURN":
+                        Application.Current.Dispatcher.Invoke(() => {
+                            // Refresh data grids
+                            mainWindow.RefreshDataGrids();
+                            // Highlight changed SLT row
+                            StatusLogConfig.Get().FindAndSelectRowIfExists(StatusLogConfig.Get().dgSLT, returnJson["sltId"]);
+                        });
+                        break;
+                    case "COMPLETE_NEW_BLU_RETURN":
+                    case "COMPLETE_NEW_SLT_RETURN":
+                        // don't refresh data grids
+                        break;
+                    default:
+                        Application.Current.Dispatcher.Invoke(() => {
+                            // Refresh data grids
+                            mainWindow.RefreshDataGrids();
+                        });
+                        break;
+                }
+            }
+            catch (Exception) {
+                Console.Error.WriteLine("client_MqttMsgPublishReceived: Directive unrecognized.");
+            }
         }
 
         /// <summary>
