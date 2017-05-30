@@ -9,13 +9,7 @@
       Title="Config">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="152*"/>
-            <ColumnDefinition Width="141*"/>
-            <ColumnDefinition Width="7*"/>
-        </Grid.ColumnDefinitions>
-        <Rectangle Grid.ColumnSpan="3" Fill="#FFFFFF" HorizontalAlignment="Left" Height="600" Stroke="Black" VerticalAlignment="Top" Width="600"/>
-        <TabControl x:Name="TabControl" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="590" Margin="0,10,0,0" VerticalAlignment="Top" Width="600">
+        <TabControl x:Name="TabControl" HorizontalAlignment="Left" Height="590" Margin="0,10,0,0" VerticalAlignment="Top" Width="600" Padding="2" BorderThickness="1">
 
             <!-- Status -->
             <TabItem x:Name="StatusTabItem" Header="Status" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="60" Margin="0" FontWeight="Bold" FontSize="16">
@@ -56,7 +50,7 @@
 
                     <Label x:Name="lblSLT" Content="SLT" HorizontalAlignment="Left" Margin="0,280,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" FontWeight="Bold" FontSize="14" Height="29" Grid.Column="1"/>
                     <Label x:Name="lblBLU" Content="BLU" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" Width="574" HorizontalContentAlignment="Left" Height="29" FontWeight="Bold" FontSize="14" Grid.Column="1"/>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="3" Margin="-2,-2,0,0"/>
+                    <Rectangle Fill="#FF0E0E6A" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="-2,-2,-2,0"/>
 
                     <Button x:Name="FindButton" VerticalAlignment="Top" Margin="0,30,0,0" HorizontalAlignment="Left" Width="33" Height="33" Click="FindButton_Click" Grid.Column="1">
                         <Button.Template>
@@ -153,7 +147,7 @@
                             </ToolTip>
                         </Button.ToolTip>
                     </Button>
-                    
+
                     <Button x:Name="ResetDatabaseButton" VerticalAlignment="Top" Margin="120,30,0,0" HorizontalAlignment="Left" Width="33" Grid.Column="1" Height="33" Click="ResetDatabaseButton_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -212,7 +206,7 @@
                         <ColumnDefinition Width="131*"/>
                         <ColumnDefinition Width="463*"/>
                     </Grid.ColumnDefinitions>
-                    <Rectangle Fill="#FF0E0E6A" HorizontalAlignment="Left" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2" Margin="-2,-2,0,0"/>
+                    <Rectangle Fill="#FF0E0E6A" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="-2,-2,-2,0"/>
                     <ScrollViewer x:Name="scrollViewer" Margin="10,35,10,42" Grid.ColumnSpan="2">
                         <TextBox x:Name="logBox" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" FontWeight="Normal">
                             <TextBox.ContextMenu>
@@ -227,7 +221,94 @@
                 </Grid>
             </TabItem>
 
+            <!--About-->
+            <TabItem x:Name="AboutTabItem" Header="About" Height="30" VerticalAlignment="Bottom" Margin="360,0,-364,0" FontWeight="Bold" FontSize="16" BorderThickness="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2.75*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="1.25*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="AboutBackgroundImage" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="9" Source="Resources/AboutBackground.png" Stretch="UniformToFill" Margin="0"/>
+                    <Rectangle Fill="#FF0E0E6A" Height="19" Stroke="#FF9FB0FF" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Column="0" Margin="-2,-2,-2,0"/>
+
+                    <Image x:Name="NielsenNinjasLogo" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           Source="Resources/nielsen_ninjas_horizontal_blue.png" Margin="0,20,0,0" />
+
+                    <TextBox x:Name="AboutBrianNameTextBox" Grid.Column="0" Grid.Row="1" Text="Brian Chipman"
+                             Style="{StaticResource AboutNameStyle}" />
+                    <TextBox x:Name="AboutBrianEmailTextBox" Grid.Column="1" Grid.Row="1" Text="bchipman@uci.edu"
+                             Style="{StaticResource AboutEmailStyle}" />
+
+                    <TextBox x:Name="AboutMariaNameTextBox" Grid.Column="0" Grid.Row="2" Text="Maria Galindo"
+                             Style="{StaticResource AboutNameStyle}" />
+                    <TextBox x:Name="AboutMariaEmailTextBox" Grid.Column="1" Grid.Row="2" Text="mariatg@uci.edu"
+                             Style="{StaticResource AboutEmailStyle}" />
+
+                    <TextBox x:Name="AboutLoreniaNameTextBox" Grid.Column="0" Grid.Row="3" Text="Lorenia Jimenez"
+                             Style="{StaticResource AboutNameStyle}" />
+                    <TextBox x:Name="AboutLoreniaEmailTextBox" Grid.Column="1" Grid.Row="3" Text="loreniaj@uci.edu"
+                             Style="{StaticResource AboutEmailStyle}" />
+
+                    <TextBox x:Name="AboutJodyNameTextBox" Grid.Column="0" Grid.Row="4" Text="Jody Nietz"
+                             Style="{StaticResource AboutNameStyle}" />
+                    <TextBox x:Name="AboutJodyEmailTextBox" Grid.Column="1" Grid.Row="4" Text="jnietz@uci.edu"
+                             Style="{StaticResource AboutEmailStyle}" />
+
+                    <TextBox x:Name="AboutCatherineNameTextBox" Grid.Column="0" Grid.Row="5" Text="Catherine Tran"
+                             Style="{StaticResource AboutNameStyle}" />
+                    <TextBox x:Name="AboutCatherineEmailTextBox" Grid.Column="1" Grid.Row="5" Text="cathemt1@uci.edu"
+                             Style="{StaticResource AboutEmailStyle}" />
+
+                    <TextBox x:Name="AboutCameronNameTextBox" Grid.Column="0" Grid.Row="6" Text="Cameron Watt"
+                             Style="{StaticResource AboutNameStyle}" />
+                    <TextBox x:Name="AboutCameronEmailTextBox" Grid.Column="1" Grid.Row="6" Text="cawatt@uci.edu"
+                             Style="{StaticResource AboutEmailStyle}" />
+
+                    <TextBox x:Name="AboutTitleTextBox" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7"
+                             TextWrapping="Wrap"
+                             Text="This app, and the accompanying Android app, were created by team Nielsen Ninjas for the senior design project course at UC Irvine, 2017."
+                             FontSize="14" FontWeight="Normal" BorderThickness="0" Margin="35,0"
+                             VerticalAlignment="Center" Background="{x:Null}" />
+
+                    <TextBlock x:Name="GitHubLink1" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" FontSize="16" FontWeight="Bold">
+                        <Hyperlink NavigateUri="https://github.com/cameron-watt/WaferNavController"
+                                   RequestNavigate="Hyperlink_RequestNavigate">
+                            <Run Text="C# App on GitHub" />
+                        </Hyperlink>
+                    </TextBlock>
+
+                    <TextBlock x:Name="GitHubLink2" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" FontSize="16" FontWeight="Bold">
+                        <Hyperlink NavigateUri="https://github.com/namedtuple/WaferNavApp"
+                                   RequestNavigate="Hyperlink_RequestNavigate">
+                            <Run Text="Android App on GitHub" />
+                        </Hyperlink>
+                    </TextBlock>
+
+                </Grid>
+            </TabItem>
+
         </TabControl>
-        <Button x:Name="LogoutButton" Content="Log Out" Grid.Column="1" Margin="222,12,4,558" Click="LogoutButton_Click" Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold"/>
+        <Button x:Name="LogoutButton" Content="Log Out" Margin="525,12,2,557" Click="LogoutButton_Click" FontSize="16" FontWeight="Bold" Padding="1" BorderBrush="#FFACACAC" BorderThickness="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFE5E5E5" Offset="0"/>
+                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
     </Grid>
 </Page>

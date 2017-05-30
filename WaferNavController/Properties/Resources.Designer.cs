@@ -63,6 +63,16 @@ namespace WaferNavController.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AboutBackground {
+            get {
+                object obj = ResourceManager.GetObject("AboutBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap add_icon_black_small {
             get {
                 object obj = ResourceManager.GetObject("add_icon_black_small", resourceCulture);
@@ -156,6 +166,36 @@ namespace WaferNavController.Properties {
         internal static System.Drawing.Bitmap find_icon_white {
             get {
                 object obj = ResourceManager.GetObject("find_icon_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nielsen_ninjas_horizontal_black {
+            get {
+                object obj = ResourceManager.GetObject("nielsen_ninjas_horizontal_black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nielsen_ninjas_horizontal_blue {
+            get {
+                object obj = ResourceManager.GetObject("nielsen_ninjas_horizontal_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nielsen_ninjas_horizontal_red {
+            get {
+                object obj = ResourceManager.GetObject("nielsen_ninjas_horizontal_red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
