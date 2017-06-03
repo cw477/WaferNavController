@@ -1,12 +1,17 @@
+extern alias M2Mqtt;
+extern alias GnatMQ;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
-using uPLibrary.Networking.M2Mqtt;
-using uPLibrary.Networking.M2Mqtt.Messages;
+using M2Mqtt::uPLibrary.Networking.M2Mqtt;
+using M2Mqtt::uPLibrary.Networking.M2Mqtt.Messages;
 using System.IO;
 using System.Windows;
 using Newtonsoft.Json.Linq;
+using uPLibrary.Networking.M2Mqtt.Communication;
+using MqttBroker = uPLibrary.Networking.M2Mqtt.MqttBroker;
 
 namespace WaferNavController {
     class MqttConnectionHandler {
@@ -16,15 +21,21 @@ namespace WaferNavController {
         private string PubTopic { get; set; }
         private readonly MqttClient mqttClient;
         private readonly MainWindow mainWindow;
+        private readonly MqttBroker mqttBroker;
 
         public MqttConnectionHandler(MainWindow mainWindow) {
             try {
                 this.mainWindow = mainWindow;
                 SetMqttConnectionInfoFromJsonFile();
+                if (BrokerUrl == "localhost") {
+                    mqttBroker = new MqttBroker();
+                    mqttBroker.Start();
+                }
                 mqttClient = new MqttClient(BrokerUrl);
                 mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
                 mqttClient.Connect(ClientId);
                 mqttClient.Subscribe(new[] {SubTopic}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
+                mainWindow.AppendLine("Connected to MQTT broker at " + BrokerUrl, true);
                 mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
                 mainWindow.AppendLine("Subscribed to " + SubTopic, true);
                 mainWindow.AppendLine("Publishing to " + PubTopic, true);
@@ -161,6 +172,7 @@ namespace WaferNavController {
 
         public void Disconnect() {
             mqttClient.Disconnect();
+            mqttBroker.Stop();
         }
     }
 }
