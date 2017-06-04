@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Nancy;
 using Nancy.Hosting.Self;
 using Nancy.ModelBinding;
@@ -11,7 +11,7 @@ namespace SimpleWebServer {
 
             using (var host = new NancyHost(uri)) {
                 host.Start();
-                Console.WriteLine("Simple web server running on " + uri);
+                Console.WriteLine($"{DateTime.Now} Simple web server running on {uri}");
                 Console.WriteLine("Press [Enter] to close the host.");
                 Console.ReadLine();
             }
@@ -33,6 +33,7 @@ namespace SimpleWebServer {
             Post["/broker_url"] = parameters => {
                 var model = this.Bind<BrokerUrl>();
                 brokerUrl = model;
+                Console.WriteLine($"{DateTime.Now} MQTT broker URL set to {brokerUrl.Url}");
                 return model;
             };
         }

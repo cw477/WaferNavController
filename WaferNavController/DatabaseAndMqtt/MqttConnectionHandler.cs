@@ -12,7 +12,6 @@ using System.Net;
 using System.Windows;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using uPLibrary.Networking.M2Mqtt.Communication;
 using MqttBroker = uPLibrary.Networking.M2Mqtt.MqttBroker;
 
 namespace WaferNavController {
@@ -33,17 +32,16 @@ namespace WaferNavController {
                 if (BrokerUrl == "localhost") {
                     mqttBroker = new MqttBroker();
                     mqttBroker.Start();
+                    SendRestCallToSetBrokerIp();
                 }
                 mqttClient = new MqttClient(BrokerUrl);
                 mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
                 mqttClient.Connect(ClientId);
                 mqttClient.Subscribe(new[] {SubTopic}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
-                mainWindow.AppendLine("Connected to MQTT broker at " + BrokerUrl, true);
+                mainWindow.AppendLine("Connected to MQTT broker at " + BrokerUrl, true);123
                 mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
                 mainWindow.AppendLine("Subscribed to " + SubTopic, true);
                 mainWindow.AppendLine("Publishing to " + PubTopic, true);
-
-                sendRestCallToSetBrokerIp();
 
                 int constraintLvl = NavigationHandler.constraintCheckLevel;
                 if (constraintLvl == 2) {
@@ -59,7 +57,7 @@ namespace WaferNavController {
             }
         }
 
-        private void sendRestCallToSetBrokerIp() {
+        private void SendRestCallToSetBrokerIp() {
             var publicIp = new WebClient().DownloadString("http://bot.whatismyipaddress.com");
             mainWindow.AppendLine($"Public IP address: {publicIp}", true);
             var brokerUrl = $"tcp://{publicIp}:1883";
