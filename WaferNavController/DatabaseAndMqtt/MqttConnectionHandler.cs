@@ -38,7 +38,7 @@ namespace WaferNavController {
                 mqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
                 mqttClient.Connect(ClientId);
                 mqttClient.Subscribe(new[] {SubTopic}, new[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE});
-                mainWindow.AppendLine("Connected to MQTT broker at " + BrokerUrl, true);123
+                mainWindow.AppendLine("Connected to MQTT broker at " + BrokerUrl, true);
                 mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
                 mainWindow.AppendLine("Subscribed to " + SubTopic, true);
                 mainWindow.AppendLine("Publishing to " + PubTopic, true);
