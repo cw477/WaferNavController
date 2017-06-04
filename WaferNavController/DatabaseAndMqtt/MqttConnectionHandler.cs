@@ -8,17 +8,20 @@ using Newtonsoft.Json;
 using M2Mqtt::uPLibrary.Networking.M2Mqtt;
 using M2Mqtt::uPLibrary.Networking.M2Mqtt.Messages;
 using System.IO;
+using System.Net;
 using System.Windows;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 using uPLibrary.Networking.M2Mqtt.Communication;
 using MqttBroker = uPLibrary.Networking.M2Mqtt.MqttBroker;
 
 namespace WaferNavController {
     class MqttConnectionHandler {
         private string ClientId { get; } = Guid.NewGuid().ToString();
-        private string BrokerUrl { get; set; } // Defaults to port 1883
         private string SubTopic { get; set; }
         private string PubTopic { get; set; }
+        private string BrokerUrl { get; set; } // Defaults to port 1883
+        private string BrokerRedirectIp { get; set; }
         private readonly MqttClient mqttClient;
         private readonly MainWindow mainWindow;
         private readonly MqttBroker mqttBroker;
@@ -39,6 +42,9 @@ namespace WaferNavController {
                 mainWindow.AppendLine("CLIENT ID: " + ClientId, true);
                 mainWindow.AppendLine("Subscribed to " + SubTopic, true);
                 mainWindow.AppendLine("Publishing to " + PubTopic, true);
+
+                sendRestCallToSetBrokerIp();
+
                 int constraintLvl = NavigationHandler.constraintCheckLevel;
                 if (constraintLvl == 2) {
                     mainWindow.AppendLine($"Constraint check level: {constraintLvl} (medium constraints)", true);
@@ -53,6 +59,19 @@ namespace WaferNavController {
             }
         }
 
+        private void sendRestCallToSetBrokerIp() {
+            var publicIp = new WebClient().DownloadString("http://bot.whatismyipaddress.com");
+            mainWindow.AppendLine($"Public IP address: {publicIp}", true);
+            var brokerUrl = $"tcp://{publicIp}:1883";
+            var client = new RestClient(BrokerRedirectIp);
+            var request = new RestRequest("broker_url", Method.POST);
+            request.AddParameter("url", brokerUrl);
+            request.AddHeader("Content-Type", "application/json");
+            var response = client.Execute(request);
+            var content = response.Content;
+            mainWindow.AppendLine($"REST call response content (raw): {content}", true);
+        }
+
         private void SetMqttConnectionInfoFromJsonFile() {
             try {
                 var jsonStr = File.Exists("config.json")
@@ -63,6 +82,7 @@ namespace WaferNavController {
                 SubTopic = innerJsonObject["sub_topic"].ToString();
                 PubTopic = innerJsonObject["pub_topic"].ToString();
                 BrokerUrl = innerJsonObject["broker_url"].ToString();
+                BrokerRedirectIp = innerJsonObject["broker_redirect_ip"].ToString();
             }
             catch (Exception e) {
                 MainWindow.Get().AppendLine("Malformed JSON file! " + e.Message, true);
